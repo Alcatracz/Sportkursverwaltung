@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf15112079701750" configfile="/Sportkursverwaltung/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="LoginView" x="156" y="81" id="pf15112749596751" outlinks="pf15112749596752 pf15112749596753" path="/LoginView.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="Trainer" x="396" y="81" id="pf15112749596754" inlinks="pf15112749596752" path="/Trainer.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="FailedLogin" x="405" y="226" id="pf15112749596740" inlinks="pf15112749596753" path="/FailedLogin.jsp"/>
+  <links id="pf15112749596752" target="pf15112749596754" source="pf15112749596751" outcome="success"/>
+  <links id="pf15112749596753" target="pf15112749596740" source="pf15112749596751" outcome="failed"/>
+</pageflow:Pageflow>
