@@ -1,5 +1,5 @@
 package model;
-
+//Fack ju goethe
 public class User {
     private String name;
     private String password;
