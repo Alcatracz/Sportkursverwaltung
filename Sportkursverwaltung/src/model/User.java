@@ -1,6 +1,7 @@
 package model;
 //Fack ju goethe
 //nice try
+//U mad hater?
 public class User {
     private String name;
     private String password;
