@@ -14,7 +14,7 @@ public class LoginController {
         	return "trainer";
         }
          else{
-            return "failed";
+            return "index";
         }
 
     }
