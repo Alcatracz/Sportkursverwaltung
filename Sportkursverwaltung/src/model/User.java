@@ -1,7 +1,5 @@
 package model;
-//Fack ju goethe
-//nice try
-//U mad hater?
+
 public class User {
     private String name;
     private String password;
@@ -19,13 +17,5 @@ public class User {
         this.password = password;
     }
 
-    public String login(){
-        // Image here a database access to validate the users
-        if (name.equalsIgnoreCase("tester") && password.equalsIgnoreCase("tester")){
-            return "success";
-        } else {
-            return "failed";
-        }
 
-    }
 }

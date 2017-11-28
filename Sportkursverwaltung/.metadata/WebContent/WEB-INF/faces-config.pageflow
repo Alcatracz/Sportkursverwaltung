@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf15112079701750" configfile="/Sportkursverwaltung/WebContent/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="LoginView" x="156" y="81" id="pf15112749596751" outlinks="pf15112749596752 pf15112749596753" path="/LoginView.jsp"/>
-  <nodes xsi:type="pageflow:PFPage" name="Trainer" x="396" y="81" id="pf15112749596754" inlinks="pf15112749596752" path="/Trainer.jsp"/>
-  <nodes xsi:type="pageflow:PFPage" name="FailedLogin" x="405" y="226" id="pf15112749596740" inlinks="pf15112749596753" path="/FailedLogin.jsp"/>
-  <links id="pf15112749596752" target="pf15112749596754" source="pf15112749596751" outcome="success"/>
-  <links id="pf15112749596753" target="pf15112749596740" source="pf15112749596751" outcome="failed"/>
+  <nodes xsi:type="pageflow:PFPage" name="index.xhtml" x="204" y="112" id="pf15118835880110" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf15118836584091 pf15118837446583" path="/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="homeCustomer.xhtml" x="372" y="84" id="pf15118836584092" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf15118836584091" path="/homeCustomer.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="homeTrainer.xhtml" x="360" y="312" id="pf15118837446584" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf15118837446583" path="/homeTrainer.xhtml"/>
+  <links id="pf15118836584091" target="pf15118836584092" source="pf15118835880110" outcome="customer"/>
+  <links id="pf15118837446583" target="pf15118837446584" source="pf15118835880110" outcome="trainer"/>
 </pageflow:Pageflow>

@@ -4,35 +4,41 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
     version="2.2">
-	<managed-bean>
-		<managed-bean-name>temperatureConverter</managed-bean-name>
-		<managed-bean-class>model.TemperatureConverter</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>card</managed-bean-name>
-		<managed-bean-class>model.Card</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
+	<application>
+		<locale-config>
+			<default-locale>en</default-locale>
+			<supported-locale>de</supported-locale>
+		</locale-config>
+	</application>
 	<managed-bean>
 		<managed-bean-name>user</managed-bean-name>
 		<managed-bean-class>model.User</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>loginController</managed-bean-name>
+		<managed-bean-class>controller.LoginController</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>user</property-name>
+			<property-class>model.User</property-class>
+			<value>#{user}</value>
+		</managed-property>
+	</managed-bean>
 	<navigation-rule>
-		<display-name>LoginView</display-name>
-		<from-view-id>/LoginView.jsp</from-view-id>
+		<display-name>index.xhtml</display-name>
+		<from-view-id>/index.xhtml</from-view-id>
 		<navigation-case>
-			<from-outcome>success</from-outcome>
-			<to-view-id>/Trainer.jsp</to-view-id>
+			<from-outcome>customer</from-outcome>
+			<to-view-id>/homeCustomer.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
-		<display-name>LoginView</display-name>
-		<from-view-id>/LoginView.jsp</from-view-id>
+		<display-name>index.xhtml</display-name>
+		<from-view-id>/index.xhtml</from-view-id>
 		<navigation-case>
-			<from-outcome>failed</from-outcome>
-			<to-view-id>/FailedLogin.jsp</to-view-id>
+			<from-outcome>trainer</from-outcome>
+			<to-view-id>/homeTrainer.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<validator>

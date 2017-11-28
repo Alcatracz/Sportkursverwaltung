@@ -6,11 +6,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.faces.validator.Validator;
 
+
 public class LoginValidator implements Validator {
     public void validate(FacesContext context, UIComponent component,
             Object value) throws ValidatorException {
         String user = (String) value;
-        if (!user.equalsIgnoreCase("tester")) {
+        if (!user.equalsIgnoreCase("tester") && !user.equalsIgnoreCase("trainer") ) {
             FacesMessage message = new FacesMessage();
             message.setDetail("User " + user + " does not exists");
             message.setSummary("Login Incorrect");
