@@ -16,7 +16,7 @@ public class LoginValidator implements Validator {
             message.setDetail("User " + user + " does not exists");
             message.setSummary("Login Incorrect");
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            throw new ValidatorException(message);
+           // throw new ValidatorException(message);
         }
     }
 }
