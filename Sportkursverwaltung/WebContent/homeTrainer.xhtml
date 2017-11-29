@@ -74,7 +74,7 @@
     
     <h:form>
         <h:commandLink binding="#{activityController.addCommand}" accesskey="n"
-            action="#{activityController.addNew}" value="Add new Todo">
+            action="#{activityController.addNew}" value="Add new Activity">
         </h:commandLink>
     </h:form>
 
@@ -99,6 +99,115 @@
                 accesskey="s">
             </h:commandButton>
             <h:commandButton action="#{activityController.cancel}" value="Cancel"
+                accesskey="c" immediate="true">
+            </h:commandButton>
+        </h:panelGroup>
+    </h:form>
+    
+    
+    
+    
+    
+    
+    
+       <h:form binding="#{customerController.tableForm}">
+   
+
+        <h:dataTable value="#{customerController.customers}" var="customer"
+            headerClass="todoheader"
+            columnClasses="first, rest">
+  
+            <h:column>
+             
+                <f:facet name="header">
+                    <h:column>
+                        <h:outputText value="FirstName"></h:outputText>
+                    </h:column>
+                </f:facet>
+                <h:outputText value="#{customer.firstname}"></h:outputText>
+
+            </h:column>
+            
+            <h:column>
+               
+                <f:facet name="header">
+                    <h:column>
+                        <h:outputText value="LastName"></h:outputText>
+                    </h:column>
+                </f:facet>
+                <h:outputText value="#{customer.lastname}"></h:outputText>
+            </h:column>
+            
+             <h:column>
+               
+                <f:facet name="header">
+                    <h:column>
+                        <h:outputText value="Email"></h:outputText>
+                    </h:column>
+                </f:facet>
+                <h:outputText value="#{customer.email}"></h:outputText>
+            </h:column>
+                        <h:column>
+               
+                <f:facet name="header">
+                    <h:column>
+                        <h:outputText value="Passwort"></h:outputText>
+                    </h:column>
+                </f:facet>
+                <h:outputText value="#{customer.passwort}"></h:outputText>
+            </h:column>
+
+            <h:column>
+              
+                <f:facet name="header">
+                    <h:column>
+                        <h:outputText value="Actions"></h:outputText>
+                    </h:column>
+                </f:facet>
+                <h:panelGrid columns="2">
+                    <h:commandLink value="delete" action="#{customerController.delete}">
+                        <f:setPropertyActionListener target="#{customerController.customer}"
+                            value="#{customer}" />
+                    </h:commandLink>
+                </h:panelGrid>
+            </h:column>
+        </h:dataTable>
+
+    </h:form> 
+    
+        <h:form>
+        <h:commandLink binding="#{customerController.addCommand}" accesskey="n"
+            action="#{customerController.addNew}" value="Add new Customer">
+        </h:commandLink>
+    </h:form>
+    
+        <h:form binding="#{customerController.form}" rendered="false"
+        styleClass="customer">
+        <h:panelGrid columns="2">
+            <h:outputText value="FirstName"></h:outputText>
+            <h:inputText value="#{customerController.customer.firstname}" required="true"
+                requiredMessage="Firstname is required">
+            </h:inputText>
+                        <h:outputText value="LastName"></h:outputText>
+            <h:inputText value="#{customerController.customer.lastname}" required="true"
+                requiredMessage="Lastname is required">
+            </h:inputText>
+                        <h:outputText value="Passwort"></h:outputText>
+            <h:inputText value="#{customerController.customer.passwort}" required="true"
+                requiredMessage="Passwort is required">
+            </h:inputText>
+                        <h:outputText value="Email"></h:outputText>
+            <h:inputText value="#{customerController.customer.email}" required="true"
+                requiredMessage="email is required">
+            </h:inputText>
+   
+     
+        </h:panelGrid>
+        <h:panelGroup>
+            <h:commandButton action="#{customerController.save}" value="Save"
+                accesskey="s">
+            </h:commandButton>
+            <h:commandButton action="#{customerController.cancel}" value="Cancel"
                 accesskey="c" immediate="true">
             </h:commandButton>
         </h:panelGroup>
