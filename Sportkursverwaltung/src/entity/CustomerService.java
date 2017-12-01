@@ -1,18 +1,21 @@
 package entity;
 
+import java.util.Collection;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 public class CustomerService {
 
-//    Use this as followed 	
-//    EntityManagerFactory emf = Persistence.createEntityManagerFactory("Sportverwaltung");
-//    EntityManager em = emf.createEntityManager();
-//    CustomerService service = new CustomerService(em);
-//    em.getTransaction().begin();
-//    Customer emp = service.createCustomer(var,var,var,var,var);
-//    em.getTransaction().commit();
-	
+	// Use this as followed
+	// EntityManagerFactory emf =
+	// Persistence.createEntityManagerFactory("Sportverwaltung");
+	// EntityManager em = emf.createEntityManager();
+	// CustomerService service = new CustomerService(em);
+	// em.getTransaction().begin();
+	// Customer emp = service.createCustomer(var,var,var,var,var);
+	// em.getTransaction().commit();
+
 	private EntityManager em;
 
 	public CustomerService(EntityManager em) {
@@ -39,5 +42,10 @@ public class CustomerService {
 
 	public Customer findCustomer(int id) {
 		return em.find(Customer.class, id);
+	}
+
+	public Collection<Customer> findAllCustomers() {
+		Query query = em.createQuery("SELECT * FROM customer;");
+		return (Collection<Customer>) query.getResultList();
 	}
 }

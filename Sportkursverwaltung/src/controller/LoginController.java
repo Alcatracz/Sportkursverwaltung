@@ -9,6 +9,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import entity.Customer;
+import entity.CustomerService;
 import model.User;
 
 public class LoginController {
@@ -26,6 +27,11 @@ public class LoginController {
     	EntityManagerFactory factory =
     			Persistence.createEntityManagerFactory("Sportkursverwaltung");
     			EntityManager manager = factory.createEntityManager();
+    			//CustomerService service = new CustomerService(manager);
+    			// manager.getTransaction().begin();
+    			// Customer emp = service.createCustomer(3l,"testmail","Jan","vroelsker","passwort123");
+    			// em.getTransaction().commit();
+    			
     			// Daten auslesen und anzeigen
     			Query query = manager.createNativeQuery("SELECT * FROM customer  WHERE email='"+user.getName()+"' AND passwort='"+user.getPassword()+"';");
     			//Query query = manager.createNativeQuery("SELECT * FROM customer;");
@@ -33,6 +39,7 @@ public class LoginController {
     			System.out.println("Size: "+liste.size());
     			// Die Liste braucht bei REST gar nicht weiter aufgelöst zu werden!
     		
+    			//factory.close();
     			manager.close();
     			
         if (liste.size()>0){
