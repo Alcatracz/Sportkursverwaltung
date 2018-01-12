@@ -1,4 +1,4 @@
-package controller;
+ package controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIForm;
 
-import model.Activity;
+import model.ActivityModel;
 import model.Customer;
 
 public class CustomerController {

@@ -1,13 +1,13 @@
 package model;
 
-public class Activity {
+public class ActivityModel {
 
 	private String id;
 	private String name;
 	private String description;
 	private int max_participants;
 	
-	public Activity(String name, String description, int max_participants) {
+	public ActivityModel(String name, String description, int max_participants) {
 		this.name = name;
 		this.description = description;
 		this.max_participants = max_participants;

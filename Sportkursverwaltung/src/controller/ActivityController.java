@@ -1,31 +1,70 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.component.UICommand;
 import javax.faces.component.UIForm;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 
-import model.Activity;
+import entity.Activity;
+import model.ActivityModel;
 
 public class ActivityController {
 
-	private List<Activity> activities;
-	private Activity activity;
+	private List<ActivityModel> activities;
+	private ActivityModel activity;
 	
 	private UIForm form;
 	private UIForm tableForm;
 	private UICommand addCommand;
 	
 	public ActivityController() {
-		activities = new ArrayList<Activity>();
+		activities = new ArrayList<ActivityModel>();
+		loadActivitiesFromDataBase();
 	}
 	
     public String addNew() {
-        activity = new Activity("", "", 0);
+        activity = new ActivityModel("", "", 0);
         form.setRendered(true);
         addCommand.setRendered(false);
         return null;
+    }
+    
+    public void loadActivitiesFromDataBase(){
+    	//ArrayList<ActivityModel> ac = new ArrayList<ActivityModel>();
+    	
+    	EntityManagerFactory factory =
+    			Persistence.createEntityManagerFactory("Sportkursverwaltung");
+    			EntityManager manager = factory.createEntityManager();
+    			// Daten auslesen und anzeigen
+    			String sql = "SELECT * FROM activity;";
+    			System.out.println(sql);
+    			Query query = manager.createNativeQuery(sql);
+    			
+    			List<Object[]> res = query.getResultList();
+    			List<Activity> list = new ArrayList<Activity>();
+    	
+    			Iterator itr = res.iterator();
+    			
+    			while(itr.hasNext()) {
+    				
+    			//Object[] line = itr.next();
+    			
+    			//ActivityModel test = new ActivityModel(line[0],line[1],line[3]);
+    			}
+   	
+    			//for (Object[] person : liste) {
+    			//ActivityModel asdf = new ActivityModel(person.getName(),person.getDescription(), Integer.valueOf(person.getMaxParticipants()));
+    			//activities.add(asdf);
+    			//}
+    			
+    			manager.close();
+    	
     }
 
     public String save() {
@@ -48,16 +87,16 @@ public class ActivityController {
     }    
 	
 	
-	public List<Activity> getActivities() {
+	public List<ActivityModel> getActivities() {
 		return activities;
 	}
-	public void setActivities(List<Activity> activities) {
+	public void setActivities(List<ActivityModel> activities) {
 		this.activities = activities;
 	}
-	public Activity getActivity() {
+	public ActivityModel getActivity() {
 		return activity;
 	}
-	public void setActivity(Activity activity) {
+	public void setActivity(ActivityModel activity) {
 		this.activity = activity;
 	}
 
