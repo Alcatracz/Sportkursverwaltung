@@ -40,22 +40,22 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	public void ladeProfildaten() {
 		 Connection c = null;
 	      PreparedStatement pstmt = null;
-	      String sql="SELECT * FROM mitglied WHERE id=?;";
+	      String sql="SELECT * FROM mitglied WHERE id=1";
 	      
 	      try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            "postgres", "amaterasu");
 	         
 	         c.setAutoCommit(false);
 	         System.out.println("Opened database successfully");
 	        
 	         pstmt = c.prepareStatement(sql);
-	         pstmt.setInt(1, user.getId());
+	       //  pstmt.setInt(1, user.getId());
 	         
 	         
-	         ResultSet rs = pstmt.executeQuery(sql);
+	         ResultSet rs = pstmt.executeQuery();
 	         
 	         while(rs.next()) {
 	        	ProfilDatenModel profilDaten = new ProfilDatenModel();
@@ -66,7 +66,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	        	profilDaten.setPasswort(rs.getString("passwort"));
 	        	profilDaten.setIstTrainer(rs.getBoolean("isttrainer"));
 	        	profilDaten.setIstBuchungsbestaetigung(rs.getBoolean("istbuchungsbestaetigung"));
-	        	profilDaten.setIstTerminerinnerung(rs.getBoolean("istterminerinerung"));
+	        	profilDaten.setIstTerminerinnerung(rs.getBoolean("istterminerinnerung"));
 	        	profilDaten.setTerminerinnerungZeit(rs.getInt("terminerinnerungzeit"));
 	        	
 	        	this.profilDaten=profilDaten;

@@ -3,15 +3,58 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:h="http://xmlns.jcp.org/jsf/html"
 	  xmlns:f="http://xmlns.jcp.org/jsf/core">
-<head>
+<h:head>
+    <h:outputStylesheet library="css" name="profil.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>Login</title>
-</head>
-<body>
+<meta http-equiv="pragma" content="no-cache" />
+<title>Kurse</title>
+</h:head>
+<h:body>
 	<f:view>
 		<f:loadBundle basename="messages" var="msg"/>
-
+		<div class="headblock">
+		<h:outputLink value="kurse.xhtml" styleClass="sitelink">Kurse</h:outputLink>
+		<h:outputLink value="profil.xhtml" styleClass="sitelink">Mein Profil</h:outputLink>
+		<h:outputLink value="termine.xhtml" styleClass="sitelink">Meine Termine</h:outputLink>
+		<h:outputLink value="index.xhtml" styleClass="sitelink">Abmelden</h:outputLink>
+		</div>
+	    <br></br>
+		<h1>Mein Profil</h1>
+		<br></br>
+		<section class="container">
+		<div class="leftblock">		
+		<h2>Meine Daten</h2>
+		<br></br>
+		<p>Vorname: <h:inputText value="#{meinProfilController.profilDaten.vorname}"
+		 readonly="true"></h:inputText></p>
+		<br></br>
+		<p>Nachname: <h:inputText value="#{meinProfilController.profilDaten.nachname}"
+		 readonly="true"></h:inputText></p>
+		<br></br>
+		<p>Buchungsbestätigung:<h:selectBooleanCheckbox value="#{meinProfilController.profilDaten.istBuchungsbestaetigung}"
+		 readonly="true"></h:selectBooleanCheckbox></p>
+		<br></br>
+		<p>Terminerinnerung: <h:selectBooleanCheckbox value="#{meinProfilController.profilDaten.istTerminerinnerung}"
+		 readonly="true"></h:selectBooleanCheckbox></p>
+		<br></br>
+		<p>Terminerinnerung <h:inputText value="#{meinProfilController.profilDaten.terminerinnerungZeit}">
+		</h:inputText><br></br> Minuten vorher:</p>
+		<h:commandButton action="#{meinProfilController.speicherProfildaten}" value="Speichern" styleClass="buttonClass"/>
+		</div>
+		<div class="rightblock">
+		<h2>Email/Passwort ändern</h2>
+		<br></br>
+		<p>Email:<h:outputText value="#{meinProfilController.profilDaten.email}"
+		 readonly="true"></h:outputText></p>		
+		<br></br>
+		<p>Neue Email: <h:inputText value="#{meinProfilController.profilDaten.email}">
+		</h:inputText> <h:commandButton action="#{meinProfilController.emailAendern}" value="Ändern" styleClass="buttonchangeClass"/></p>
+		<br></br>
+		<p>Neues Passwort: <h:inputSecret value="#{meinProfilController.profilDaten.email}" redisplay="true">
+		</h:inputSecret><h:commandButton action="#{meinProfilController.passwortAendern}" value="Ändern" styleClass="buttonchangeClass"/></p>
+		</div>
+		</section>
 		
-	</f:view>
-</body>
+		</f:view>
+		</h:body>
 </html>

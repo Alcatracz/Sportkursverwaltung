@@ -17,8 +17,8 @@ public class AnotherTest {
 	      try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
+	 	            "postgres", "amaterasu");
 	         
 	         c.setAutoCommit(false);
 	         System.out.println("Opened database successfully");
@@ -43,6 +43,7 @@ public class AnotherTest {
 	        	
 	        
 	        	System.out.println("Name: "+profilDaten.getVorname());
+	        	System.out.println("Name: "+profilDaten.isIstBuchungsbestaetigung());
 	        	
 	         }
 	         rs.close();
