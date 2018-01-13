@@ -85,16 +85,16 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public List<TerminModel> getTermine() {
+	public List<TerminAnzeigeModel> getTermine() {
 		return termine;
 	}
-	public void setTermine(List<TerminModel> termine) {
+	public void setTermine(List<TerminAnzeigeModel> termine) {
 		this.termine = termine;
 	}
-	public TerminModel getTermin() {
+	public TerminAnzeigeModel getTermin() {
 		return termin;
 	}
-	public void setTermin(TerminModel termin) {
+	public void setTermin(TerminAnzeigeModel termin) {
 		this.termin = termin;
 	}
 }

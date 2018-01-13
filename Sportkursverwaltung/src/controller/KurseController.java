@@ -14,13 +14,14 @@ import model.User;
 
 public class KurseController implements KurseControllerInterface{
 
-	private List<TerminModel> termine;
-	private TerminModel termin;
+	private List<TerminAnzeigeModel> termine;
+	private TerminAnzeigeModel termin;
 	
 	private User user;
 	
 	public KurseController() {
-		termine = new ArrayList<TerminModel> ();
+		termine = new ArrayList<TerminAnzeigeModel> ();
+		ladeTermine();
 	}
 	
 	@Override
@@ -34,7 +35,7 @@ public class KurseController implements KurseControllerInterface{
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            "postgres", "amaterasu");
 	         
 	         c.setAutoCommit(false);
 	         System.out.println("Opened database successfully");
@@ -91,16 +92,16 @@ public class KurseController implements KurseControllerInterface{
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public List<TerminModel> getTermine() {
+	public List<TerminAnzeigeModel> getTermine() {
 		return termine;
 	}
-	public void setTermine(List<TerminModel> termine) {
+	public void setTermine(List<TerminAnzeigeModel> termine) {
 		this.termine = termine;
 	}
-	public TerminModel getTermin() {
+	public TerminAnzeigeModel getTermin() {
 		return termin;
 	}
-	public void setTermin(TerminModel termin) {
+	public void setTermin(TerminAnzeigeModel termin) {
 		this.termin = termin;
 	}
 
