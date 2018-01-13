@@ -3,7 +3,6 @@
 /* CSS Document 
 to use fonts:
 font-family: 'Alfa Slab One', cursive;
-@charset "ISO-8859-1";
 font-family: 'Barlow', sans-serif;
 font-family: 'Baloo Tamma', cursive;
 font-family: 'Krona One', sans-serif;
@@ -11,80 +10,89 @@ font-family: 'Libre Franklin', sans-serif;
 font-family: 'Mallanna', sans-serif;
 */
 
-header {
-	background:rgba(133,237,242,0.5);
-	width:inherit;
-	margin: -0.1%;
-	height: 65px;
-	
-	transform: translate(0,-30px);
-		
+
+$bg: #171a1e;
+$fg: lighten($bg,60%);
+
+$hi: #39a086;
+$hib: #24d6a6;
+
+$error: #d84966;
+$warn: #b27b1c;
+
+
+  
+fieldset {
+  
+  margin: 1em auto;
+  padding: 8em;
+  width: 22em;
+  position: relative;
+  
+  border-radius: 5px;
+  border-color: lighten(#171a1e,10%);
+  background: lighten( #171a1e, 2% );
+  box-shadow: 0 2px 2px darken( #171a1e, 2% );
 }
 
-.nav {
-    background: #7f1d8c;
-    width:inherit;
-    margin: -0.1%;
+  .input {
+    outline:0;
+    background: transparent;
+    border:0;
+    border-bottom:1px solid white;
+    font-size:22px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+    color: white;
+
+    transition: all 0.3s ease;
+  }
+  
+  .label {
+  color: white;
+    width: 100%;
+  }
+
+
+
+ .buttonClass {
+  font-size: 1.2em;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: #24d6a6;
+  border: 1px solid transparent;
+  color: #171a1e;
+  padding: 0.5em 2em;
+  position:center;
+  vertical-align: middle;
+      display: block;
+    margin-left: auto;
+    margin-right: auto;
+  width: 20%;
+  border-radius: 3px;
+  opacity: 0.8;
+  transition: all 0.2s ease;  
 }
-
-
-.nav div {
-
-    display: inline-block;
-    width: 10%;
-    margin: 10px;
-	text-align: center;
-
-
-}
-
-
+ 
 body {
-	background: #000000;
-	font-family: 'Libre Franklin', sans-serif;
-	color: #FFFFFF;
-	
+  
+  font-family: "Lato";
+  font-size: 16px;
+  background: #171a1e;
+  
 }
 
-h1 {
-	
-	font-family: 'Baloo Tamma', cursive;
-	font-size: 3em;
-	color: white;
-	margin-left: 0.5%;
-	padding-top: 15px;
-	
-	
-}
-
-.form1{
-	margin-left: 37.5%;
-	padding: 2%;
-	background:rgba(133,237,242,0.5);
-	width: 15%;
-}
-
-button {
-	background:rgba(65,58,232,1.00);
-	color: rgba(255,255,255,1.00);
-	border: rgba(255,255,255,1.00);
-	
+p {
+  
+  font-family: "Helvetica";
+  font-size: 55px;
+  text-align: center;
+  color: #24d6a6;
+  
 }
 
 
 
-a {
 
-    font-family: 'Mallanna', sans-serif;
-    margin-left:10px;
-    color: azure;
-}
-
-/*
-div form{
-	margin:1%;
-	background:rgba(133,237,242,0.7);
-	width: 15%;
-	
-}
-*/
