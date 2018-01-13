@@ -11,11 +11,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import entity.Activity;
-import model.ActivityModel;
-
 public class ActivityController {
-
+/*
 	private List<ActivityModel> activities;
 	private ActivityModel activity;
 	
@@ -125,4 +122,5 @@ public class ActivityController {
 	public void setTableForm(UIForm tableForm) {
 		this.tableForm = tableForm;
 	}
+	*/
 }

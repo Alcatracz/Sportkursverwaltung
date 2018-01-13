@@ -15,7 +15,7 @@ public class CustomerService {
 	// em.getTransaction().begin();
 	// Customer emp = service.createCustomer(var,var,var,var,var);
 	// em.getTransaction().commit();
-
+/*
 	private EntityManager em;
 
 	public CustomerService(EntityManager em) {
@@ -48,4 +48,5 @@ public class CustomerService {
 		Query query = em.createQuery("SELECT * FROM customer;");
 		return (Collection<Customer>) query.getResultList();
 	}
+	*/
 }

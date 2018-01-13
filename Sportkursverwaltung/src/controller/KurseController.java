@@ -14,13 +14,13 @@ import model.User;
 
 public class KurseController implements KurseControllerInterface{
 
-	private List<TerminModel> termine;
-	private TerminModel termin;
+	private List<TerminAnzeigeModel> termine;
+	private TerminAnzeigeModel termin;
 	
 	private User user;
 	
 	public KurseController() {
-		termine = new ArrayList<TerminModel> ();
+		termine = new ArrayList<TerminAnzeigeModel> ();
 	}
 	
 	@Override
@@ -82,26 +82,33 @@ public class KurseController implements KurseControllerInterface{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 	
 	
 	// Setter und Getter
+	public List<TerminAnzeigeModel> getTermine() {
+		return termine;
+	}
+
+	public void setTermine(List<TerminAnzeigeModel> termine) {
+		this.termine = termine;
+	}
+
+	public TerminAnzeigeModel getTermin() {
+		return termin;
+	}
+
+	public void setTermin(TerminAnzeigeModel termin) {
+		this.termin = termin;
+	}
+
 	public User getUser() {
 		return user;
 	}
+
 	public void setUser(User user) {
 		this.user = user;
-	}
-	public List<TerminModel> getTermine() {
-		return termine;
-	}
-	public void setTermine(List<TerminModel> termine) {
-		this.termine = termine;
-	}
-	public TerminModel getTermin() {
-		return termin;
-	}
-	public void setTermin(TerminModel termin) {
-		this.termin = termin;
 	}
 
 }
