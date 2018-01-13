@@ -83,28 +83,9 @@ public class KurseController implements KurseControllerInterface{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 	
 	
 	// Setter und Getter
-<<<<<<< HEAD
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
-	public List<TerminAnzeigeModel> getTermine() {
-		return termine;
-	}
-	public void setTermine(List<TerminAnzeigeModel> termine) {
-		this.termine = termine;
-	}
-	public TerminAnzeigeModel getTermin() {
-		return termin;
-	}
-=======
 	public List<TerminAnzeigeModel> getTermine() {
 		return termine;
 	}
@@ -117,7 +98,6 @@ public class KurseController implements KurseControllerInterface{
 		return termin;
 	}
 
->>>>>>> aab989281b139e6a89a5f36c4d16de21bcbf110d
 	public void setTermin(TerminAnzeigeModel termin) {
 		this.termin = termin;
 	}
