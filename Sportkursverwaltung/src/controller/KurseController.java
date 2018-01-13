@@ -21,6 +21,7 @@ public class KurseController implements KurseControllerInterface{
 	
 	public KurseController() {
 		termine = new ArrayList<TerminAnzeigeModel> ();
+		ladeTermine();
 	}
 	
 	@Override
