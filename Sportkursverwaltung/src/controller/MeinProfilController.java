@@ -16,6 +16,9 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	User user;
 	ProfilDatenModel profilDaten;
 	
+	public MeinProfilController() {
+		ladeProfildaten();
+	}
 	
 	public User getUser() {
 		return user;
@@ -66,7 +69,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	        	profilDaten.setIstTerminerinnerung(rs.getBoolean("istterminerinerung"));
 	        	profilDaten.setTerminerinnerungZeit(rs.getInt("terminerinnerungzeit"));
 	        	
-	        	
+	        	this.profilDaten=profilDaten;
 	        	
 	         }
 	         rs.close();

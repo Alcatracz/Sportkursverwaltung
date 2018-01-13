@@ -15,7 +15,7 @@ import javax.persistence.Query;
 //em.getTransaction().commit();
 
 public class ActivityServices {
-
+/*
 	private EntityManager em;
 
 	public ActivityServices(EntityManager em) {
@@ -47,4 +47,5 @@ public class ActivityServices {
 		Query query = em.createQuery("SELECT * FROM activity;");
 		return (Collection<Activity>) query.getResultList();
 	}
+	*/
 }

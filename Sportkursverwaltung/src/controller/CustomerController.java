@@ -6,11 +6,8 @@ import java.util.List;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIForm;
 
-import model.ActivityModel;
-import model.Customer;
-
 public class CustomerController {
-
+/*
 	private List<Customer> customers;
 	private Customer customer;
 	
@@ -81,4 +78,5 @@ public class CustomerController {
 	public void setAddCommand(UICommand addCommand) {
 		this.addCommand = addCommand;
 	}
+	*/
 }

@@ -85,6 +85,7 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	public void setUser(User user) {
 		this.user = user;
 	}
+<<<<<<< HEAD
 	public List<TerminAnzeigeModel> getTermine() {
 		return termine;
 	}
@@ -94,7 +95,23 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	public TerminAnzeigeModel getTermin() {
 		return termin;
 	}
+=======
+
+	public List<TerminAnzeigeModel> getTermine() {
+		return termine;
+	}
+
+	public void setTermine(List<TerminAnzeigeModel> termine) {
+		this.termine = termine;
+	}
+
+	public TerminAnzeigeModel getTermin() {
+		return termin;
+	}
+
+>>>>>>> aab989281b139e6a89a5f36c4d16de21bcbf110d
 	public void setTermin(TerminAnzeigeModel termin) {
 		this.termin = termin;
 	}
+
 }
