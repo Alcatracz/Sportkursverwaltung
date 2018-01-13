@@ -7,16 +7,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-
-import entity.Customer;
+import interfaces.LoginControllerInterface;
 import entity.CustomerService;
 import model.User;
+import entity.Mitglied;
 
-public class LoginController {
+public class LoginController implements LoginControllerInterface {
 
 	private User user;
 	
-	
+	@Override
     public String login(){
         // Image here a database access to validate the users
     	System.out.println("login");
@@ -35,7 +35,7 @@ public class LoginController {
     			// Daten auslesen und anzeigen
     			Query query = manager.createNativeQuery("SELECT * FROM customer  WHERE email='"+user.getName()+"' AND passwort='"+user.getPassword()+"';");
     			//Query query = manager.createNativeQuery("SELECT * FROM customer;");
-    			List<Customer> liste = query.getResultList();
+    			List<Mitglied> liste = query.getResultList();
     			System.out.println("Size: "+liste.size());
     			// Die Liste braucht bei REST gar nicht weiter aufgelöst zu werden!
     		
@@ -54,6 +54,14 @@ public class LoginController {
 
     }
 
+	@Override
+	public String logout() {
+		// TODO Auto-generated method stub
+		user = null;
+		return "index";
+	}
+	
+    
 	public User getUser() {
 		return user;
 	}
@@ -61,4 +69,6 @@ public class LoginController {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+
 }

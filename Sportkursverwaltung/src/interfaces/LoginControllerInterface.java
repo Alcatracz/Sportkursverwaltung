@@ -2,6 +2,6 @@ package interfaces;
 
 public interface LoginControllerInterface {
 
-	public void login();
-	public void logout();
+	public String login();
+	public String logout();
 }

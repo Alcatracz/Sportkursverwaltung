@@ -16,9 +16,9 @@
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
-		<managed-bean-name>loginController</managed-bean-name>
-		<managed-bean-class>controller.LoginController</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
+		<managed-bean-name>meinProfilController</managed-bean-name>
+		<managed-bean-class>controller.MeinProfilController</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
 		<managed-property>
 			<property-name>user</property-name>
 			<property-class>model.User</property-class>
@@ -26,14 +26,39 @@
 		</managed-property>
 	</managed-bean>
 	<managed-bean>
-		<managed-bean-name>activityController</managed-bean-name>
-		<managed-bean-class>controller.ActivityController</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
+		<managed-bean-name>kurseController</managed-bean-name>
+		<managed-bean-class>controller.KurseController</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>user</property-name>
+			<property-class>model.User</property-class>
+			<value>#{user}</value>
+		</managed-property>
 	</managed-bean>
 	<managed-bean>
-		<managed-bean-name>customerController</managed-bean-name>
-		<managed-bean-class>controller.CustomerController</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
+		<managed-bean-name>loginController</managed-bean-name>
+		<managed-bean-class>controller.LoginController</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>user</property-name>
+			<property-class>model.User</property-class>
+			<value>#{user}</value>
+		</managed-property>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>meineTermineController</managed-bean-name>
+		<managed-bean-class>controller.MeineTermineController</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>user</property-name>
+			<property-class>model.User</property-class>
+			<value>#{user}</value>
+		</managed-property>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>trainerbereichController</managed-bean-name>
+		<managed-bean-class>controller.TrainerbereichController</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	<navigation-rule>
 		<display-name>index.xhtml</display-name>
