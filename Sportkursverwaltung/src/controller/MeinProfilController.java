@@ -23,7 +23,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	
 
 	public MeinProfilController() {
-		
+		profilDaten= new ProfilDatenModel();
 	}
 	@PostConstruct
 	public void init() {
@@ -68,7 +68,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         ResultSet rs = pstmt.executeQuery();
 	         
 	         while(rs.next()) {
-	        	ProfilDatenModel profilDaten = new ProfilDatenModel();
+	        	
 	        	
 	        	profilDaten.setVorname(rs.getString("vorname"));
 	        	profilDaten.setNachname(rs.getString("nachname"));
@@ -79,7 +79,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	        	profilDaten.setIstTerminerinnerung(rs.getBoolean("istterminerinnerung"));
 	        	profilDaten.setTerminerinnerungZeit(rs.getInt("terminerinnerungzeit"));
 	        	
-	        	this.profilDaten=profilDaten;
+	        
 	        	
 	         }
 	         rs.close();
@@ -98,6 +98,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	@Override
 	public String speicherProfildaten() {
 		System.out.println("Speichern");
+		System.out.println("BUCHUNGSBESTAETIGUNG: " + profilDaten.isIstBuchungsbestaetigung());
 		 Connection c = null;
 	      PreparedStatement pstmt = null;
 	      String sql = "UPDATE mitglied SET istbuchungsbestaetigung = ?, istterminerinnerung = ?, terminerinnerungzeit = ? WHERE id = ?;";
@@ -117,7 +118,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         pstmt.setInt(3, profilDaten.getTerminerinnerungZeit());
 	         pstmt.setInt(4, user.getId());
 	    
-	         pstmt.executeQuery();
+	         pstmt.executeUpdate();
 	  
 	         pstmt.close();
 	         c.close();
@@ -153,8 +154,8 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         
 	         
 	         pstmt.executeUpdate();
-	        
-	        
+	        profilDaten.setEmail(emailNeu);
+	        emailNeu="";
 	         pstmt.close();
 	         c.close();
 	         
@@ -192,7 +193,8 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         
 	         pstmt.executeUpdate();
 	        
-	        
+	         profilDaten.setPasswort(passwortNeu);
+		        passwortNeu="";
 	         pstmt.close();
 	         c.close();
 	         

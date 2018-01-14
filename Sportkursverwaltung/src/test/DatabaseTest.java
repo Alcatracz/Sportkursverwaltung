@@ -98,11 +98,13 @@ public class DatabaseTest {
 	}
 	
 	public static void update(Connection c) throws SQLException {
-		String sql = "UPDATE aktivitaet SET beschreibung = ? WHERE id = ?;";
+		String sql = "UPDATE mitglied SET istbuchungsbestaetigung = ?, istterminerinnerung = ?, terminerinnerungzeit = ? WHERE id = ?;";
 		
 		PreparedStatement pstmt = c.prepareStatement(sql);
-		pstmt.setString(1, "Hab was geändert");
-		pstmt.setInt(2, 7);
+		pstmt.setBoolean(1, false);
+		pstmt.setBoolean(2, false);
+		pstmt.setInt(3, 0);
+		pstmt.setInt(4, 2);
 		
 		pstmt.executeUpdate();
 		pstmt.close();
@@ -123,10 +125,10 @@ public class DatabaseTest {
 			//insert(c);
 			//selectAll(c);
 			//System.out.println("-----------------------------");
-			//update(c);
+			update(c);
 			//selectAll(c);
 			//System.out.println("-----------------------------");
-			delete(c);
+			//delete(c);
 			//selectAll(c);
 			//System.out.println("-----------------------------");
 			
