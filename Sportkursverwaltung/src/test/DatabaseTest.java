@@ -14,24 +14,64 @@ public class DatabaseTest {
 		
 			Class.forName("org.postgresql.Driver");
 			c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung","postgres", "postgres");
-		    c.setAutoCommit(false);
+		    c.setAutoCommit(true);
         
 	         return c;
 	}
 	
+	
 	public static void selectAll(Connection c) throws SQLException {
 		String sql="SELECT * FROM aktivitaet;";
 		PreparedStatement pstmt = c.prepareStatement(sql);
-		pstmt.executeUpdate();
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+        while(rs.next()) {
+        	int id = rs.getInt("ID");
+        	String name = rs.getString("Name");
+        	String beschreibung = rs.getString("Beschreibung");
+        	int teilnehmer = rs.getInt("Teilnehmer");
+        	String trainer = rs.getString("Trainer");
+        	
+            System.out.println( "ID = " + id );
+            System.out.println( "NAME = " + name );
+            System.out.println( "BESCHREIBUNG = " + beschreibung);
+            System.out.println( "Teilnehmer = " + teilnehmer );
+            System.out.println( "Trainer = " + trainer );
+            System.out.println();
+         }
+         rs.close();
+         pstmt.close();
 	}
 	
 	public static void selectByAttribute(Connection c) throws SQLException {
-		String sql="SELECT * FROM aktivitaet WHERE id=?";
+		String sql="SELECT tl.id, t.datum, t.enduhrzeit, t.startuhrzeit, a.name, a.beschreibung, a.trainer FROM terminliste tl INNER JOIN termin t ON "
+				+ "tl.terminid = t.id INNER JOIN aktivitaet a ON t.aktivitaetid = a.id WHERE tl.mitgliedid = 1;";
         PreparedStatement pstmt=c.prepareStatement(sql);
-        pstmt.setInt(1, 1); 
-        pstmt.executeUpdate();
+        //pstmt.setInt(1, 1); 
+        
+        ResultSet rs = pstmt.executeQuery();
 		
-
+        while(rs.next()) {
+        	int id = rs.getInt("id");
+        	String name = rs.getString("name");
+        	String beschreibung = rs.getString("beschreibung");
+        	String trainer = rs.getString("trainer");
+        	String datum =rs.getDate("datum").toString();
+        	String startuhrzeit =rs.getTime("startuhrzeit").toString();
+        	String enduhrzeit = rs.getTime("enduhrzeit").toString();
+        	
+            System.out.println( "ID = " + id );
+            System.out.println( "NAME = " + name );
+            System.out.println( "BESCHREIBUNG = " + beschreibung);
+            System.out.println( "DATUM = " + datum );
+            System.out.println( "START = " + startuhrzeit );
+            System.out.println( "ENDE = " + enduhrzeit );
+            System.out.println( "Trainer = " + trainer );
+            System.out.println();
+         }
+         rs.close();
+         pstmt.close();
 	}
 	
 	public static void insert(Connection c) throws SQLException {
@@ -44,116 +84,59 @@ public class DatabaseTest {
         pstmt.setString(4, "Max Muster");
         
         pstmt.executeUpdate();
+        
+        pstmt.close();
 	}
 	
 	public static void delete(Connection c) throws SQLException {
-		
+		String sql = "DELETE FROM aktivitaet WHERE id = ?";
+		PreparedStatement pstmt = c.prepareStatement(sql);
+		pstmt.setInt(1, 7);
+		pstmt.executeUpdate();
+		pstmt.close();
 	}
 	
-	public static void alter(Connection c) throws SQLException {
+	public static void update(Connection c) throws SQLException {
+		String sql = "UPDATE aktivitaet SET beschreibung = ? WHERE id = ?;";
 		
+		PreparedStatement pstmt = c.prepareStatement(sql);
+		pstmt.setString(1, "Hab was geändert");
+		pstmt.setInt(2, 7);
+		
+		pstmt.executeUpdate();
+		pstmt.close();
 	}
 	
-	// SELECT -OPERATION
+//-----------------------------------------------------------------------------
+	
 	  public static void main(String args[]) {
-	      Connection c = null;
-	      Statement stmt = null;
-	      String sql="SELECT * FROM aktivitaet INNER JOIN termin ON aktivitaet.id=termin.aktivitaetid;";
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "amaterasu");
-	         
-	         c.setAutoCommit(false);
-	         System.out.println("Opened database successfully");
-	         
-	         stmt = c.createStatement();
-	         ResultSet rs = stmt.executeQuery(sql);
-	         while(rs.next()) {
-	        	int id = rs.getInt("ID");
-	        	String name = rs.getString("Name");
-	        	String beschreibung = rs.getString("Beschreibung");
-	        	int teilnehmer = rs.getInt("Teilnehmer");
-	        	String trainer = rs.getString("Trainer");
-	        	
-	            System.out.println( "ID = " + id );
-	            System.out.println( "NAME = " + name );
-	            System.out.println( "BESCHREIBUNG = " + beschreibung);
-	            System.out.println( "Teilnehmer = " + teilnehmer );
-	            System.out.println( "Trainer = " + trainer );
-	            System.out.println();
-	         }
-	         rs.close();
-	         stmt.close();
-	         c.close();
-	         
-	      } catch (Exception e) {
-	         e.printStackTrace();
-	         System.err.println(e.getClass().getName()+": "+e.getMessage());
-	         System.exit(0);
-	      }
-	     
-	      System.out.println("Operation done successfully");
+		  Connection c= null;
+		  
+		  try {
+			c=connect();
+			
+			//selectAll(c);
+			System.out.println("-----------------------------");
+			selectByAttribute(c);
+			System.out.println("-----------------------------");
+			//insert(c);
+			//selectAll(c);
+			//System.out.println("-----------------------------");
+			//update(c);
+			//selectAll(c);
+			//System.out.println("-----------------------------");
+			//delete(c);
+			//selectAll(c);
+			//System.out.println("-----------------------------");
+			
+			c.close();
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	      
 	   }
-	  
-	  
-	/*
-	// INSERT -OPERATION
-		  public static void main(String args[]) {
-		      Connection c = null;
-		      Statement stmt = null;
-		      PreparedStatement pstmt = null;
-		      try {
-		         Class.forName("org.postgresql.Driver");
-		         c = DriverManager
-		            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-		            "postgres", "postgres");
-		         
-		         c.setAutoCommit(false);
-		         System.out.println("Opened database successfully");
-		         
-		         //stmt=c.createStatement();
-		         String sql = "INSERT INTO aktivitaet (Name,Beschreibung,Teilnehmer,Trainer) VALUES(?,?,?,?);"; 
-		         
-		         pstmt=c.prepareStatement(sql);
-		         pstmt.setString(1, "Kickboxen");
-		         pstmt.setString(2, "Kampsportart");
-		         pstmt.setInt(3, 10);
-		         pstmt.setString(4, "Max Muster");
-		         
-		         pstmt.executeUpdate();
-		         
-		         
-		         stmt = c.createStatement();
-		         ResultSet rs = stmt.executeQuery("SELECT * FROM aktivitaet;");
-		         while(rs.next()) {
-		        	int id = rs.getInt("ID");
-		        	String name = rs.getString("Name");
-		        	String beschreibung = rs.getString("Beschreibung");
-		        	int teilnehmer = rs.getInt("Teilnehmer");
-		        	String trainer = rs.getString("Trainer");
-		        	
-		            System.out.println( "ID = " + id );
-		            System.out.println( "NAME = " + name );
-		            System.out.println( "BESCHREIBUNG = " + beschreibung);
-		            System.out.println( "Teilnehmer = " + teilnehmer );
-		            System.out.println( "Trainer = " + trainer );
-		            System.out.println();
-		         }
-		         rs.close();
-		         stmt.close();
-		         c.close();
-		         
-		      } catch (Exception e) {
-		         e.printStackTrace();
-		         System.err.println(e.getClass().getName()+": "+e.getMessage());
-		         System.exit(0);
-		      }
-		     
-		      System.out.println("Operation done successfully");
-		      
-		   }
-		   */
+  
+		 
 }

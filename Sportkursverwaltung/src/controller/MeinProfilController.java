@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 import interfaces.MeinProfilControllerInterface;
 import model.ProfilDatenModel;
-import model.TerminAnzeigeModel;
+import model.MeineTermineModel;
 import model.User;
 
 public class MeinProfilController implements MeinProfilControllerInterface {
@@ -46,7 +46,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "amaterasu");
+	            "postgres", "postgres");
 	         
 	         c.setAutoCommit(false);
 	         System.out.println("Opened database successfully");
@@ -66,11 +66,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	        	profilDaten.setPasswort(rs.getString("passwort"));
 	        	profilDaten.setIstTrainer(rs.getBoolean("isttrainer"));
 	        	profilDaten.setIstBuchungsbestaetigung(rs.getBoolean("istbuchungsbestaetigung"));
-<<<<<<< Upstream, based on branch 'master' of https://github.com/Alcatracz/Sportkursverwaltung.git
-	        	profilDaten.setIstTerminerinnerung(rs.getBoolean("istterminerinnerung"));
-=======
 	        	profilDaten.setIstTerminerinnerung(rs.getBoolean("istterminnerinerung"));
->>>>>>> 2884fd2 datebase tests
 	        	profilDaten.setTerminerinnerungZeit(rs.getInt("terminerinnerungzeit"));
 	        	
 	        	this.profilDaten=profilDaten;
@@ -90,19 +86,22 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	}
 
 	@Override
-	public void speicherProfildaten() {
+	public String speicherProfildaten() {
+		return null;
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void emailAendern() {
+	public String emailAendern() {
+		return null;
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void passwortAendern() {
+	public String passwortAendern() {
+		return null;
 		// TODO Auto-generated method stub
 		
 	}

@@ -8,19 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.KurseControllerInterface;
-import model.TerminAnzeigeModel;
+import model.MeineTermineModel;
 import model.TerminModel;
 import model.User;
 
 public class KurseController implements KurseControllerInterface{
 
-	private List<TerminAnzeigeModel> termine;
-	private TerminAnzeigeModel termin;
+	private List<MeineTermineModel> termine;
+	private MeineTermineModel termin;
 	
 	private User user;
 	
 	public KurseController() {
-		termine = new ArrayList<TerminAnzeigeModel> ();
+		termine = new ArrayList<MeineTermineModel> ();
 		ladeTermine();
 	}
 	
@@ -43,7 +43,7 @@ public class KurseController implements KurseControllerInterface{
 	         stmt = c.createStatement();
 	         ResultSet rs = stmt.executeQuery(sql);
 	         while(rs.next()) {
-	        	TerminAnzeigeModel terminModel = new TerminAnzeigeModel();
+	        	MeineTermineModel terminModel = new MeineTermineModel();
 	        	
 	        	terminModel.setName(rs.getString("name"));
 	        	terminModel.setTrainer(rs.getString("trainer"));
@@ -51,10 +51,7 @@ public class KurseController implements KurseControllerInterface{
 	        	terminModel.setDatum(rs.getDate("datum").toString());
 	        	terminModel.setStartUhrzeit(rs.getTime("startuhrzeit").toString());
 	        	terminModel.setEndUhrzeit(rs.getTime("enduhrzeit").toString());
-	        	terminModel.setIstWoechentlich(rs.getBoolean("istwoechentlich"));
-	        	terminModel.setBuchbarAb(rs.getInt("buchbarab"));
-	        	terminModel.setBuchbarBis(rs.getInt("buchbarbis"));
-	        	terminModel.setStornierbarBis(rs.getInt("stornierbarbis"));
+
 	        	
 	        	
 	        	termine.add(terminModel);
@@ -86,19 +83,19 @@ public class KurseController implements KurseControllerInterface{
 	
 	
 	// Setter und Getter
-	public List<TerminAnzeigeModel> getTermine() {
+	public List<MeineTermineModel> getTermine() {
 		return termine;
 	}
 
-	public void setTermine(List<TerminAnzeigeModel> termine) {
+	public void setTermine(List<MeineTermineModel> termine) {
 		this.termine = termine;
 	}
 
-	public TerminAnzeigeModel getTermin() {
+	public MeineTermineModel getTermin() {
 		return termin;
 	}
 
-	public void setTermin(TerminAnzeigeModel termin) {
+	public void setTermin(MeineTermineModel termin) {
 		this.termin = termin;
 	}
 
