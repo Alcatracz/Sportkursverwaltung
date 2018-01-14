@@ -90,7 +90,8 @@ public class LoginController implements LoginControllerInterface {
 	@Override
 	public String logout() {
 		// TODO Auto-generated method stub
-		user = null;
+		System.out.println("logout");
+		user.logout();
 		return "index";
 	}
 	

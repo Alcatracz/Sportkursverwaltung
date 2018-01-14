@@ -10,6 +10,15 @@ public class User {
     public User() {
     	istAuthentifiziert=false;
     }
+    
+    public void logout() {
+    	this.email = null;
+    	this.passwort = null;
+    	this.istTrainer = false;
+    	this.id = 0;
+    	this.istAuthentifiziert = false;
+    	
+    }
     public boolean isIstAuthentifiziert() {
 		return istAuthentifiziert;
 	}
