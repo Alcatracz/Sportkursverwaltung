@@ -13,9 +13,13 @@ import model.User;
 
 public class MeinProfilController implements MeinProfilControllerInterface {
 
-	User user;
-	ProfilDatenModel profilDaten;
+	private User user;
+	private ProfilDatenModel profilDaten;
 	
+	private String passwortNeu;
+	private String emailNeu;
+	
+
 	public MeinProfilController() {
 		ladeProfildaten();
 	}
@@ -40,7 +44,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	public void ladeProfildaten() {
 		 Connection c = null;
 	      PreparedStatement pstmt = null;
-	      String sql="SELECT * FROM mitglied WHERE id=1";
+	      String sql="SELECT * FROM mitglied WHERE id=?";
 	      
 	      try {
 	         Class.forName("org.postgresql.Driver");
@@ -48,11 +52,11 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
 	            "postgres", "amaterasu");
 	         
-	         c.setAutoCommit(false);
+	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
 	        
 	         pstmt = c.prepareStatement(sql);
-	       //  pstmt.setInt(1, user.getId());
+	         pstmt.setInt(1, user.getId());
 	         
 	         
 	         ResultSet rs = pstmt.executeQuery();
@@ -87,23 +91,129 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 
 	@Override
 	public String speicherProfildaten() {
-		return null;
-		// TODO Auto-generated method stub
-		
+		 Connection c = null;
+	      PreparedStatement pstmt = null;
+	      String sql = "UPDATE mitglied SET istbuchungsbestaetigung = ?, istterminerinnerung = ?, terminerinnerungzeit = ? WHERE id = ?;";
+	      
+	      try {
+	         Class.forName("org.postgresql.Driver");
+	         c = DriverManager
+	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
+	            "postgres", "postgres");
+	         
+	         c.setAutoCommit(true);
+	         System.out.println("Opened database successfully");
+	        
+	         pstmt = c.prepareStatement(sql);
+	         pstmt.setBoolean(1, profilDaten.isIstBuchungsbestaetigung());
+	         pstmt.setBoolean(2, profilDaten.isIstTerminerinnerung());
+	         pstmt.setInt(3, profilDaten.getTerminerinnerungZeit());
+	         pstmt.setInt(4, user.getId());
+	    
+	         pstmt.executeQuery();
+	  
+	         pstmt.close();
+	         c.close();
+	         
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         System.err.println(e.getClass().getName()+": "+e.getMessage());
+	         System.exit(0);
+	      }
+	     
+	      System.out.println("Operation done successfully");
+		return null;	
 	}
 
 	@Override
 	public String emailAendern() {
+		 Connection c = null;
+	      PreparedStatement pstmt = null;
+	      String sql = "UPDATE mitglied SET email = ? WHERE id = ?;";
+	      
+	      try {
+	         Class.forName("org.postgresql.Driver");
+	         c = DriverManager
+	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
+	            "postgres", "postgres");
+	         
+	         c.setAutoCommit(true);
+	         System.out.println("Opened database successfully");
+	        
+	         pstmt = c.prepareStatement(sql);
+	         pstmt.setString(1, emailNeu);
+	         pstmt.setInt(2, user.getId());
+	         
+	         
+	         pstmt.executeUpdate();
+	        
+	        
+	         pstmt.close();
+	         c.close();
+	         
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         System.err.println(e.getClass().getName()+": "+e.getMessage());
+	         System.exit(0);
+	      }
+	     
+	      System.out.println("Operation done successfully");
 		return null;
-		// TODO Auto-generated method stub
+	
 		
 	}
 
 	@Override
 	public String passwortAendern() {
+		 Connection c = null;
+	      PreparedStatement pstmt = null;
+	      String sql = "UPDATE mitglied SET passwort = ? WHERE id = ?;";
+	      
+	      try {
+	         Class.forName("org.postgresql.Driver");
+	         c = DriverManager
+	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
+	            "postgres", "postgres");
+	         
+	         c.setAutoCommit(true);
+	         System.out.println("Opened database successfully");
+	        
+	         pstmt = c.prepareStatement(sql);
+	         pstmt.setString(1, passwortNeu);
+	         pstmt.setInt(2, user.getId());
+	         
+	         
+	         pstmt.executeUpdate();
+	        
+	        
+	         pstmt.close();
+	         c.close();
+	         
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         System.err.println(e.getClass().getName()+": "+e.getMessage());
+	         System.exit(0);
+	      }
+	     
+	      System.out.println("Operation done successfully");
 		return null;
-		// TODO Auto-generated method stub
-		
+	
+	}
+	
+	public String getPasswortNeu() {
+		return passwortNeu;
+	}
+
+	public void setPasswortNeu(String passwortNeu) {
+		this.passwortNeu = passwortNeu;
+	}
+
+	public String getEmailNeu() {
+		return emailNeu;
+	}
+
+	public void setEmailNeu(String emailNeu) {
+		this.emailNeu = emailNeu;
 	}
 
 }
