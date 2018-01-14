@@ -4,58 +4,30 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
+import model.KursListeTagModel;
 import model.ProfilDatenModel;
 
 public class AnotherTest {
 
 	public static void main(String args[]) {
-		Connection c = null;
-	      PreparedStatement pstmt = null;
-	      String sql="SELECT * FROM mitglied WHERE id=?;";
-	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	 	            "postgres", "postgres");
-	         
-	         c.setAutoCommit(false);
-	         System.out.println("Opened database successfully");
-	        
-	         pstmt = c.prepareStatement(sql);
-	         pstmt.setInt(1, 1);
-	         
-	         
-	         ResultSet rs = pstmt.executeQuery();
-	         
-	         while(rs.next()) {
-	        	ProfilDatenModel profilDaten = new ProfilDatenModel();
-	        	
-	        	profilDaten.setVorname(rs.getString("vorname"));
-	        	profilDaten.setNachname(rs.getString("nachname"));
-	        	profilDaten.setEmail(rs.getString("email"));
-	        	profilDaten.setPasswort(rs.getString("passwort"));
-	        	profilDaten.setIstTrainer(rs.getBoolean("isttrainer"));
-	        	profilDaten.setIstBuchungsbestaetigung(rs.getBoolean("istbuchungsbestaetigung"));
-	        	profilDaten.setIstTerminerinnerung(rs.getBoolean("istterminerinnerung"));
-	        	profilDaten.setTerminerinnerungZeit(rs.getInt("terminerinnerungzeit"));
-	        	
-	        
-	        	System.out.println("Name: "+profilDaten.getVorname());
-	        	System.out.println("Name: "+profilDaten.isIstBuchungsbestaetigung());
-	        	
-	         }
-	         rs.close();
-	         pstmt.close();
-	         c.close();
-	         
-	      } catch (Exception e) {
-	         e.printStackTrace();
-	         System.err.println(e.getClass().getName()+": "+e.getMessage());
-	         System.exit(0);
-	      }
-	     
-	      System.out.println("Operation done successfully");
+		
+		List<KursListeTagModel> wochenListe = new ArrayList<KursListeTagModel> ();	
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.DAY_OF_WEEK,calendar.getFirstDayOfWeek());
+		
+		for(int i = 1; i<=7; i++) {
+			String tag= calendar.getTime().toString();
+			System.out.println(tag);
+			System.out.println(""+calendar.get(Calendar.DAY_OF_WEEK));
+			calendar.add(Calendar.DATE, 1);
+			
+			KursListeTagModel kltm = new KursListeTagModel();
+			kltm.setTag(tag);
+			wochenListe.add(kltm);
+		}
 	}
 }
