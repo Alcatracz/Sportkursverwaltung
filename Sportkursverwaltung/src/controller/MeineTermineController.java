@@ -35,7 +35,7 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            "postgres", "amaterasu");
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");

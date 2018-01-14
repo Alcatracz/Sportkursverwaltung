@@ -46,7 +46,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            "postgres", "amaterasu");
 	         
 	         c.setAutoCommit(false);
 	         System.out.println("Opened database successfully");
@@ -66,7 +66,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	        	profilDaten.setPasswort(rs.getString("passwort"));
 	        	profilDaten.setIstTrainer(rs.getBoolean("isttrainer"));
 	        	profilDaten.setIstBuchungsbestaetigung(rs.getBoolean("istbuchungsbestaetigung"));
-	        	profilDaten.setIstTerminerinnerung(rs.getBoolean("istterminnerinerung"));
+	        	profilDaten.setIstTerminerinnerung(rs.getBoolean("istterminerinnerung"));
 	        	profilDaten.setTerminerinnerungZeit(rs.getInt("terminerinnerungzeit"));
 	        	
 	        	this.profilDaten=profilDaten;

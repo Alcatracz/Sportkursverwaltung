@@ -17,14 +17,14 @@
 		 <br></br>
 		 <p>Login</p>
 			<br></br>
-			<h:inputText id="username_input" value="#{loginController.user.name}" 
+			<h:inputText id="username_input" value="#{loginController.user.email}" 
 			p:placeholder="#{msg.user}" styleClass="input" onfocus="this.placeholder=''"
 			onblur="this.placeholder='#{msg.user}'">
 			<f:validator validatorId="validator.LoginValidator" />
 			</h:inputText>
 			<br></br>
 			<br></br>
-			<h:inputSecret value="#{loginController.user.password}" 
+			<h:inputSecret value="#{loginController.user.passwort}" 
 			p:placeholder="#{msg.password}" styleClass="input" onfocus="this.placeholder=''"
 			onblur="this.placeholder='#{msg.password}'"/>
 			<br></br>

@@ -32,7 +32,7 @@ public class LoginController implements LoginControllerInterface {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            "postgres", "amaterasu");
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -41,13 +41,14 @@ public class LoginController implements LoginControllerInterface {
 	         pstmt.setString(1, user.getEmail());
 	         pstmt.setString(2, user.getPasswort());
 	         
-	         ResultSet rs = pstmt.executeQuery(sql);
+	         ResultSet rs = pstmt.executeQuery();
 	         while(rs.next()) {
 
 	        	 user.setId(rs.getInt("id"));
 	        	 user.setEmail(rs.getString("email"));
 	        	 user.setPasswort(rs.getString("passwort"));
 	        	 user.setIstTrainer(rs.getBoolean("isttrainer"));
+	        	 user.setIstAuthentifiziert(true);
 	         }
 	         rs.close();
 	         pstmt.close();
@@ -62,7 +63,7 @@ public class LoginController implements LoginControllerInterface {
 	      System.out.println("Operation done successfully");
     			
         if (user.isIstAuthentifiziert() && !user.isIstTrainer()){
-            return "customer";
+            return "kurse";
         } else if(user.isIstAuthentifiziert() && user.isIstTrainer()){
         	return "trainer";
         }

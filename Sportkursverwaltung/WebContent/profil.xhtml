@@ -47,10 +47,10 @@
 		<p>Email:<h:outputText value="#{meinProfilController.profilDaten.email}"
 		 readonly="true"></h:outputText></p>		
 		<br></br>
-		<p>Neue Email: <h:inputText value="#{meinProfilController.profilDaten.email}">
+		<p>Neue Email: <h:inputText value="#{meinProfilController.emailNeu}">
 		</h:inputText> <h:commandButton action="#{meinProfilController.emailAendern}" value="Ändern" styleClass="buttonchangeClass"/></p>
 		<br></br>
-		<p>Neues Passwort: <h:inputSecret value="#{meinProfilController.profilDaten.email}" redisplay="true">
+		<p>Neues Passwort: <h:inputSecret value="#{meinProfilController.passwortNeu}" redisplay="true">
 		</h:inputSecret><h:commandButton action="#{meinProfilController.passwortAendern}" value="Ändern" styleClass="buttonchangeClass"/></p>
 		</div>
 		</section>
