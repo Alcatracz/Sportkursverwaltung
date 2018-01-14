@@ -19,12 +19,12 @@
 		<h:outputLink value="index.xhtml" styleClass="sitelink">Abmelden</h:outputLink>
 		</div>
 		
-<h:dataTable value="#{kurseController.termine}" var="u"
+<h:dataTable value="#{meineTermineController.termine}" var="u"
 styleClass="order-table">
 
 <h:column headerClass="customHeader">
 <f:facet name="header">
-Uhrzeit
+#{u.datum}
 </f:facet>
 #{u.startUhrzeit}-#{u.endUhrzeit}
 </h:column>

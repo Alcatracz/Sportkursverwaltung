@@ -56,7 +56,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         System.out.println("Opened database successfully");
 	        
 	         pstmt = c.prepareStatement(sql);
-	         pstmt.setInt(1, user.getId());
+	         pstmt.setInt(1, 1);
 	         
 	         
 	         ResultSet rs = pstmt.executeQuery();

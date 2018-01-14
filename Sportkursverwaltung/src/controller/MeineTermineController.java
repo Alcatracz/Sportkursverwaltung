@@ -42,7 +42,7 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	        
 	         pstmt = c.prepareStatement(sql);
 	         
-	         ResultSet rs = pstmt.executeQuery(sql);
+	         ResultSet rs = pstmt.executeQuery();
 	         while(rs.next()) {
 	        	MeineTermineModel terminModel = new MeineTermineModel();
 	        	
