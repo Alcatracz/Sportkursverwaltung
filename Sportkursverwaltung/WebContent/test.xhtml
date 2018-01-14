@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+ <h:head>
+    <h:outputStylesheet library="css" name="login.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<meta http-equiv="pragma" content="no-cache" />
+<title>Login</title>
+</h:head>
+<body>
+	<f:view>
+		<f:loadBundle basename="messages" var="msg"/>
+		<h:form>
+		 <br></br>
+		 <p>Login</p>
+			<br></br>
+			<h:inputText id="username_input" value="#{loginController.user.name}" 
+			p:placeholder="#{msg.user}" styleClass="input" onfocus="this.placeholder=''"
+			onblur="this.placeholder='#{msg.user}'">
+			<f:validator validatorId="validator.LoginValidator" />
+			</h:inputText>
+			<br></br>
+			<br></br>
+			<h:inputSecret value="#{loginController.user.password}" 
+			p:placeholder="#{msg.password}" styleClass="input" onfocus="this.placeholder=''"
+			onblur="this.placeholder='#{msg.password}'"/>
+			<br></br>
+			<h:commandButton action="#{loginController.login}" value="#{msg.login}" styleClass="buttonClass"/>
+			<h:messages layout="table"/>
+		</h:form>
+		
+	</f:view>
+</body>
+</html>

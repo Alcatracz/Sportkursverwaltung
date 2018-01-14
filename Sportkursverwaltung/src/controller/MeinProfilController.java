@@ -66,7 +66,11 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	        	profilDaten.setPasswort(rs.getString("passwort"));
 	        	profilDaten.setIstTrainer(rs.getBoolean("isttrainer"));
 	        	profilDaten.setIstBuchungsbestaetigung(rs.getBoolean("istbuchungsbestaetigung"));
+<<<<<<< Upstream, based on branch 'master' of https://github.com/Alcatracz/Sportkursverwaltung.git
 	        	profilDaten.setIstTerminerinnerung(rs.getBoolean("istterminerinnerung"));
+=======
+	        	profilDaten.setIstTerminerinnerung(rs.getBoolean("istterminnerinerung"));
+>>>>>>> 2884fd2 datebase tests
 	        	profilDaten.setTerminerinnerungZeit(rs.getInt("terminerinnerungzeit"));
 	        	
 	        	this.profilDaten=profilDaten;
