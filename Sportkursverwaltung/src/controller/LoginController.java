@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -20,6 +21,16 @@ import entity.Mitglied;
 public class LoginController implements LoginControllerInterface {
 
 	private User user;
+	
+
+	public LoginController() {
+		
+	}
+	
+	@PostConstruct
+	public void init() {
+		
+	}
 	
 	@Override
     public String login(){
@@ -49,6 +60,9 @@ public class LoginController implements LoginControllerInterface {
 	        	 user.setPasswort(rs.getString("passwort"));
 	        	 user.setIstTrainer(rs.getBoolean("isttrainer"));
 	        	 user.setIstAuthentifiziert(true);
+	        	 
+	        	 System.out.println("ID: " + user.getId());
+	        	 System.out.println("EMAIL: " + user.getEmail());
 	         }
 	         rs.close();
 	         pstmt.close();
