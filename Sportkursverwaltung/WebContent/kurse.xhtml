@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:h="http://xmlns.jcp.org/jsf/html"
-	  xmlns:f="http://xmlns.jcp.org/jsf/core">
+	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
 <h:head>
     <h:outputStylesheet library="css" name="kurse.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -27,7 +28,10 @@ styleClass="order-table">
 <h:column headerClass="customHeader">
 <f:facet name="header">
 </f:facet>
-Info
+<p:commandButton value="Info" update=":dlgForm:edit" type="button" onclick="PF('dlg1').show();" />
+<p:dialog header="#{u.name}" widgetVar="dlg1" modal="true" resizable="false" width="300" height="200">
+    <h:outputText value="#{u.name}" />    
+</p:dialog>
 </h:column>
 
 
@@ -41,7 +45,8 @@ Uhrzeit
 <h:column headerClass="customHeader">
 <f:facet name="header">
 </f:facet>
-Button Hilfe
+<h:commandButton action="#{meinProfilController.speicherProfildaten}" value="Speichern" styleClass="buttonClass"/>
+
 </h:column>
 
 
@@ -60,8 +65,12 @@ Zeit
 
 
 </h:dataTable>
-
-	</h:form>	
+</h:form>	
+<h:form id="dlgForm">
+<p:dialog header="#{u.name}" widgetVar="dlg1" modal="true" resizable="false" width="300" height="200">
+    <h:outputText value="#{u.name}" />    
+</p:dialog>
+</h:form>	
 	</f:view>
 </h:body>
 </html>
