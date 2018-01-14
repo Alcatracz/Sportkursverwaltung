@@ -11,13 +11,14 @@
 </h:head>
 <h:body>
 	<f:view>
+	<h:form>
 		<f:loadBundle basename="messages" var="msg"/>
 
 		<div class="headblock">
 		<h:outputLink value="kurse.xhtml" styleClass="sitelink">Kurse</h:outputLink>
 		<h:outputLink value="profil.xhtml" styleClass="sitelink">Mein Profil</h:outputLink>
 		<h:outputLink value="termine.xhtml" styleClass="sitelink">Meine Termine</h:outputLink>
-		<h:outputLink value="index.xhtml" styleClass="sitelink">Abmelden</h:outputLink>
+		<h:commandLink value = "Abmelden" action = "loginController.logout" />
 		</div>
 		
 <h:dataTable value="#{kurseController.termine}" var="u"
@@ -60,7 +61,7 @@ Zeit
 
 </h:dataTable>
 
-		
+	</h:form>	
 	</f:view>
 </h:body>
 </html>
