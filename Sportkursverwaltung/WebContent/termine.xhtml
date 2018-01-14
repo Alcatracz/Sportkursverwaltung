@@ -12,6 +12,7 @@
 <h:body>
 	<f:view>
 		<f:loadBundle basename="messages" var="msg"/>
+		<h1><h:outputText value = "#{msg.hello}: #{meineTermineController.user.email}, #{meinTermineController.user.id}" /></h1>
 		<div class="headblock">
 		<h:outputLink value="kurse.xhtml" styleClass="sitelink">Kurse</h:outputLink>
 		<h:outputLink value="profil.xhtml" styleClass="sitelink">Mein Profil</h:outputLink>
@@ -19,7 +20,7 @@
 		<h:outputLink value="index.xhtml" styleClass="sitelink">Abmelden</h:outputLink>
 		</div>
 		
-<h:dataTable value="#{kurseController.termine}" var="u"
+<h:dataTable value="#{meineTermineController.termine}" var="u"
 styleClass="order-table">
 
 <h:column headerClass="customHeader">

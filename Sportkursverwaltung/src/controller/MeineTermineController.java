@@ -26,6 +26,7 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	
 	public void ladeTermine() {
 		
+		//System.out.println("UserID:"+user.getId());
 	      Connection c = null;
 	      PreparedStatement pstmt = null;
 			String sql="SELECT tl.id, t.datum, t.enduhrzeit, t.startuhrzeit, a.name, a.beschreibung, a.trainer FROM terminliste tl INNER JOIN termin t ON "
@@ -35,14 +36,14 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "amaterasu");
+	            "postgres", "postgres");
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
 	        
 	         pstmt = c.prepareStatement(sql);
 	         
-	         ResultSet rs = pstmt.executeQuery(sql);
+	         ResultSet rs = pstmt.executeQuery();
 	         while(rs.next()) {
 	        	MeineTermineModel terminModel = new MeineTermineModel();
 	        	
