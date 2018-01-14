@@ -20,22 +20,26 @@
 		<h:outputLink value="index.xhtml" styleClass="sitelink">Abmelden</h:outputLink>
 		</div>
 		
-<h:dataTable value="#{meineTermineController.termine}" var="u"
+       <h:form binding="#{meineTermineController.tableForm}">		
+<h:dataTable value="#{meineTermineController.termine}" var="termin"
 styleClass="order-table">
 
 <h:column headerClass="customHeader">
 <div class="blockview">
 <f:facet name="header">
 </f:facet>
-#{u.datum} #{u.startUhrzeit}<br></br>
-Kurs: #{u.name}<br></br>
-Trainer: #{u.trainer}<br></br>
-<h:commandButton action="#{meineTermineController.absagen}" value="Absagen" styleClass="buttonClass"/>
+#{termin.datum} #{termin.startUhrzeit}<br></br>
+Kurs: #{termin.name}<br></br>
+Trainer: #{termin.trainer}<br></br>
+                 <h:commandLink value="absagen" action="#{meineTermineController.absagen}">
+                        <f:setPropertyActionListener target="#{meineTermineController.termin}"
+                            value="#{termin}" />
+                    </h:commandLink>
 </div>
 </h:column>
 
 </h:dataTable>
-
+ </h:form> 
 		
 	</f:view>
 </h:body>

@@ -89,9 +89,10 @@ public class DatabaseTest {
 	}
 	
 	public static void delete(Connection c) throws SQLException {
-		String sql = "DELETE FROM aktivitaet WHERE id = ?";
+		String sql = "DELETE FROM terminliste WHERE terminid = ? AND mitgliedid=?";
 		PreparedStatement pstmt = c.prepareStatement(sql);
-		pstmt.setInt(1, 7);
+		pstmt.setInt(1, 1);
+		pstmt.setInt(2, 3);
 		pstmt.executeUpdate();
 		pstmt.close();
 	}
@@ -116,16 +117,16 @@ public class DatabaseTest {
 			c=connect();
 			
 			//selectAll(c);
-			System.out.println("-----------------------------");
-			selectByAttribute(c);
-			System.out.println("-----------------------------");
+			//System.out.println("-----------------------------");
+			//selectByAttribute(c);
+			//System.out.println("-----------------------------");
 			//insert(c);
 			//selectAll(c);
 			//System.out.println("-----------------------------");
 			//update(c);
 			//selectAll(c);
 			//System.out.println("-----------------------------");
-			//delete(c);
+			delete(c);
 			//selectAll(c);
 			//System.out.println("-----------------------------");
 			

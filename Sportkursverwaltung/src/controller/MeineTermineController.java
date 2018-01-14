@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.component.UIForm;
 
 import interfaces.MeineTermineControllerInterace;
 import model.MeineTermineModel;
@@ -18,7 +19,15 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 
 	private List<MeineTermineModel> termine;
 	private MeineTermineModel termin;
-	
+	private UIForm tableForm;
+	public UIForm getTableForm() {
+		return tableForm;
+	}
+
+	public void setTableForm(UIForm tableForm) {
+		this.tableForm = tableForm;
+	}
+
 	private User user;
 	
 	public MeineTermineController() {
@@ -42,7 +51,7 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "amaterasu");
+	            "postgres", "postgres");
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -77,12 +86,17 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	}
 	
 	public String absagen() {
-		termine.remove(termin);
+		System.out.println("Rofl Absage");
 		int id = termin.getId();
+		System.out.println("TERMIN_ID: " + id);
+		System.out.println("MITGLIED_ID: " + user.getId());
+		System.out.println("Rofl Absage");
+		termine.remove(termin);
+		
 		
 	      Connection c = null;
 	      PreparedStatement pstmt = null;
-	      String sql = "DELETE FROM terminliste WHERE terminid = ? AND mitgliedid=?";
+	      String sql = "DELETE FROM terminliste WHERE id = ? AND mitgliedid=?";
 	      
 	      try {
 	         Class.forName("org.postgresql.Driver");
@@ -97,7 +111,7 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	         pstmt.setInt(1, id);
 	         pstmt.setInt(2, user.getId());
 	      
-	         
+	         pstmt.executeUpdate();
 	         pstmt.close();
 	         c.close();
 	         
