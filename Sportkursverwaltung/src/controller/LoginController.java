@@ -1,6 +1,10 @@
 package controller;
 
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,6 +13,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import interfaces.LoginControllerInterface;
 import entity.CustomerService;
+import model.MeineTermineModel;
 import model.User;
 import entity.Mitglied;
 
@@ -18,34 +23,47 @@ public class LoginController implements LoginControllerInterface {
 	
 	@Override
     public String login(){
-        // Image here a database access to validate the users
-    	System.out.println("login");
-    	
-    	System.out.println("Email: "+user.getName());
-    	System.out.println("Password: "+user.getPassword());
-    	
-    	EntityManagerFactory factory =
-    			Persistence.createEntityManagerFactory("Sportkursverwaltung");
-    			EntityManager manager = factory.createEntityManager();
-    			//CustomerService service = new CustomerService(manager);
-    			// manager.getTransaction().begin();
-    			// Customer emp = service.createCustomer(3l,"testmail","Jan","vroelsker","passwort123");
-    			// em.getTransaction().commit();
+
+		Connection c = null;
+	      PreparedStatement pstmt = null;
+			String sql="SELECT m.id, m.email, m.passwort, m.isttrainer FROM mitglied m WHERE m.email=? AND m.passwort=?";
+	      
+	      try {
+	         Class.forName("org.postgresql.Driver");
+	         c = DriverManager
+	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
+	            "postgres", "postgres");
+	         
+	         c.setAutoCommit(true);
+	         System.out.println("Opened database successfully");
+	        
+	         pstmt = c.prepareStatement(sql);
+	         pstmt.setString(1, user.getEmail());
+	         pstmt.setString(2, user.getPasswort());
+	         
+	         ResultSet rs = pstmt.executeQuery(sql);
+	         while(rs.next()) {
+
+	        	 user.setId(rs.getInt("id"));
+	        	 user.setEmail(rs.getString("email"));
+	        	 user.setPasswort(rs.getString("passwort"));
+	        	 user.setIstTrainer(rs.getBoolean("isttrainer"));
+	         }
+	         rs.close();
+	         pstmt.close();
+	         c.close();
+	         
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         System.err.println(e.getClass().getName()+": "+e.getMessage());
+	         System.exit(0);
+	      }
+	     
+	      System.out.println("Operation done successfully");
     			
-    			// Daten auslesen und anzeigen
-    			Query query = manager.createNativeQuery("SELECT * FROM customer  WHERE email='"+user.getName()+"' AND passwort='"+user.getPassword()+"';");
-    			//Query query = manager.createNativeQuery("SELECT * FROM customer;");
-    			List<Mitglied> liste = query.getResultList();
-    			System.out.println("Size: "+liste.size());
-    			// Die Liste braucht bei REST gar nicht weiter aufgelöst zu werden!
-    		
-    			//factory.close();
-    			manager.close();
-    			
-        if (liste.size()>0){
-    	//if (user.getName().equalsIgnoreCase("tester") && user.getPassword().equalsIgnoreCase("tester")){
+        if (user.isIstAuthentifiziert() && !user.isIstTrainer()){
             return "customer";
-        } else if(user.getName().equalsIgnoreCase("trainer") && user.getPassword().equalsIgnoreCase("trainer")){
+        } else if(user.isIstAuthentifiziert() && user.isIstTrainer()){
         	return "trainer";
         }
          else{
