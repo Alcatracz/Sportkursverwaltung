@@ -22,7 +22,7 @@
 		<h:commandLink value = "Abmelden" action = "#{loginController.logout }" />
 		</div>
 		
-<h:dataTable value="#{kurseController.termine}" var="u"
+<h:dataTable value="#{kurseController.wochenListe}" var="u"
 styleClass="order-table">
 
 <h:column headerClass="customHeader">
@@ -39,7 +39,7 @@ styleClass="order-table">
 <f:facet name="header">
 Uhrzeit
 </f:facet>
-#{u.startUhrzeit}-#{u.endUhrzeit}
+
 </h:column>
 
 <h:column headerClass="customHeader">
@@ -53,7 +53,7 @@ Uhrzeit
 <h:column headerClass="customHeader">
 <f:facet name="header">
 </f:facet>
-#{u.name}
+
 </h:column>
 
 <h:column headerClass="customHeader">
