@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.annotation.PostConstruct;
+
 import interfaces.MeinProfilControllerInterface;
 import model.ProfilDatenModel;
 import model.MeineTermineModel;
@@ -21,6 +23,10 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	
 
 	public MeinProfilController() {
+		
+	}
+	@PostConstruct
+	public void init() {
 		ladeProfildaten();
 	}
 	
@@ -56,7 +62,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         System.out.println("Opened database successfully");
 	        
 	         pstmt = c.prepareStatement(sql);
-	         pstmt.setInt(1,1);
+	         pstmt.setInt(1,user.getId());
 	         
 	         
 	         ResultSet rs = pstmt.executeQuery();

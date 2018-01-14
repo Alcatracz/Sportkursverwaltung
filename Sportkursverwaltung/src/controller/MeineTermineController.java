@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import interfaces.MeineTermineControllerInterace;
 import model.MeineTermineModel;
 import model.User;
@@ -21,6 +23,10 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	
 	public MeineTermineController() {
 		termine = new ArrayList<MeineTermineModel> ();
+	}
+	
+	@PostConstruct
+	public void init() {
 		ladeTermine();
 	}
 	
@@ -30,7 +36,7 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	      Connection c = null;
 	      PreparedStatement pstmt = null;
 			String sql="SELECT tl.id, t.datum, t.enduhrzeit, t.startuhrzeit, a.name, a.beschreibung, a.trainer FROM terminliste tl INNER JOIN termin t ON "
-					+ "tl.terminid = t.id INNER JOIN aktivitaet a ON t.aktivitaetid = a.id WHERE tl.mitgliedid = 1;";
+					+ "tl.terminid = t.id INNER JOIN aktivitaet a ON t.aktivitaetid = a.id WHERE tl.mitgliedid = ?;";
 	      
 	      try {
 	         Class.forName("org.postgresql.Driver");
@@ -42,7 +48,7 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	         System.out.println("Opened database successfully");
 	        
 	         pstmt = c.prepareStatement(sql);
-	         
+	         pstmt.setInt(1, user.getId());
 	         ResultSet rs = pstmt.executeQuery();
 	         while(rs.next()) {
 	        	MeineTermineModel terminModel = new MeineTermineModel();

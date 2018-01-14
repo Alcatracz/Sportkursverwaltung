@@ -7,6 +7,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import interfaces.KurseControllerInterface;
 import model.MeineTermineModel;
 import model.TerminModel;
@@ -20,7 +22,11 @@ public class KurseController implements KurseControllerInterface{
 	private User user;
 	
 	public KurseController() {
-		termine = new ArrayList<MeineTermineModel> ();
+		termine = new ArrayList<MeineTermineModel> ();		
+	}
+	
+	@PostConstruct
+	public void init() {
 		ladeTermine();
 	}
 	
