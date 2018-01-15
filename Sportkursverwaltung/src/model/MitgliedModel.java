@@ -2,6 +2,7 @@ package model;
 
 public class MitgliedModel {
 
+	private int id;
 	private String vorname;
 	private String nachname;
 	private String email;
@@ -63,5 +64,15 @@ public class MitgliedModel {
 	}
 	public void setTerminerinnerungZeit(int terminerinnerungZeit) {
 		this.terminerinnerungZeit = terminerinnerungZeit;
+	}
+
+
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }
