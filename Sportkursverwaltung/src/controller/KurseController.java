@@ -68,7 +68,7 @@ public class KurseController implements KurseControllerInterface{
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "amaterasu");
+	            "postgres", "postgres");
 	         
 	         c.setAutoCommit(false);
 	         System.out.println("Opened database successfully");
@@ -77,8 +77,23 @@ public class KurseController implements KurseControllerInterface{
 	         ResultSet rs = stmt.executeQuery(sql);
 	         while(rs.next()) {
 	        	 int maxTeilnehmer = rs.getInt("teilnehmer");
-	        	 
-	        	 
+	        	 int terminID= rs.getInt("id");
+	        	 PreparedStatement ps = c.prepareStatement("SELECT count(id) from terminliste WHERE terminid=?;");
+	        		 ps.setInt(1, terminID);
+	        		 ResultSet rsCount = ps.executeQuery();
+	        		 rs.next();
+	        		 int currTeilnehmmer= rs.getInt(1);
+	        		 ps.close();
+	        		
+	        		 PreparedStatement pshero = c.prepareStatement("SELECT id from terminliste WHERE terminid=? AND mitgliedid=?");
+	        		 pshero.setInt(1, terminID);
+	        		 pshero.setInt(2, user.getId());
+	        		 ResultSet rshero = pshero.executeQuery();
+	        		 int terminmitgliedid=0;
+	        		 while(rshero.next()) {
+	        			 terminmitgliedid=rshero.getInt("id");
+	        		 }
+	        		 
 	        	 //Check ob freier platz
 	        	 //Check ob angemeldet
 	        	KursTerminModel terminModel = new KursTerminModel();
@@ -89,6 +104,15 @@ public class KurseController implements KurseControllerInterface{
 	        	terminModel.setDatum(rs.getDate("datum").toString());
 	        	terminModel.setStartUhrzeit(rs.getTime("startuhrzeit").toString());
 	        	terminModel.setEndUhrzeit(rs.getTime("enduhrzeit").toString());
+	        	
+	        	if(maxTeilnehmer-currTeilnehmmer>0) {
+	        		terminModel.setActionName("Teilnehmen");
+	        		terminModel.setIstBuchbar(true);
+	        	}
+	        	if(terminmitgliedid != 0) {
+	        		terminModel.setActionName("Absagen");
+	        		terminModel.setBereitsgebucht(true);
+	        	}
 	        	
 	        	Calendar calender = Calendar.getInstance();
 	        	calender.setTime(rs.getDate("datum"));
