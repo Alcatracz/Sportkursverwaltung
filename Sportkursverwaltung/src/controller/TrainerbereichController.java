@@ -93,14 +93,80 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	@Override
 	public void ladeAktivitaeten() {
-		// TODO Auto-generated method stub
-		
+		Connection c = null;
+	      PreparedStatement pstmt = null;
+			String sql="SELECT * FROM aktivitaet;";
+	      
+	      try {
+	         Class.forName("org.postgresql.Driver");
+	         c = DriverManager
+	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
+	            "postgres", "postgres");
+	         
+	         c.setAutoCommit(true);
+	         System.out.println("Opened database successfully");
+	        
+	         pstmt = c.prepareStatement(sql);	    
+	         ResultSet rs = pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+	        	 AktivitaetModel ak = new AktivitaetModel();
+	        	 
+	         }
+	         rs.close();
+	         pstmt.close();
+	         c.close();
+	         
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         System.err.println(e.getClass().getName()+": "+e.getMessage());
+	         System.exit(0);
+	      }
+	     
+	      System.out.println("Operation done successfully");
 	}
 
 	@Override
 	public void ladeTermine() {
-		// TODO Auto-generated method stub
-		
+		Connection c = null;
+	      PreparedStatement pstmt = null;
+			String sql="SELECT * FROM mitglied;";
+	      
+	      try {
+	         Class.forName("org.postgresql.Driver");
+	         c = DriverManager
+	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
+	            "postgres", "postgres");
+	         
+	         c.setAutoCommit(true);
+	         System.out.println("Opened database successfully");
+	        
+	         pstmt = c.prepareStatement(sql);	    
+	         ResultSet rs = pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+		      MitgliedModel mitgliedModel = new MitgliedModel();
+		      mitgliedModel.setId(rs.getInt("id"));
+		      mitgliedModel.setVorname(rs.getString("vorname"));
+		      mitgliedModel.setNachname(rs.getString("nachname"));
+		      mitgliedModel.setEmail(rs.getString("email"));
+		      mitgliedModel.setPasswort(rs.getString("passwort"));
+		      mitgliedModel.setIstTrainer(rs.getBoolean("isttrainer"));
+		      mitgliedModel.setIstBuchungsbestaetigung(rs.getBoolean("istbuchungsbestaetigung"));
+		      mitgliedModel.setIstTerminerinnerung(rs.getBoolean("istterminerinnerung"));
+		      mitgliedModel.setTerminerinnerungZeit(rs.getInt("terminerinnerungzeit"));
+	         }
+	         rs.close();
+	         pstmt.close();
+	         c.close();
+	         
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         System.err.println(e.getClass().getName()+": "+e.getMessage());
+	         System.exit(0);
+	      }
+	     
+	      System.out.println("Operation done successfully");
 	}
 
 	@Override
@@ -148,7 +214,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	}
 
 	@Override
-	public String loescheMitglied() {
+	public String loescheMitglied(MitgliedModel mitglied) {
 		// TODO Auto-generated method stub
 		Connection c = null;
 	      PreparedStatement pstmt = null;
@@ -178,7 +244,8 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	      }
 	     
 	      System.out.println("Operation done successfully");
-		
+	      
+	      														//lösche Termine von mitglied
 		mitglieder.remove(mitglied);
 		return null;
 	}
@@ -190,7 +257,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	}
 
 	@Override
-	public String loescheAktivitaet() {
+	public String loescheAktivitaet(AktivitaetModel aktivitaet) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -202,7 +269,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	}
 
 	@Override
-	public String loescheTermin() {
+	public String loescheTermin(TerminModel termin) {
 		// TODO Auto-generated method stub
 		return null;
 	}
