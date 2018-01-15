@@ -68,7 +68,7 @@ public class KurseController implements KurseControllerInterface{
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "amaterasu");
+	            "postgres", "postgres");
 	         
 	         c.setAutoCommit(false);
 	         System.out.println("Opened database successfully");
@@ -161,19 +161,21 @@ public class KurseController implements KurseControllerInterface{
 			System.out.println("end");
 	}
 	@Override
-	public String toggleButton() {
+	public String toggleButton(KursTerminModel termin) {
+		System.out.println("toggleButton");
 		//Check if bereits gebucht
 		if(termin.isBereitsgebucht()) {
-			absagen();
+			System.out.println("");
+			absagen(termin);
 		} else if(termin.isIstBuchbar()) {
-			teilnehmen();
+			teilnehmen(termin);
 		}
 		
 		return null;
 	}
 	
 	@Override
-	public void teilnehmen() {
+	public void teilnehmen(KursTerminModel termin) {
 		
 		Connection c = null;
 	      PreparedStatement pstmt = null;
@@ -210,7 +212,7 @@ public class KurseController implements KurseControllerInterface{
 	}
 
 	@Override
-	public void absagen() {
+	public void absagen(KursTerminModel termin) {
 		// TODO Auto-generated method stub
 		 Connection c = null;
 	      PreparedStatement pstmt = null;

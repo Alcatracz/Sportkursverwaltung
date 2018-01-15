@@ -16,8 +16,8 @@ public class KursTerminModel {
 
 	
 	private int terminId;
-	private boolean bereitsgebucht;
-	private boolean istBuchbar;
+	private boolean bereitsgebucht=false;
+	private boolean istBuchbar=true;
 	
 	
 	public boolean isBereitsgebucht() {
