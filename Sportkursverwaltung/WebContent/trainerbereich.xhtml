@@ -23,6 +23,7 @@
 			</div>
 			<p:tabView>
 				<p:tab title="Mitglieder">
+				<p:commandButton value="Erstellen" update=":detail" oncomplete="PF('detail').show();" />
 				
 					<h:dataTable value="#{trainerbereichController.mitglieder}" var="curmitglied"
 styleClass="order-table">
@@ -41,15 +42,15 @@ styleClass="order-table">
 		<p:dialog header="Neues Mitglied" id="detail" widgetVar="detail"
 			modal="true" resizable="false" width="375" height="400">
 			<h:form>
-				<p>Vorname: <h:inputText value="">
+				<p>Vorname: <h:inputText value="#{trainerbereichController.mitglied.vorname}">
 		</h:inputText> </p>
-				<p>Nachname:  <h:inputText value="">
+				<p>Nachname:  <h:inputText value="#{trainerbereichController.mitglied.nachname}">
 		</h:inputText> </p>
-				<p>Email:  <h:inputText value="">
+				<p>Email:  <h:inputText value="#{trainerbereichController.mitglied.email}">
 		</h:inputText> </p>
-				<p>Trainer <h:selectBooleanCheckbox value=""
-		 ><f:ajax></f:ajax></h:selectBooleanCheckbox></p>
-				<h:commandButton  value="Hinzufügen"
+				<p>Trainer <h:selectBooleanCheckbox value ="#{trainerbereichController.mitglied.istTrainer}">
+		 </h:selectBooleanCheckbox></p>
+				<h:commandButton action="#{trainerbereichController.speicherNeuesMitglied}" value="Hinzufügen"
 					styleClass="buttonClass" />
 			</h:form>
 		</p:dialog>
