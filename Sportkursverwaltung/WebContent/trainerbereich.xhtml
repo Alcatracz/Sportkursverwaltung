@@ -9,6 +9,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 	<meta http-equiv="pragma" content="no-cache" />
 	<title>Trainerbereich</title>
+	
 </h:head>
 <h:body>
 	<f:view>
@@ -22,13 +23,14 @@
 			</div>
 			<p:tabView>
 				<p:tab title="Mitglieder">
-					<h:dataTable value="#{trainerbereichController.mitglieder}" var="currentmitglied"
-						styleClass="order-table">
+				
+					<h:dataTable value="#{trainerbereichController.mitglieder}" var="curmitglied"
+styleClass="order-table">
 						<h:column headerClass="customHeader">
-         #currentmitglied.vorname
+         #{curmitglied.vorname} #{curmitglied.nachname}
         </h:column>
 						<h:column headerClass="customHeader">
-							<h:commandButton action="#{trainerbereichController.loescheMitglied(currentmitglied)}" value="" styleClass="buttonClass" />
+							<h:commandButton action="#{trainerbereichController.loescheMitglied(curmitglied)}" value="Löschen" styleClass="buttonClass" />
 						</h:column>
 					</h:dataTable>
 				</p:tab>
