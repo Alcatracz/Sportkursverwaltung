@@ -22,8 +22,12 @@
 		<h:commandLink value = "Abmelden" action = "#{loginController.logout }" />
 		</div>
 		
-<h:dataTable value="#{kurseController.wochenListe}" var="u"
+<h:dataTable value="#{kurseController.wochenListe}" var="wochentag"
 styleClass="order-table">
+
+<h:column>
+#{wochentag.tag}
+<h:dataTable value="#{wochentag.termine}" var="termin">
 
 <h:column headerClass="customHeader">
 <f:facet name="header">
@@ -31,6 +35,10 @@ styleClass="order-table">
 <p:commandButton value="Info" action="#kurseController.testtest()" 
 update=":detail" onclick="PF('detail').show();" />
 
+<p:commandButton value="Info" update=":dlgForm:edit" type="button" onclick="PF('dlg1').show();" />
+<p:dialog header="#{termin.name}" widgetVar="dlg1" modal="true" resizable="false" width="300" height="200">
+    <h:outputText value="#{termin.name}" />    
+</p:dialog>
 </h:column>
 
 
@@ -63,11 +71,20 @@ Zeit
 </h:column>
 
 
+
+</h:dataTable>
+</h:column>
+
+
+
 </h:dataTable>
 </h:form>	
 <h:form id="detail" widgetVar="detail">
 <p:dialog header="#{kurseController.termininfo.name}" widgetVar="dlg1" modal="true" resizable="false" width="300" height="200">
     <h:outputText value="#{kurseController.termininfo.name}"/>    
+<h:form id="dlgForm">
+<p:dialog header="#{termin.name}" widgetVar="dlg1" modal="true" resizable="false" width="300" height="200">
+    <h:outputText value="#{termin.name}" />    
 </p:dialog>
 </h:form>	
 	</f:view>

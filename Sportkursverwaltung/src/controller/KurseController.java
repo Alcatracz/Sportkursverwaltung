@@ -2,6 +2,7 @@ package controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -61,7 +62,8 @@ public class KurseController implements KurseControllerInterface{
 		// TODO Auto-generated method stub
 		 Connection c = null;
 	      Statement stmt = null;
-	      String sql="SELECT * FROM aktivitaet a INNER JOIN termin t ON a.id = t.aktivitaetid;";
+	      String sql="SELECT a.name, a.trainer, a.beschreibung, a.teilnehmer, t.datum, t.startuhrzeit, t.enduhrzeit, t.id"
+	      		+ " FROM aktivitaet a INNER JOIN termin t ON a.id = t.aktivitaetid;";
 	      
 	      try {
 	         Class.forName("org.postgresql.Driver");
@@ -75,9 +77,13 @@ public class KurseController implements KurseControllerInterface{
 	         stmt = c.createStatement();
 	         ResultSet rs = stmt.executeQuery(sql);
 	         while(rs.next()) {
+	        	 int maxTeilnehmer = rs.getInt("teilnehmer");
 	        	 
+	        	 
+	        	 //Check ob freier platz
+	        	 //Check ob angemeldet
 	        	KursTerminModel terminModel = new KursTerminModel();
-	        	terminModel.setId(rs.getInt("id"));
+	        	terminModel.setTerminId(rs.getInt("id"));
 	        	terminModel.setName(rs.getString("name"));
 	        	terminModel.setTrainer(rs.getString("trainer"));
 	        	terminModel.setBeschreibung(rs.getString("beschreibung"));
@@ -128,20 +134,95 @@ public class KurseController implements KurseControllerInterface{
 	      System.out.println("Operation done successfully");
 			System.out.println("end");
 	}
-
 	@Override
-	public String teilnehmen() {
-		
-		
-		
+	public String ToggleButton() {
+		//Check if bereits gebucht
+		if(termin.isBereitsgebucht()) {
+			absagen();
+		} else if(termin.isIstBuchbar()) {
+			teilnehmen();
+		}
 		
 		return null;
 	}
+	
+	@Override
+	public void teilnehmen() {
+		
+		Connection c = null;
+	      PreparedStatement pstmt = null;
+	      String sql = "INSERT INTO terminliste(mitgliedid,terminid) VALUES (?,?);";
+	      
+	      try {
+	         Class.forName("org.postgresql.Driver");
+	         c = DriverManager
+	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
+	            "postgres", "postgres");
+	         
+	         c.setAutoCommit(true);
+	         System.out.println("Opened database successfully");
+	        
+	         pstmt = c.prepareStatement(sql);
+	         
+	         pstmt.setInt(1, user.getId());
+	         pstmt.setInt(2, termin.getTerminId());
+	         
+	         pstmt.executeUpdate();
+	         pstmt.close();
+	         c.close();
+	         
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         System.err.println(e.getClass().getName()+": "+e.getMessage());
+	         System.exit(0);
+	      }
+	     
+	      System.out.println("Operation done successfully");
+		
+		termin.setBereitsgebucht(true);
+		termin.setActionName("Absagen");
+	}
 
 	@Override
-	public String absagen() {
+	public void absagen() {
 		// TODO Auto-generated method stub
-		return null;
+		 Connection c = null;
+	      PreparedStatement pstmt = null;
+	      String sql = "DELETE FROM terminliste WHERE id = ? AND mitgliedid=?";
+	      
+	      try {
+	         Class.forName("org.postgresql.Driver");
+	         c = DriverManager
+	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
+	            "postgres", "postgres");
+	         
+	         c.setAutoCommit(true);
+	         System.out.println("Opened database successfully");
+	        
+	         pstmt = c.prepareStatement(sql);
+	         pstmt.setInt(1, termin.getTerminMitgliedId());
+	         pstmt.setInt(2, user.getId());
+	      
+	         pstmt.executeUpdate();
+	         pstmt.close();
+	         c.close();
+	         
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         System.err.println(e.getClass().getName()+": "+e.getMessage());
+	         System.exit(0);
+	      }
+	     
+	      System.out.println("Operation done successfully");
+	      
+		
+		
+		termin.setBereitsgebucht(false);
+		if(termin.isIstBuchbar()) {
+			termin.setActionName("Teilnehmen");
+		} else {
+			termin.setActionName("Voll");
+		}
 	}
 	
 

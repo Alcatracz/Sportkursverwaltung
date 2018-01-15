@@ -2,7 +2,44 @@ package model;
 
 public class KursTerminModel {
 
-	private int id;
+	
+	private String actionName;
+	private int terminMitgliedId;
+	
+	
+	public int getTerminMitgliedId() {
+		return terminMitgliedId;
+	}
+	public void setTerminMitgliedId(int terminMitgliedId) {
+		this.terminMitgliedId = terminMitgliedId;
+	}
+
+	
+	private int terminId;
+	private boolean bereitsgebucht;
+	private boolean istBuchbar;
+	
+	
+	public boolean isBereitsgebucht() {
+		return bereitsgebucht;
+	}
+	public void setBereitsgebucht(boolean bereitsgebucht) {
+		this.bereitsgebucht = bereitsgebucht;
+	}
+	public String getActionName() {
+		return actionName;
+	}
+	public void setActionName(String actionName) {
+		this.actionName = actionName;
+	}
+	public boolean isIstBuchbar() {
+		return istBuchbar;
+	}
+	public void setIstBuchbar(boolean istBuchbar) {
+		this.istBuchbar = istBuchbar;
+	}
+
+	
 	private String name;
 	private String trainer;
 	private String beschreibung;
@@ -14,13 +51,23 @@ public class KursTerminModel {
 		
 	}
 
-	public int getId() {
-		return id;
+
+
+
+
+
+
+	public int getTerminId() {
+		return terminId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+
+
+	public void setTerminId(int terminId) {
+		this.terminId = terminId;
 	}
+
+
 
 	public String getName() {
 		return name;
