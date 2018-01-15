@@ -2,6 +2,7 @@ package model;
 
 public class TerminModel {
 
+	private int id;
 	private String datum;
 	private String startUhrzeit;
 	private String endUhrzeit;
@@ -14,6 +15,16 @@ public class TerminModel {
 		
 	}
 	
+
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 
 	public String getDatum() {
 		return datum;

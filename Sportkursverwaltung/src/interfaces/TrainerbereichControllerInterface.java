@@ -18,6 +18,6 @@ public interface TrainerbereichControllerInterface {
 	public String speicherNeueAktivitaet ();
 	public String loescheAktivitaet (AktivitaetModel aktivitaet);
 	
-	public String speicherNeuenTermin ();
+	public String speicherNeuenTermin (int id);
 	public String loescheTermin (TerminModel termin);
 }

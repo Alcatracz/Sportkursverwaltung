@@ -4,7 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -143,9 +147,10 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	@Override
 	public void ladeTermine(int id) {
+		termine= new ArrayList<TerminModel>();
 		Connection c = null;
 	      PreparedStatement pstmt = null;
-			String sql="SELECT * FROM termin;";
+			String sql="SELECT * FROM termin WHERE aktivitaetid=?;";
 	      
 	      try {
 	         Class.forName("org.postgresql.Driver");
@@ -156,20 +161,21 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
 	        
-	         pstmt = c.prepareStatement(sql);	    
+	         pstmt = c.prepareStatement(sql);	
+	         pstmt.setInt(1, id);
 	         ResultSet rs = pstmt.executeQuery();
 	         
 	         while(rs.next()) {
-		      MitgliedModel mitgliedModel = new MitgliedModel();
-		      mitgliedModel.setId(rs.getInt("id"));
-		      mitgliedModel.setVorname(rs.getString("vorname"));
-		      mitgliedModel.setNachname(rs.getString("nachname"));
-		      mitgliedModel.setEmail(rs.getString("email"));
-		      mitgliedModel.setPasswort(rs.getString("passwort"));
-		      mitgliedModel.setIstTrainer(rs.getBoolean("isttrainer"));
-		      mitgliedModel.setIstBuchungsbestaetigung(rs.getBoolean("istbuchungsbestaetigung"));
-		      mitgliedModel.setIstTerminerinnerung(rs.getBoolean("istterminerinnerung"));
-		      mitgliedModel.setTerminerinnerungZeit(rs.getInt("terminerinnerungzeit"));
+	        	 TerminModel tm = new TerminModel();
+	        	 tm.setStartUhrzeit(rs.getTime("startuhrzeit").toString());
+	        	 tm.setBuchbarAb(rs.getInt("buchbarab"));
+	        	 tm.setBuchbarBis(rs.getInt("buchbarbis"));
+	        	 tm.setDatum(rs.getDate("datum").toString());
+	        	 tm.setEndUhrzeit(rs.getTime("enduhrzeit").toString());
+	        	 tm.setIstWoechentlich(rs.getBoolean("istwoechentlich"));
+	        	 tm.setStornierbarBis(rs.getInt("stornierbarbis"));
+	        	 
+	        	 termine.add(tm);
 	         }
 	         rs.close();
 	         pstmt.close();
@@ -262,7 +268,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	     
 	      System.out.println("Operation done successfully");
 	      
-	      														//lösche Termine von mitglied
+	      														//lösche Termine von mitglied-------------------------------------
 		mitglieder.remove(mitglied);
 		return null;
 	}
@@ -338,19 +344,19 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	     
 	      System.out.println("Operation done successfully");
 	      
-	      														//lösche Termine von aktivität
+	      														//lösche Termine von aktivität------------------------------
 		aktivitaeten.remove(aktivitaet);
 		return null;
 	}
 
 	@Override
-	public String speicherNeuenTermin() {
-		termin = new TerminModel();
+	public String speicherNeuenTermin(int id) {
+		
 		
 		 Connection c = null;
 	      PreparedStatement pstmt = null;
-	      String sql = "INSERT INTO termin (startuhrzeit,datum,istwoechentlich,buchbarab,buchbarbis,stornierbarbis,aktivitaetid)"
-	      		+ " VALUES (?,?,?,?,?,?,?);";
+	      String sql = "INSERT INTO termin (startuhrzeit,enduhrzeit,datum,istwoechentlich,buchbarab,buchbarbis,stornierbarbis,aktivitaetid)"
+	      		+ " VALUES (?,?,?,?,?,?,?,?);";
 	      
 	      try {
 	         Class.forName("org.postgresql.Driver");
@@ -360,12 +366,17 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
-	        
+	        DateFormat dateformatter = new SimpleDateFormat("YYYY-MM-DD");
+	        DateFormat timeformatter = new SimpleDateFormat("HH-MM-SS");
 	         pstmt = c.prepareStatement(sql);
-	         pstmt.setString(1, aktivitaet.getName());
-	         pstmt.setString(2, aktivitaet.getBeschreibung());
-	         pstmt.setString(3, aktivitaet.getTrainer());
-	         pstmt.setInt(4, aktivitaet.getTeilnehmer());
+	         pstmt.setTime(1, (Time) timeformatter.parse(termin.getStartUhrzeit()));
+	         pstmt.setTime(2, (Time) timeformatter.parse(termin.getEndUhrzeit()));
+	         pstmt.setDate(3, (java.sql.Date)dateformatter.parse(termin.getDatum()));
+	         pstmt.setBoolean(4, termin.isIstWoechentlich());
+	         pstmt.setInt(5, termin.getBuchbarAb());
+	         pstmt.setInt(6, termin.getBuchbarBis());
+	         pstmt.setInt(7, termin.getStornierbarBis());
+	         pstmt.setInt(8, id);
 	      
 	    
 	         pstmt.executeUpdate();
@@ -378,7 +389,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         System.err.println(e.getClass().getName()+": "+e.getMessage());
 	         System.exit(0);
 	      }
-	     
+	     termine.add(termin);
 	      System.out.println("Operation done successfully");
 		return null;
 	}
@@ -387,7 +398,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	public String loescheTermin(TerminModel termin) {
 		Connection c = null;
 	      PreparedStatement pstmt = null;
-	      String sql = "DELETE FROM aktivitaet WHERE id=?";
+	      String sql = "DELETE FROM termin WHERE id=?";
 	      
 	      try {
 	         Class.forName("org.postgresql.Driver");
@@ -399,7 +410,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         System.out.println("Opened database successfully");
 	        
 	         pstmt = c.prepareStatement(sql);
-	         pstmt.setInt(1, aktivitaet.getId());
+	         pstmt.setInt(1, termin.getId());
 	         
 	      
 	         pstmt.executeUpdate();
