@@ -4,10 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import javax.annotation.PostConstruct;
 import interfaces.TrainerbereichControllerInterface;
 import model.MitgliedModel;
 import model.AktivitaetModel;
+import model.KursTerminModel;
 import model.MeineTermineModel;
 import model.TerminModel;
 import model.TrainerTermineModel;
@@ -501,6 +504,121 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	@Override
+	public void ladeTrainerTermine() {
+		// TODO Auto-generated method stub
+				 Connection c = null;
+			      Statement stmt = null;
+			      String sql="SELECT a.name, a.trainer, a.beschreibung, a.teilnehmer, t.datum, t.startuhrzeit, t.enduhrzeit, t.id"
+			      		+ ",t.buchbarab, t.buchbarbis, t.stornierbarbis"
+			      		+ " FROM aktivitaet a INNER JOIN termin t ON a.id = t.aktivitaetid;";
+			      
+			      try {
+			         Class.forName("org.postgresql.Driver");
+			         c = DriverManager
+			            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
+			            "postgres", "postgres");
+			         
+			         c.setAutoCommit(false);
+			         System.out.println("Opened database successfully");
+			        
+			         stmt = c.createStatement();
+			         ResultSet rs = stmt.executeQuery(sql);
+			         while(rs.next()) {
+			        	 int maxTeilnehmer = rs.getInt("teilnehmer");
+			        	 int terminID= rs.getInt("id");
+			        	 PreparedStatement ps = c.prepareStatement("SELECT count(id) from terminliste WHERE terminid=?;");
+			        		 ps.setInt(1, terminID);
+			        		 ResultSet rsCount = ps.executeQuery();
+			        		 rsCount.next();
+			        		 int currTeilnehmmer= rsCount.getInt(1);
+			        		 ps.close();
+			        		 rsCount.close();
+			        		
+			        		 PreparedStatement pshero = c.prepareStatement("SELECT id from terminliste WHERE terminid=? AND mitgliedid=?");
+			        		 pshero.setInt(1, terminID);
+			        		 pshero.setInt(2, user.getId());
+			        		 ResultSet rshero = pshero.executeQuery();
+			        		 int terminmitgliedid=0;
+			        		 while(rshero.next()) {
+			        			 terminmitgliedid=rshero.getInt("id");
+			        		 }
+			        		 pshero.close();
+			        		 rshero.close();
+			        		 
+			        	 //Check ob freier platz
+			        	 //Check ob angemeldet
+			        	KursTerminModel terminModel = new KursTerminModel();
+			        	terminModel.setTerminId(rs.getInt("id"));
+			        	terminModel.setName(rs.getString("name"));
+			        	terminModel.setTrainer(rs.getString("trainer"));
+			        	terminModel.setBeschreibung(rs.getString("beschreibung"));
+			        	terminModel.setDatum(rs.getDate("datum").toString());
+			        	terminModel.setStartUhrzeit(rs.getTime("startuhrzeit").toString());
+			        	terminModel.setEndUhrzeit(rs.getTime("enduhrzeit").toString());
+			        	terminModel.setStornierbarBis(rs.getInt("stornierbarbis"));
+			        	terminModel.setBuchbarAb(rs.getInt("buchbarab"));
+			        	terminModel.setBuchbarBis(rs.getInt("buchbarbis"));
+			        	
+			        	if(maxTeilnehmer-currTeilnehmmer>0) {
+			        		terminModel.setActionName("Teilnehmen");
+			        		terminModel.setIstBuchbar(true);
+			        	}
+			        	if(terminmitgliedid != 0) {
+			        		terminModel.setActionName("Absagen");
+			        		terminModel.setBereitsgebucht(true);
+			        	}
+			        	
+			        	Calendar calender = Calendar.getInstance();
+			        	calender.setTime(rs.getDate("datum"));
+			        	switch(calender.get(Calendar.DAY_OF_WEEK)) {
+			        	case 1:
+			        		wochenListe.get(6).add(terminModel);
+			        		break;
+			        	case 2:
+			        		wochenListe.get(0).add(terminModel);
+			        		break;
+			        	case 3:
+			        		wochenListe.get(1).add(terminModel);
+			        		break;
+			        	case 4:
+			        		wochenListe.get(2).add(terminModel);
+			        		break;
+			        	case 5:
+			        		wochenListe.get(3).add(terminModel);
+			        		break;
+			        	case 6:
+			        		wochenListe.get(4).add(terminModel);
+			        		break;
+			        	case 7:
+			        		wochenListe.get(5).add(terminModel);
+			        		break;	
+			        	}
+			        	
+			        	
+			        	
+			        	//termine.add(terminModel);
+			         }
+			         rs.close();
+			         stmt.close();
+			         c.close();
+			         
+			      } catch (Exception e) {
+			         e.printStackTrace();
+			         System.err.println(e.getClass().getName()+": "+e.getMessage());
+			         System.exit(0);
+			      }
+			     
+			      System.out.println("Operation done successfully");
+		
+	}
+
+	@Override
+	public void ladeTerminDetails() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -20,4 +20,7 @@ public interface TrainerbereichControllerInterface {
 	
 	public String speicherNeuenTermin (int id);
 	public String loescheTermin (TerminModel termin);
+	
+	public void ladeTrainerTermine();
+	public void ladeTerminDetails();
 }
