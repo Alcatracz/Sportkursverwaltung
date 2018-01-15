@@ -21,7 +21,16 @@ public class KurseController implements KurseControllerInterface{
 
 	private List<KursListeTagModel> wochenListe;
 	private KursTerminModel termin;
+	private KursTerminModel termininfo;
 	
+	public KursTerminModel getTermininfo() {
+		return termininfo;
+	}
+
+	public void setTermininfo(KursTerminModel termininfo) {
+		this.termininfo = termininfo;
+	}
+
 	private User user;
 	
 	private int currentDay;
@@ -44,6 +53,7 @@ public class KurseController implements KurseControllerInterface{
 	@PostConstruct
 	public void init() {
 		ladeTermine();
+		System.out.println("kappachinyycyceroei:"+wochenListe.get(1).getTermine().get(0).getName());
 	}
 	
 	@Override
@@ -57,7 +67,7 @@ public class KurseController implements KurseControllerInterface{
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            "postgres", "amaterasu");
 	         
 	         c.setAutoCommit(false);
 	         System.out.println("Opened database successfully");
@@ -116,6 +126,7 @@ public class KurseController implements KurseControllerInterface{
 	      }
 	     
 	      System.out.println("Operation done successfully");
+			System.out.println("end");
 	}
 
 	@Override
@@ -157,5 +168,6 @@ public class KurseController implements KurseControllerInterface{
 	public void setUser(User user) {
 		this.user = user;
 	}
+
 
 }

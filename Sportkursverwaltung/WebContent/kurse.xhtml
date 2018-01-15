@@ -12,7 +12,7 @@
 </h:head>
 <h:body>
 	<f:view>
-	<h:form>
+	<h:form id="master">
 		<f:loadBundle basename="messages" var="msg"/>
 
 		<div class="headblock">
@@ -28,10 +28,9 @@ styleClass="order-table">
 <h:column headerClass="customHeader">
 <f:facet name="header">
 </f:facet>
-<p:commandButton value="Info" update=":dlgForm:edit" type="button" onclick="PF('dlg1').show();" />
-<p:dialog header="#{u.name}" widgetVar="dlg1" modal="true" resizable="false" width="300" height="200">
-    <h:outputText value="#{u.name}" />    
-</p:dialog>
+<p:commandButton value="Info" action="#kurseController.testtest()" 
+update=":detail" onclick="PF('detail').show();" />
+
 </h:column>
 
 
@@ -66,9 +65,9 @@ Zeit
 
 </h:dataTable>
 </h:form>	
-<h:form id="dlgForm">
-<p:dialog header="#{u.name}" widgetVar="dlg1" modal="true" resizable="false" width="300" height="200">
-    <h:outputText value="#{u.name}" />    
+<h:form id="detail" widgetVar="detail">
+<p:dialog header="#{kurseController.termininfo.name}" widgetVar="dlg1" modal="true" resizable="false" width="300" height="200">
+    <h:outputText value="#{kurseController.termininfo.name}"/>    
 </p:dialog>
 </h:form>	
 	</f:view>
