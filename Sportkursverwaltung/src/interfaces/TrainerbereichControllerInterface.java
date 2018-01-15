@@ -10,7 +10,7 @@ public interface TrainerbereichControllerInterface {
 	
 	public void ladeMitglieder ();
 	public void ladeAktivitaeten ();
-	public void ladeTermine ();
+	public void ladeTermine (int id);
 	
 	public String speicherNeuesMitglied ();
 	public String loescheMitglied (MitgliedModel mitglied);

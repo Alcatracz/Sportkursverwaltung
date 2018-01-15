@@ -35,11 +35,17 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	
 	public TrainerbereichController () {
 		mitglieder = new ArrayList<MitgliedModel> ();
+		aktivitaeten = new ArrayList<AktivitaetModel> ();
+		termine = new ArrayList<TerminModel> ();
+		aktivitaet = new AktivitaetModel();
+		mitglied = new MitgliedModel();
+		termin = new TerminModel();
 	}
 	
 	@PostConstruct
 	public void init() {
 		ladeMitglieder();
+		ladeAktivitaeten();
 	}
 	
 	@Override
@@ -136,10 +142,10 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	}
 
 	@Override
-	public void ladeTermine() {
+	public void ladeTermine(int id) {
 		Connection c = null;
 	      PreparedStatement pstmt = null;
-			String sql="SELECT * FROM mitglied;";
+			String sql="SELECT * FROM termin;";
 	      
 	      try {
 	         Class.forName("org.postgresql.Driver");
@@ -181,7 +187,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	@Override
 	public String speicherNeuesMitglied() {
 		System.out.println("Test: "+mitglied.getVorname());
-		mitglied = new MitgliedModel();
+		//mitglied = new MitgliedModel();
 		// TODO Auto-generated method stub		
 		 Connection c = null;
 	      PreparedStatement pstmt = null;
@@ -263,7 +269,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	@Override
 	public String speicherNeueAktivitaet() {
-		aktivitaet = new AktivitaetModel();
+		//aktivitaet = new AktivitaetModel();
 		
 		 Connection c = null;
 	      PreparedStatement pstmt = null;
@@ -296,7 +302,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         System.err.println(e.getClass().getName()+": "+e.getMessage());
 	         System.exit(0);
 	      }
-	     
+	     aktivitaeten.add(aktivitaet);
 	      System.out.println("Operation done successfully");
 		return null;
 	}
