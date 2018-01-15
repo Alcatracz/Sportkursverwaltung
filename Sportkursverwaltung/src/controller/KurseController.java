@@ -62,6 +62,7 @@ public class KurseController implements KurseControllerInterface{
 		 Connection c = null;
 	      Statement stmt = null;
 	      String sql="SELECT a.name, a.trainer, a.beschreibung, a.teilnehmer, t.datum, t.startuhrzeit, t.enduhrzeit, t.id"
+	      		+ ",t.buchbarab, t.buchbarbis, t.stornierbarbis"
 	      		+ " FROM aktivitaet a INNER JOIN termin t ON a.id = t.aktivitaetid;";
 	      
 	      try {
@@ -107,6 +108,9 @@ public class KurseController implements KurseControllerInterface{
 	        	terminModel.setDatum(rs.getDate("datum").toString());
 	        	terminModel.setStartUhrzeit(rs.getTime("startuhrzeit").toString());
 	        	terminModel.setEndUhrzeit(rs.getTime("enduhrzeit").toString());
+	        	terminModel.setStornierbarBis(rs.getInt("stornierbarbis"));
+	        	terminModel.setBuchbarAb(rs.getInt("buchbarab"));
+	        	terminModel.setBuchbarBis(rs.getInt("buchbarbis"));
 	        	
 	        	if(maxTeilnehmer-currTeilnehmmer>0) {
 	        		terminModel.setActionName("Teilnehmen");
@@ -165,7 +169,7 @@ public class KurseController implements KurseControllerInterface{
 		System.out.println("toggleButton");
 		//Check if bereits gebucht
 		if(termin.isBereitsgebucht()) {
-			System.out.println("");
+			System.out.println("Absagen");
 			absagen(termin);
 		} else if(termin.isIstBuchbar()) {
 			teilnehmen(termin);
@@ -213,10 +217,11 @@ public class KurseController implements KurseControllerInterface{
 
 	@Override
 	public void absagen(KursTerminModel termin) {
+		System.out.println("Absagen-Methode");
 		// TODO Auto-generated method stub
 		 Connection c = null;
 	      PreparedStatement pstmt = null;
-	      String sql = "DELETE FROM terminliste WHERE id = ? AND mitgliedid=?";
+	      String sql = "DELETE FROM terminliste WHERE terminid = ? AND mitgliedid=?";
 	      
 	      try {
 	         Class.forName("org.postgresql.Driver");
@@ -228,7 +233,7 @@ public class KurseController implements KurseControllerInterface{
 	         System.out.println("Opened database successfully");
 	        
 	         pstmt = c.prepareStatement(sql);
-	         pstmt.setInt(1, termin.getTerminMitgliedId());
+	         pstmt.setInt(1, termin.getTerminId());
 	         pstmt.setInt(2, user.getId());
 	      
 	         pstmt.executeUpdate();
