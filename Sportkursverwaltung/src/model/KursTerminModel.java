@@ -46,6 +46,9 @@ public class KursTerminModel {
 	private String datum;
 	private String startUhrzeit;
 	private String endUhrzeit;
+	private int buchbarAb;
+	private int buchbarBis;
+	private int stornierbarBis;
 	
 	public KursTerminModel() {
 		
@@ -57,6 +60,24 @@ public class KursTerminModel {
 
 
 
+	public int getBuchbarAb() {
+		return buchbarAb;
+	}
+	public void setBuchbarAb(int buchbarAb) {
+		this.buchbarAb = buchbarAb;
+	}
+	public int getBuchbarBis() {
+		return buchbarBis;
+	}
+	public void setBuchbarBis(int buchbarBis) {
+		this.buchbarBis = buchbarBis;
+	}
+	public int getStornierbarBis() {
+		return stornierbarBis;
+	}
+	public void setStornierbarBis(int stornierbarBis) {
+		this.stornierbarBis = stornierbarBis;
+	}
 	public int getTerminId() {
 		return terminId;
 	}
