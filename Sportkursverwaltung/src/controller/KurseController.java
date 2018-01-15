@@ -68,7 +68,7 @@ public class KurseController implements KurseControllerInterface{
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            "postgres", "amaterasu");
 	         
 	         c.setAutoCommit(false);
 	         System.out.println("Opened database successfully");
@@ -81,9 +81,10 @@ public class KurseController implements KurseControllerInterface{
 	        	 PreparedStatement ps = c.prepareStatement("SELECT count(id) from terminliste WHERE terminid=?;");
 	        		 ps.setInt(1, terminID);
 	        		 ResultSet rsCount = ps.executeQuery();
-	        		 rs.next();
-	        		 int currTeilnehmmer= rs.getInt(1);
+	        		 rsCount.next();
+	        		 int currTeilnehmmer= rsCount.getInt(1);
 	        		 ps.close();
+	        		 rsCount.close();
 	        		
 	        		 PreparedStatement pshero = c.prepareStatement("SELECT id from terminliste WHERE terminid=? AND mitgliedid=?");
 	        		 pshero.setInt(1, terminID);
@@ -93,6 +94,8 @@ public class KurseController implements KurseControllerInterface{
 	        		 while(rshero.next()) {
 	        			 terminmitgliedid=rshero.getInt("id");
 	        		 }
+	        		 pshero.close();
+	        		 rshero.close();
 	        		 
 	        	 //Check ob freier platz
 	        	 //Check ob angemeldet
@@ -158,7 +161,7 @@ public class KurseController implements KurseControllerInterface{
 			System.out.println("end");
 	}
 	@Override
-	public String ToggleButton() {
+	public String toggleButton() {
 		//Check if bereits gebucht
 		if(termin.isBereitsgebucht()) {
 			absagen();
