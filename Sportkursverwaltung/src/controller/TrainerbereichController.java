@@ -45,7 +45,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	@Override
 	public String generatePasswort() {
 		// TODO Auto-generated method stub
-		return null;
+		return "klose";
 	}
 
 	@Override
@@ -113,6 +113,8 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         
 	         while(rs.next()) {
 	        	 AktivitaetModel ak = new AktivitaetModel();
+	        	 ak.setId(rs.getInt("id"));
+	        	 ak.setName(rs.getString("name"));
 	        	 
 	         }
 	         rs.close();
@@ -173,10 +175,12 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	@Override
 	public String speicherNeuesMitglied() {
+		System.out.println("Test: "+mitglied.getVorname());
+		mitglied = new MitgliedModel();
 		// TODO Auto-generated method stub		
 		 Connection c = null;
 	      PreparedStatement pstmt = null;
-	      String sql = "INSERT INTO mitglied (vorname, nachname, email, passwort, isttrainer,istbuchungbestaetigung,istterminerinnerung,terminerinnerungzeit)"
+	      String sql = "INSERT INTO mitglied (vorname, nachname, email, passwort, isttrainer,istbuchungsbestaetigung,istterminerinnerung,terminerinnerungzeit)"
 	      		+ " VALUES (?,?,?,?,?,?,?,?);";
 	      
 	      try {
@@ -194,9 +198,9 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         pstmt.setString(3, mitglied.getEmail());
 	         pstmt.setString(4, generatePasswort());
 	         pstmt.setBoolean(5, mitglied.isIstTrainer());
-	         pstmt.setBoolean(6, mitglied.isIstBuchungsbestaetigung());
-	         pstmt.setBoolean(7, mitglied.isIstTerminerinnerung());
-	         pstmt.setInt(8, mitglied.getTerminerinnerungZeit());
+	         pstmt.setBoolean(6, false);
+	         pstmt.setBoolean(7, false);
+	         pstmt.setInt(8, 0);
 	      
 	    
 	         pstmt.executeUpdate();

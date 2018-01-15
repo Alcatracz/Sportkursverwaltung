@@ -56,7 +56,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "amaterasu");
+	            "postgres", "postgres");
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");

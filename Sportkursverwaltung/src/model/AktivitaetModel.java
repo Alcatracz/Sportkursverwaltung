@@ -2,6 +2,7 @@ package model;
 
 public class AktivitaetModel {
 
+	private int id;
 	private String name;
 	private String trainer;
 	private String beschreibung;
@@ -9,6 +10,14 @@ public class AktivitaetModel {
 	
 	public AktivitaetModel() {
 		
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
