@@ -54,7 +54,6 @@ public class KurseController implements KurseControllerInterface{
 	@PostConstruct
 	public void init() {
 		ladeTermine();
-		System.out.println("kappachinyycyceroei:"+wochenListe.get(1).getTermine().get(0).getName());
 	}
 	
 	@Override

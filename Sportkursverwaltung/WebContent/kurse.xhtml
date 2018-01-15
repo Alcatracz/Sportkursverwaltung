@@ -28,65 +28,41 @@ styleClass="order-table">
 <h:column>
 #{wochentag.tag}
 <h:dataTable value="#{wochentag.termine}" var="termin">
-
 <h:column headerClass="customHeader">
 <f:facet name="header">
 </f:facet>
-<p:commandButton value="Info" action="#kurseController.testtest()" 
-update=":detail" onclick="PF('detail').show();" />
+<p:commandButton value="Info" action="#{kurseController.setTermininfo(termin)}" 
+update=":detail" oncomplete="PF('detail').show();" />
+</h:column>
 
-<p:commandButton value="Info" update=":dlgForm:edit" type="button" onclick="PF('dlg1').show();" />
-<p:dialog header="#{termin.name}" widgetVar="dlg1" modal="true" resizable="false" width="300" height="200">
-    <h:outputText value="#{termin.name}" />    
-</p:dialog>
+<h:column headerClass="customHeader">
+#{termin.startUhrzeit}-#{termin.endUhrzeit}
+</h:column>
+
+<h:column headerClass="customHeader">
+<h:commandButton action="#{meinProfilController.speicherProfildaten}" value="Anmelden" styleClass="buttonClass"/>
 </h:column>
 
 
 <h:column headerClass="customHeader">
-<f:facet name="header">
-Uhrzeit
-</f:facet>
-
+#{termin.name}
 </h:column>
 
 <h:column headerClass="customHeader">
-<f:facet name="header">
-</f:facet>
-<h:commandButton action="#{meinProfilController.speicherProfildaten}" value="Speichern" styleClass="buttonClass"/>
-
-</h:column>
-
-
-<h:column headerClass="customHeader">
-<f:facet name="header">
-</f:facet>
-
-</h:column>
-
-<h:column headerClass="customHeader">
-<f:facet name="header">
 Dauer
-</f:facet>
-Zeit
 </h:column>
-
-
 
 </h:dataTable>
 </h:column>
-
-
-
 </h:dataTable>
 </h:form>	
-<h:form id="detail" widgetVar="detail">
-<p:dialog header="#{kurseController.termininfo.name}" widgetVar="dlg1" modal="true" resizable="false" width="300" height="200">
+
+<p:dialog header="#{kurseController.termininfo.name}" id="detail" widgetVar="detail" modal="true" resizable="false" width="300" height="200">
+<h:form>
     <h:outputText value="#{kurseController.termininfo.name}"/>    
-<h:form id="dlgForm">
-<p:dialog header="#{termin.name}" widgetVar="dlg1" modal="true" resizable="false" width="300" height="200">
-    <h:outputText value="#{termin.name}" />    
+    </h:form>
 </p:dialog>
-</h:form>	
+	
 	</f:view>
 </h:body>
 </html>
