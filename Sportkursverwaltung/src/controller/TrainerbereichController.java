@@ -33,7 +33,17 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	
 	private List<AktivitaetModel> aktivitaeten;
 	private AktivitaetModel aktivitaet;
+	private AktivitaetModel aktivitaetinfo;
+	private int currentAktivitaetId;
 	
+	public AktivitaetModel getAktivitaetinfo() {
+		return aktivitaetinfo;
+	}
+
+	public void setAktivitaetinfo(AktivitaetModel aktivitaetinfo) {
+		this.aktivitaetinfo = aktivitaetinfo;
+	}
+
 	private List<TerminModel> termine;
 	private TerminModel termin;
 	
@@ -150,6 +160,10 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	@Override
 	public void ladeTermine(int id) {
+		System.out.println("ID: "+id);
+		
+		 currentAktivitaetId=id;
+		 System.out.println("AktivitaetID: " +currentAktivitaetId);
 		termine= new ArrayList<TerminModel>();
 		Connection c = null;
 	      PreparedStatement pstmt = null;
@@ -177,7 +191,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	        	 tm.setEndUhrzeit(rs.getTime("enduhrzeit").toString());
 	        	 tm.setIstWoechentlich(rs.getBoolean("istwoechentlich"));
 	        	 tm.setStornierbarBis(rs.getInt("stornierbarbis"));
-	        	 
+	        	 tm.setAktivitaetid(id); //arne suckt
 	        	 termine.add(tm);
 	         }
 	         rs.close();
@@ -189,7 +203,8 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         System.err.println(e.getClass().getName()+": "+e.getMessage());
 	         System.exit(0);
 	      }
-	     
+	     // System.out.println("ID ARNE SUCKT"+ aktivitaetinfo.getId());
+	    
 	      System.out.println("Operation done successfully");
 	}
 
@@ -353,9 +368,9 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	}
 
 	@Override
-	public String speicherNeuenTermin(int id) {
-		
-		
+	public String speicherNeuenTermin() {
+		System.out.println("speicherneuentermin");
+		System.out.println("AktivitaetID: " +currentAktivitaetId);
 		 Connection c = null;
 	      PreparedStatement pstmt = null;
 	      String sql = "INSERT INTO termin (startuhrzeit,enduhrzeit,datum,istwoechentlich,buchbarab,buchbarbis,stornierbarbis,aktivitaetid)"
@@ -370,16 +385,18 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
 	        DateFormat dateformatter = new SimpleDateFormat("YYYY-MM-DD");
-	        DateFormat timeformatter = new SimpleDateFormat("HH-MM-SS");
+	        DateFormat timeformatter = new SimpleDateFormat("HH:MM:SS");
+	        
 	         pstmt = c.prepareStatement(sql);
-	         pstmt.setTime(1, (Time) timeformatter.parse(termin.getStartUhrzeit()));
-	         pstmt.setTime(2, (Time) timeformatter.parse(termin.getEndUhrzeit()));
-	         pstmt.setDate(3, (java.sql.Date)dateformatter.parse(termin.getDatum()));
+	         
+	         pstmt.setTime(1, new Time(timeformatter.parse(termin.getStartUhrzeit()).getTime()));
+	         pstmt.setTime(2, new Time(timeformatter.parse(termin.getEndUhrzeit()).getTime()));
+	         pstmt.setDate(3, new java.sql.Date(dateformatter.parse(termin.getDatum()).getTime()));
 	         pstmt.setBoolean(4, termin.isIstWoechentlich());
 	         pstmt.setInt(5, termin.getBuchbarAb());
 	         pstmt.setInt(6, termin.getBuchbarBis());
 	         pstmt.setInt(7, termin.getStornierbarBis());
-	         pstmt.setInt(8, id);
+	         pstmt.setInt(8, currentAktivitaetId);
 	      
 	    
 	         pstmt.executeUpdate();
@@ -394,6 +411,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	      }
 	     termine.add(termin);
 	      System.out.println("Operation done successfully");
+	      //ladeTermine(currentAktivitaetId);
 		return null;
 	}
 
@@ -569,35 +587,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 			        	if(terminmitgliedid != 0) {
 			        		terminModel.setActionName("Absagen");
 			        		terminModel.setBereitsgebucht(true);
-			        	}
-			        	
-			        	Calendar calender = Calendar.getInstance();
-			        	calender.setTime(rs.getDate("datum"));
-			        	switch(calender.get(Calendar.DAY_OF_WEEK)) {
-			        	case 1:
-			        		wochenListe.get(6).add(terminModel);
-			        		break;
-			        	case 2:
-			        		wochenListe.get(0).add(terminModel);
-			        		break;
-			        	case 3:
-			        		wochenListe.get(1).add(terminModel);
-			        		break;
-			        	case 4:
-			        		wochenListe.get(2).add(terminModel);
-			        		break;
-			        	case 5:
-			        		wochenListe.get(3).add(terminModel);
-			        		break;
-			        	case 6:
-			        		wochenListe.get(4).add(terminModel);
-			        		break;
-			        	case 7:
-			        		wochenListe.get(5).add(terminModel);
-			        		break;	
-			        	}
-			        	
-			        	
+			        	}     	
 			        	
 			        	//termine.add(terminModel);
 			         }

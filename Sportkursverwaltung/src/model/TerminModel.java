@@ -10,11 +10,22 @@ public class TerminModel {
 	private int buchbarAb;
 	private int buchbarBis;
 	private int stornierbarBis;
+	private int aktivitaetid;
 	
 	public TerminModel() {
 		
 	}
 	
+
+	public int getAktivitaetid() {
+		return aktivitaetid;
+	}
+
+
+	public void setAktivitaetid(int aktivitaetid) {
+		this.aktivitaetid = aktivitaetid;
+	}
+
 
 	public int getId() {
 		return id;
