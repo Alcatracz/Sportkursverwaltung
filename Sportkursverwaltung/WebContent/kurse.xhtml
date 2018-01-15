@@ -22,15 +22,19 @@
 		<h:commandLink value = "Abmelden" action = "#{loginController.logout }" />
 		</div>
 		
-<h:dataTable value="#{kurseController.wochenListe}" var="u"
+<h:dataTable value="#{kurseController.wochenListe}" var="wochentag"
 styleClass="order-table">
+
+<h:column>
+#{wochentag.tag}
+<h:dataTable value="#{wochentag.termine}" var="termin">
 
 <h:column headerClass="customHeader">
 <f:facet name="header">
 </f:facet>
 <p:commandButton value="Info" update=":dlgForm:edit" type="button" onclick="PF('dlg1').show();" />
-<p:dialog header="#{u.name}" widgetVar="dlg1" modal="true" resizable="false" width="300" height="200">
-    <h:outputText value="#{u.name}" />    
+<p:dialog header="#{termin.name}" widgetVar="dlg1" modal="true" resizable="false" width="300" height="200">
+    <h:outputText value="#{termin.name}" />    
 </p:dialog>
 </h:column>
 
@@ -64,11 +68,17 @@ Zeit
 </h:column>
 
 
+
+</h:dataTable>
+</h:column>
+
+
+
 </h:dataTable>
 </h:form>	
 <h:form id="dlgForm">
-<p:dialog header="#{u.name}" widgetVar="dlg1" modal="true" resizable="false" width="300" height="200">
-    <h:outputText value="#{u.name}" />    
+<p:dialog header="#{termin.name}" widgetVar="dlg1" modal="true" resizable="false" width="300" height="200">
+    <h:outputText value="#{termin.name}" />    
 </p:dialog>
 </h:form>	
 	</f:view>

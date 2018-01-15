@@ -4,7 +4,8 @@ public interface KurseControllerInterface {
 
 	public void ladeTermine();
 	
-	public String teilnehmen();
-	public String absagen();
+	public String ToggleButton();
+	public void teilnehmen();
+	public void absagen();
 	
 }
