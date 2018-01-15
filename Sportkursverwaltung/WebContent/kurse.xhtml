@@ -57,9 +57,14 @@ Dauer
 </h:dataTable>
 </h:form>	
 
-<p:dialog header="#{kurseController.termininfo.name}" id="detail" widgetVar="detail" modal="true" resizable="false" width="300" height="200">
+<p:dialog header="#{kurseController.termininfo.name}" id="detail" widgetVar="detail"
+ modal="true" resizable="false" width="375" height="400">
 <h:form>
-    <h:outputText value="#{kurseController.termininfo.name}"/>    
+<h:outputText value="#{kurseController.termininfo.trainer}"/>    
+<h:outputText value="#{kurseController.termininfo.beschreibung}"/>   
+<h:outputText value="Buchbar ab: #{kurseController.termininfo.buchbarAb}"/>   
+<h:outputText value="Buchbar bis: #{kurseController.termininfo.buchbarBis}"/>   
+<h:outputText value="Stornierbar bis: #{kurseController.termininfo.stornierbarBis}"/>   
     </h:form>
 </p:dialog>
 	
