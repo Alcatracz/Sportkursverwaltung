@@ -13,7 +13,7 @@
 </h:head>
 <h:body>
 	<f:view>
-		<h:form>
+		<h:form id="mainform">
 			<f:loadBundle basename="messages" var="msg" />
 			<div class="headblock">
 				<h:outputLink value="kurse.xhtml" styleClass="sitelink">Kurse</h:outputLink>
@@ -89,8 +89,8 @@ styleClass="order-table">
 		</p:inputText> </p>
 				<p>Trainer <h:selectBooleanCheckbox value ="#{trainerbereichController.mitglied.istTrainer}">
 		 </h:selectBooleanCheckbox></p>
-				<h:commandButton action="#{trainerbereichController.speicherNeuesMitglied}" value="Hinzufügen"
-					styleClass="buttonClass" />
+				<p:commandButton action="#{trainerbereichController.speicherNeuesMitglied}" value="Hinzufügen"
+					 update=":mainform"/>
 			</h:form>
 		</p:dialog>
 		
@@ -105,8 +105,8 @@ styleClass="order-table">
 		</p:inputText> </p>
 				<p>Beschreibung: <p:inputTextarea value ="#{trainerbereichController.aktivitaet.beschreibung}">
 		 </p:inputTextarea></p>
-				<h:commandButton action="#{trainerbereichController.speicherNeueAktivitaet}" value="Hinzufügen"
-					styleClass="buttonClass" />
+				<p:commandButton action="#{trainerbereichController.speicherNeueAktivitaet}" value="Hinzufügen"
+					 update=":mainform" />
 			</h:form>
 		</p:dialog>
 		
