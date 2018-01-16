@@ -52,6 +52,11 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 		mitglieder = new ArrayList<MitgliedModel> ();
 		aktivitaeten = new ArrayList<AktivitaetModel> ();
 		termine = new ArrayList<TerminModel> ();
+		trainerTermine = new ArrayList<KursTerminModel>();
+		terminMitglieder = new ArrayList<MitgliedModel>();
+		
+		trainerTermin = new KursTerminModel();
+		terminMitglied = new MitgliedModel();
 		aktivitaet = new AktivitaetModel();
 		mitglied = new MitgliedModel();
 		termin = new TerminModel();
@@ -278,10 +283,15 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	        
 	         pstmt = c.prepareStatement(sql);
 	         pstmt.setInt(1, mitglied.getId());
-	         
-	      
 	         pstmt.executeUpdate();
 	         pstmt.close();
+	         
+	         String delete ="DELETE FROM terminliste WHERE mitgliedid=?";
+	         PreparedStatement ps =c.prepareStatement(delete);
+	         ps.setInt(1, mitglied.getId());
+	         pstmt.executeUpdate();
+	         pstmt.close();
+	         
 	         c.close();
 	         
 	      } catch (Exception e) {
@@ -356,10 +366,19 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	        
 	         pstmt = c.prepareStatement(sql);
 	         pstmt.setInt(1, aktivitaet.getId());
-	         
-	      
 	         pstmt.executeUpdate();
+	         
+	         String select = "SELECT t.id FROM termin WHERE aktivitaetid=?;";
+	         
+	         pstmt=c.prepareStatement(select);
+	         
 	         pstmt.close();
+	         
+	         
+	         String delete = "DELETE FROM termin WHERE aktivitaetid=?";
+	         PreparedStatement ps = c.prepareStatement(delete);
+	         ps.setInt(1, aktivitaet.getId());
+	         
 	         c.close();
 	         
 	      } catch (Exception e) {
