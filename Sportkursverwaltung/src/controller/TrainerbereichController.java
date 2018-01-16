@@ -202,6 +202,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         
 	         while(rs.next()) {
 	        	 TerminModel tm = new TerminModel();
+	        	 tm.setId(rs.getInt("id"));
 	        	 tm.setStartUhrzeit(rs.getTime("startuhrzeit").toString());
 	        	 tm.setBuchbarAb(rs.getInt("buchbarab"));
 	        	 tm.setBuchbarBis(rs.getInt("buchbarbis"));
@@ -268,7 +269,8 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	     
 	      System.out.println("Operation done successfully");
 	      
-		mitglieder.add(mitglied);	
+		mitglieder.add(mitglied);
+		mitglied= new MitgliedModel();
 		//ladeMitglieder();
 		return null;
 	}
@@ -334,15 +336,27 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
 	        
-	         pstmt = c.prepareStatement(sql);
+	         pstmt = c.prepareStatement(sql,new String[] {"id"});
+	         
 	         pstmt.setString(1, aktivitaet.getName());
 	         pstmt.setString(2, aktivitaet.getBeschreibung());
 	         pstmt.setString(3, aktivitaet.getTrainer());
 	         pstmt.setInt(4, aktivitaet.getTeilnehmer());
-	      
+	         
+
 	    
 	         pstmt.executeUpdate();
 	  
+	         ResultSet rs = pstmt.getGeneratedKeys();
+	         System.out.println("rslength: "+rs.getFetchSize());
+	         long id=0L;
+	         if(rs.next()) {
+	        	 id = rs.getLong(1); 
+	         }//
+	         
+	         System.out.println("ROFL DIE ID: " + id);
+	         aktivitaet.setId(Math.toIntExact(id));
+	         
 	         pstmt.close();
 	         c.close();
 	         
@@ -352,6 +366,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         System.exit(0);
 	      }
 	     aktivitaeten.add(aktivitaet);
+	     aktivitaet= new AktivitaetModel();
 	    // ladeAktivitaeten();
 	      System.out.println("Operation done successfully");
 		return null;
@@ -462,6 +477,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         System.exit(0);
 	      }
 	     termine.add(termin);
+	     termin = new TerminModel();
 	      System.out.println("Operation done successfully");
 	      //ladeTermine(currentAktivitaetId);
 		return null;
@@ -469,7 +485,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	@Override
 	public String loescheTermin(TerminModel termin) {
-		System.out.println("löscheTermin");
+		System.out.println("löscheTermin"+termin.getDatum()+"/ "+termin.getId());
 		Connection c = null;
 	      PreparedStatement pstmt = null;
 	      String sql = "DELETE FROM termin WHERE id=?";
@@ -489,6 +505,13 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	      
 	         pstmt.executeUpdate();
 	         pstmt.close();
+	         
+	         String delete ="DELETE FROM terminliste WHERE terminid=?";
+	         PreparedStatement ps =c.prepareStatement(delete);
+	         ps.setInt(1, termin.getId());
+	         ps.executeUpdate();
+	         ps.close();
+	         
 	         c.close();
 	         
 	      } catch (Exception e) {
