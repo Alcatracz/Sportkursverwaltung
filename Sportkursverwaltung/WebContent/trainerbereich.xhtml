@@ -66,9 +66,11 @@ styleClass="order-table">
         <h:column headerClass="customHeader">
          #{curtermin.startUhrzeit}-#{curtermin.endUhrzeit}
         </h:column>
-                <h:column headerClass="customHeader">
+        <h:column headerClass="customHeader">
         <p:commandButton value="Info" action="#{trainerbereichController.setTrainerTermin(curtermin)}" 
-          update=":detail4" oncomplete="PF('detail4').show();" />
+          update=":detail4" oncomplete="PF('detail4').show();"
+          actionListener="#{trainerbereichController.ladeTerminDetails(curtermin.terminId)}" >
+          </p:commandButton>
         </h:column>
          </h:dataTable>
 	
@@ -153,6 +155,12 @@ styleClass="order-table">
 		 </h:outputText></p>
 				<p>Stornierbar bis: <h:outputText value ="#{trainerbereichController.trainerTermin.stornierbarBis}">
 		 </h:outputText></p>
+		 		<h:dataTable value="#{trainerbereichController.terminMitglieder}" var="mitgliedcurr"
+         styleClass="order-table">
+						<h:column headerClass="customHeader">
+         #{mitgliedcurr.vorname} #{mitgliedcurr.nachname}
+        </h:column>
+        </h:dataTable>
 			</h:form>
 		</p:dialog>
 		
