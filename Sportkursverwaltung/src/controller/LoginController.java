@@ -31,7 +31,7 @@ public class LoginController implements LoginControllerInterface {
 	
 	@PostConstruct
 	public void init() {
-		
+		System.out.println("LoginController.init ()");
 	}
 	
 	@Override

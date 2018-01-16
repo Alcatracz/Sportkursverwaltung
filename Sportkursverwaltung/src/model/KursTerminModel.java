@@ -18,6 +18,7 @@ public class KursTerminModel {
 	private int stornierbarBis=1;
 	private boolean istBuchbar;
 	private boolean istStornierbar;
+	private boolean istWoechentlich;
 	private int dauer;
 	
 	public KursTerminModel() {
@@ -148,6 +149,14 @@ public class KursTerminModel {
 
 	public void setDauer(int dauer) {
 		this.dauer = dauer;
+	}
+
+	public boolean isIstWoechentlich() {
+		return istWoechentlich;
+	}
+
+	public void setIstWoechentlich(boolean istWoechentlich) {
+		this.istWoechentlich = istWoechentlich;
 	}
 	
 }

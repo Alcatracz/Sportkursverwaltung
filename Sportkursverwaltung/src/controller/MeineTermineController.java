@@ -27,15 +27,18 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	private User user;
 	
 	public MeineTermineController() {
+		System.out.println("MeineTermineController ()");
 		termine = new ArrayList<MeineTermineModel> ();
 	}
 	
 	@PostConstruct
 	public void init() {
+		System.out.println("MeineTermineController.init ()");
 		ladeTermine();
 	}
 	
 	public void ladeTermine() {
+		System.out.println("MeineTermineController.ladeTermine ()");
 		
 		//System.out.println("UserID:"+user.getId());
 	      Connection c = null;
@@ -82,7 +85,8 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	}
 	
 	public String absagen() {
-		System.out.println("Rofl Absage");
+		System.out.println("MeineTermineController.absagen ()");
+		
 		int id = termin.getId();
 		System.out.println("TERMIN_ID: " + id);
 		System.out.println("MITGLIED_ID: " + user.getId());

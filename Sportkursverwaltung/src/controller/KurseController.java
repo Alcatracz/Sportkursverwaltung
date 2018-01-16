@@ -67,7 +67,7 @@ public class KurseController implements KurseControllerInterface{
 	    String sql="SELECT a.name, a.trainer, a.beschreibung, a.teilnehmer, "
 	    		+ "t.id, t.datum, t.startuhrzeit, t.enduhrzeit,"
 	      		+ "t.buchbarab, t.buchbarbis, t.stornierbarbis, "
-	      		+ "t.istbuchbar, t.iststornierbar, t.dauer"
+	      		+ "t.istbuchbar, t.iststornierbar, t.dauer, t.istwoechentlich"
 	      		+ " FROM aktivitaet a INNER JOIN termin t ON a.id = t.aktivitaetid;";
 	      
 	    try {
@@ -93,6 +93,7 @@ public class KurseController implements KurseControllerInterface{
 	        	terminModel.setIstBuchbar(rs.getBoolean("istbuchbar"));
 	        	terminModel.setIstStornierbar(rs.getBoolean("iststornierbar"));
 	        	terminModel.setDauer(rs.getInt("dauer"));
+	        	terminModel.setIstWoechentlich(rs.getBoolean("istwoechentlich"));
 	        	
 	        	int maxTeilnehmer = rs.getInt("teilnehmer");
 	        	int terminID= terminModel.getId();
