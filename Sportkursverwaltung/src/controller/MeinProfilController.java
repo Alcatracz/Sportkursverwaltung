@@ -15,6 +15,9 @@ import model.User;
 
 public class MeinProfilController implements MeinProfilControllerInterface {
 
+	private String dbUser = "postgres";
+	private String dbPasswort = "postgres";
+	
 	private User user;
 	private ProfilDatenModel profilDaten;
 	
@@ -56,7 +59,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -107,7 +110,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -143,7 +146,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -181,7 +184,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");

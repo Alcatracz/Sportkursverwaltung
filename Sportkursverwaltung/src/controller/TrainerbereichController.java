@@ -28,6 +28,9 @@ import model.User;
 
 public class TrainerbereichController implements TrainerbereichControllerInterface {
 
+	private String dbUser = "postgres";
+	private String dbPasswort = "postgres";
+	
 	private User user;
 	
 	private List<MitgliedModel> mitglieder;
@@ -97,7 +100,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -143,7 +146,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -188,7 +191,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -236,7 +239,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -281,7 +284,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -326,7 +329,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -365,7 +368,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -379,6 +382,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         pstmt=c.prepareStatement(select);
 	         pstmt.setInt(1, aktivitaet.getId());
 	         ResultSet rs=pstmt.executeQuery();
+	        
 	         
 	         while(rs.next()) {
 	        	 String deleteListe="DELETE FROM terminliste WHERE terminid=?";
@@ -388,13 +392,16 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	        	 pst.close();
 	        	 
 	         }
+	         pstmt.close(); 
 	         
-	         pstmt.close();
 	         
+	         System.out.println("ID:"+aktivitaet.getId());
 	         
 	         String delete = "DELETE FROM termin WHERE aktivitaetid=?";
 	         PreparedStatement ps = c.prepareStatement(delete);
 	         ps.setInt(1, aktivitaet.getId());
+	         ps.executeUpdate();
+	         ps.close();
 	         
 	         c.close();
 	         
@@ -425,7 +432,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -471,7 +478,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -512,7 +519,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 			         Class.forName("org.postgresql.Driver");
 			         c = DriverManager
 			            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-			            "postgres", "postgres");
+			            		dbUser, dbPasswort);
 			         
 			         c.setAutoCommit(false);
 			         System.out.println("Opened database successfully");
@@ -565,7 +572,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");

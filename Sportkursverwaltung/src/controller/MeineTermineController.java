@@ -17,6 +17,9 @@ import model.User;
 
 public class MeineTermineController implements MeineTermineControllerInterace {
 
+	private String dbUser = "postgres";
+	private String dbPasswort = "postgres";
+	
 	private List<MeineTermineModel> termine;
 	private MeineTermineModel termin;
 	private UIForm tableForm;
@@ -51,7 +54,7 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -102,7 +105,7 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");

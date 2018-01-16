@@ -13,13 +13,15 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import interfaces.LoginControllerInterface;
-import entity.CustomerService;
 import model.MeineTermineModel;
 import model.User;
 import entity.Mitglied;
 
 public class LoginController implements LoginControllerInterface {
 
+	private String dbUser = "postgres";
+	private String dbPasswort = "postgres";
+	
 	private User user;
 	
 
@@ -43,7 +45,7 @@ public class LoginController implements LoginControllerInterface {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");

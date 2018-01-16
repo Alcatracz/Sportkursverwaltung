@@ -20,6 +20,9 @@ import model.User;
 
 public class KurseController implements KurseControllerInterface{
 
+	private String dbUser = "postgres";
+	private String dbPasswort = "postgres";
+	
 	private List<KursListeTagModel> wochenListe;
 	private KursTerminModel termin;
 	private KursTerminModel termininfo;
@@ -70,7 +73,7 @@ public class KurseController implements KurseControllerInterface{
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(false);
 	         System.out.println("Opened database successfully");
@@ -190,7 +193,7 @@ public class KurseController implements KurseControllerInterface{
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -228,7 +231,7 @@ public class KurseController implements KurseControllerInterface{
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            "postgres", "postgres");
+	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
