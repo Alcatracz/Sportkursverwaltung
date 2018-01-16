@@ -264,7 +264,9 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	      }
 	     
 	      System.out.println("Operation done successfully");
+	      
 		mitglieder.add(mitglied);	
+		//ladeMitglieder();
 		return null;
 	}
 
@@ -347,13 +349,14 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         System.exit(0);
 	      }
 	     aktivitaeten.add(aktivitaet);
+	    // ladeAktivitaeten();
 	      System.out.println("Operation done successfully");
 		return null;
 	}
 
 	@Override
 	public String loescheAktivitaet(AktivitaetModel aktivitaet) {
-		System.out.println("löscheAktivitaet");
+		System.out.println("löscheAktivitaet"+aktivitaet.getName());
 		Connection c = null;
 	      PreparedStatement pstmt = null;
 	      String sql = "DELETE FROM aktivitaet WHERE id=?";
@@ -371,7 +374,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         pstmt.setInt(1, aktivitaet.getId());
 	         pstmt.executeUpdate();
 	         
-	         String select = "SELECT t.id FROM termin WHERE aktivitaetid=?;";
+	         String select = "SELECT t.id FROM termin t WHERE aktivitaetid=?;";
 	         
 	         pstmt=c.prepareStatement(select);
 	         pstmt.setInt(1, aktivitaet.getId());
