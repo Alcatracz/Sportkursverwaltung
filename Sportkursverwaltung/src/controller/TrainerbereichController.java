@@ -15,6 +15,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import com.sun.xml.rpc.encoding.MissingTrailingBlockIDException;
+
 import interfaces.TrainerbereichControllerInterface;
 import model.MitgliedModel;
 import model.AktivitaetModel;
@@ -75,6 +77,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	public void init() {
 		ladeMitglieder();
 		ladeAktivitaeten();
+		ladeTrainerTermine();
 	}
 	
 	@Override
@@ -267,7 +270,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	@Override
 	public String loescheMitglied(MitgliedModel mitglied) {
-		System.out.println("löscheMitglied");
+		System.out.println("löscheMitglied: "+mitglied.getVorname());
 		Connection c = null;
 	      PreparedStatement pstmt = null;
 	      String sql = "DELETE FROM mitglied WHERE id=?";
@@ -289,8 +292,8 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         String delete ="DELETE FROM terminliste WHERE mitgliedid=?";
 	         PreparedStatement ps =c.prepareStatement(delete);
 	         ps.setInt(1, mitglied.getId());
-	         pstmt.executeUpdate();
-	         pstmt.close();
+	         ps.executeUpdate();
+	         ps.close();
 	         
 	         c.close();
 	         
@@ -542,6 +545,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 			      }
 			     
 			      System.out.println("Operation done successfully");
+			      System.out.println("LISTE: "+trainerTermine.size());
 		
 	}
 
