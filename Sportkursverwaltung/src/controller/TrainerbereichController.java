@@ -33,16 +33,9 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	
 	private List<AktivitaetModel> aktivitaeten;
 	private AktivitaetModel aktivitaet;
-	private AktivitaetModel aktivitaetinfo;
+	private AktivitaetModel aktivitaetInfo;
 	private int currentAktivitaetId;
 	
-	public AktivitaetModel getAktivitaetinfo() {
-		return aktivitaetinfo;
-	}
-
-	public void setAktivitaetinfo(AktivitaetModel aktivitaetinfo) {
-		this.aktivitaetinfo = aktivitaetinfo;
-	}
 
 	private List<TerminModel> termine;
 	private TerminModel termin;
@@ -51,14 +44,24 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	private TrainerTermineModel trainerTermin;
 	
 	public TrainerbereichController () {
+		System.out.println("KONSTRUKOR");
 		mitglieder = new ArrayList<MitgliedModel> ();
 		aktivitaeten = new ArrayList<AktivitaetModel> ();
 		termine = new ArrayList<TerminModel> ();
 		aktivitaet = new AktivitaetModel();
 		mitglied = new MitgliedModel();
 		termin = new TerminModel();
+		aktivitaetInfo= new AktivitaetModel();
 	}
 	
+	public AktivitaetModel getAktivitaetInfo() {
+		return aktivitaetInfo;
+	}
+
+	public void setAktivitaetInfo(AktivitaetModel aktivitaetInfo) {
+		this.aktivitaetInfo = aktivitaetInfo;
+	}
+
 	@PostConstruct
 	public void init() {
 		ladeMitglieder();
@@ -73,6 +76,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	@Override
 	public void ladeMitglieder() {
+		System.out.println("ladeMitglieder");
 		Connection c = null;
 	      PreparedStatement pstmt = null;
 			String sql="SELECT * FROM mitglied;";
@@ -118,6 +122,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	@Override
 	public void ladeAktivitaeten() {
+		System.out.println("ladeAktivitaeten");
 		Connection c = null;
 	      PreparedStatement pstmt = null;
 			String sql="SELECT * FROM aktivitaet;";
@@ -160,9 +165,11 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	@Override
 	public void ladeTermine(int id) {
-		System.out.println("ID: "+id);
+		System.out.println("ladeTermine");
+		if(id>0) {
+			 currentAktivitaetId=id;	
+		}
 		
-		 currentAktivitaetId=id;
 		 System.out.println("AktivitaetID: " +currentAktivitaetId);
 		termine= new ArrayList<TerminModel>();
 		Connection c = null;
@@ -210,8 +217,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	@Override
 	public String speicherNeuesMitglied() {
-		System.out.println("Test: "+mitglied.getVorname());
-		//mitglied = new MitgliedModel();
+		System.out.println("speicherNeuesMitglied");
 		// TODO Auto-generated method stub		
 		 Connection c = null;
 	      PreparedStatement pstmt = null;
@@ -256,7 +262,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	@Override
 	public String loescheMitglied(MitgliedModel mitglied) {
-		// TODO Auto-generated method stub
+		System.out.println("löscheMitglied");
 		Connection c = null;
 	      PreparedStatement pstmt = null;
 	      String sql = "DELETE FROM mitglied WHERE id=?";
@@ -293,6 +299,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	@Override
 	public String speicherNeueAktivitaet() {
+		System.out.println("speicherNeueAktivitaet");
 		//aktivitaet = new AktivitaetModel();
 		
 		 Connection c = null;
@@ -333,6 +340,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	@Override
 	public String loescheAktivitaet(AktivitaetModel aktivitaet) {
+		System.out.println("löscheAktivitaet");
 		Connection c = null;
 	      PreparedStatement pstmt = null;
 	      String sql = "DELETE FROM aktivitaet WHERE id=?";
@@ -368,9 +376,10 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	}
 
 	@Override
-	public String speicherNeuenTermin() {
-		System.out.println("speicherneuentermin");
-		System.out.println("AktivitaetID: " +currentAktivitaetId);
+	public String speicherNeuenTermin(AktivitaetModel aktivitaet) {
+		System.out.println("speicherNeuenTermin");
+		System.out.println("AktivitaetID: " +aktivitaet.getId());
+		
 		 Connection c = null;
 	      PreparedStatement pstmt = null;
 	      String sql = "INSERT INTO termin (startuhrzeit,enduhrzeit,datum,istwoechentlich,buchbarab,buchbarbis,stornierbarbis,aktivitaetid)"
@@ -396,7 +405,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         pstmt.setInt(5, termin.getBuchbarAb());
 	         pstmt.setInt(6, termin.getBuchbarBis());
 	         pstmt.setInt(7, termin.getStornierbarBis());
-	         pstmt.setInt(8, currentAktivitaetId);
+	         pstmt.setInt(8, aktivitaet.getId());
 	      
 	    
 	         pstmt.executeUpdate();
@@ -417,6 +426,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	@Override
 	public String loescheTermin(TerminModel termin) {
+		System.out.println("löscheTermin");
 		Connection c = null;
 	      PreparedStatement pstmt = null;
 	      String sql = "DELETE FROM termin WHERE id=?";

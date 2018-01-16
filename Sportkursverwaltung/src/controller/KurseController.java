@@ -37,6 +37,7 @@ public class KurseController implements KurseControllerInterface{
 	private int currentDay;
 	
 	public KurseController() {
+		System.out.println("KursController-Konstruktor");
 		wochenListe = new ArrayList<KursListeTagModel> ();	
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.DAY_OF_WEEK,calendar.getFirstDayOfWeek());

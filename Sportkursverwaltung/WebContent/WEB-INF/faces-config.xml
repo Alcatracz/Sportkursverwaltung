@@ -58,12 +58,7 @@
 	<managed-bean>
 		<managed-bean-name>trainerbereichController</managed-bean-name>
 		<managed-bean-class>controller.TrainerbereichController</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
-		<managed-property>
-			<property-name>user</property-name>
-			<property-class>model.User</property-class>
-			<value>#{user}</value>
-		</managed-property>
+		<managed-bean-scope>view</managed-bean-scope>
 	</managed-bean>
 	<navigation-rule>
 		<display-name>index.xhtml</display-name>

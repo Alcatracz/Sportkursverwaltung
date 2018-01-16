@@ -45,9 +45,11 @@ styleClass="order-table">
          #{curaktiv.name}
         </h:column>
 						<h:column headerClass="customHeader">
-							<p:commandButton action="#{trainerbereichController.ladeTermine(curaktiv.id)}"
-							value="Termine verwalten" update=":detail3" oncomplete="PF('detail3').show();">
-							<f:actionListener binding="#{trainerbereichController.setAktivitaetinfo(curaktiv)}" /></p:commandButton>
+							<p:commandButton action="#{trainerbereichController.setAktivitaetInfo(curaktiv)}"
+							value="Termine verwalten" update=":detail3" oncomplete="PF('detail3').show();" 
+							actionListener="#{trainerbereichController.ladeTermine(curaktiv.id)}">
+							<f:ajax execute="@form" render="@none"></f:ajax>
+							</p:commandButton>
 						</h:column>
 						<h:column headerClass="customHeader">
 							<h:commandButton action="#{trainerbereichController.loescheAktivitaet(curaktiv)}" value="Löschen" styleClass="buttonClass" />
@@ -90,7 +92,7 @@ styleClass="order-table">
 			</h:form>
 		</p:dialog>
 		
-		<p:dialog header="#{trainerbereichController.aktivitaetinfo.name}" id="detail3" widgetVar="detail3"
+		<p:dialog header="#{trainerbereichController.aktivitaet.name}" id="detail3" widgetVar="detail3"
 			modal="true" resizable="false" width="375" height="400">
 			<h:form>
 				<p>Uhrzeit: <p:inputText value="#{trainerbereichController.termin.startUhrzeit}">
@@ -105,7 +107,7 @@ styleClass="order-table">
 		</p:inputText> </p>
 				<p>Stornierbar bis:  <p:inputText value="#{trainerbereichController.termin.stornierbarBis}">
 		</p:inputText> </p>
-				<h:commandButton action="#{trainerbereichController.speicherNeuenTermin}" value="Hinzufügen"
+				<h:commandButton action="#{trainerbereichController.speicherNeuenTermin(trainerbereichController.aktivitaetInfo)}" value="Hinzufügen"
 					styleClass="buttonClass" />
 		<h:dataTable value="#{trainerbereichController.termine}" var="curtermin"
 styleClass="order-table">
