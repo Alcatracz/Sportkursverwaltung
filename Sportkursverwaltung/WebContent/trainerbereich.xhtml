@@ -56,6 +56,24 @@ styleClass="order-table">
 						</h:column>
 					</h:dataTable>
 				</p:tab>
+		<p:tab title="Termine">
+		<h:dataTable value="#{kurseController.trainerTermine}" var="curtermin"
+         styleClass="order-table">
+        <h:column headerClass="customHeader">
+         #{curtermin.name}
+        </h:column>
+        <h:column headerClass="customHeader">
+         #{curtermin.startUhrzeit}-#{curtermin.endUhrzeit}
+        </h:column>
+                <h:column headerClass="customHeader">
+        <p:commandButton value="Info" action="#{trainerbereichController.setTrainerTermin(curtermin)}" 
+          update=":detail4" oncomplete="PF('detail4').show();" />
+        </h:column>
+         </h:dataTable>
+	
+
+
+		</p:tab>
 				</p:tabView>
 	
 		</h:form>
@@ -118,6 +136,22 @@ styleClass="order-table">
 	    <h:commandButton action="#{trainerbereichController.loescheTermin(curtermin)}" value="Löschen" styleClass="buttonClass" />
 		</h:column>
 </h:dataTable>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Details" id="detail4" widgetVar="detail4"
+			modal="true" resizable="false" width="375" height="400">
+			<h:form>
+				<p>Trainer: <p:outputText value="#{trainerbereichController.trainerTermin.trainer}">
+		</p:outputText> </p>
+				<p>Beschreibung:  <p:outputText value="#{trainerbereichController.trainerTermin.beschreibung}">
+		</p:outputText> </p>
+				<p>Buchbar ab:  <p:outputText value="#{trainerbereichController.trainerTermin.buchbarAb}">
+		</p:outputText> </p>
+				<p>Buchbar bis: <p:outputText value ="#{trainerbereichController.trainerTermin.buchbarBis}">
+		 </p:outputText></p>
+				<p>Stornierbar bis: <p:outputText value ="#{trainerbereichController.trainerTermin.stornierbarBis}">
+		 </p:outputText></p>
 			</h:form>
 		</p:dialog>
 		
