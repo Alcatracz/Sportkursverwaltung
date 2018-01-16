@@ -371,6 +371,17 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         String select = "SELECT t.id FROM termin WHERE aktivitaetid=?;";
 	         
 	         pstmt=c.prepareStatement(select);
+	         pstmt.setInt(1, aktivitaet.getId());
+	         ResultSet rs=pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+	        	 String deleteListe="DELETE FROM terminliste WHERE terminid=?";
+	        	 PreparedStatement pst = c.prepareStatement(deleteListe);
+	        	 pst.setInt(1, rs.getInt("id"));
+	        	 pst.executeUpdate();
+	        	 pst.close();
+	        	 
+	         }
 	         
 	         pstmt.close();
 	         
