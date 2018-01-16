@@ -2,6 +2,7 @@ package controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.Instant;
@@ -37,12 +38,50 @@ public class TimeManagement {
 			System.out.println(date1);
 			if(date1.equals(localDate.toString())){
 				System.out.println("Wrong order");
+				loescheAltenTermin(trainerTermine.get(i));
 			}
 		}
 		trainerTermine.clear();
 	}
 	
 	
+	private void loescheAltenTermin(KursTerminModel termin) {
+		Connection c = null;
+	      PreparedStatement pstmt = null;
+	      String sql = "DELETE FROM termin WHERE id=?";
+	      
+	      try {
+	         Class.forName("org.postgresql.Driver");
+	         c = DriverManager
+	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
+	            		dbUser, dbPasswort);
+	         
+	         c.setAutoCommit(true);
+	         System.out.println("Opened database successfully");
+	        
+	         pstmt = c.prepareStatement(sql);
+	         pstmt.setInt(1, termin.getId());
+	         
+	      
+	         pstmt.executeUpdate();
+	         pstmt.close();
+	         
+	         String delete ="DELETE FROM terminliste WHERE terminid=?";
+	         PreparedStatement ps =c.prepareStatement(delete);
+	         ps.setInt(1, termin.getId());
+	         ps.executeUpdate();
+	         ps.close();
+	         
+	         c.close();
+	         
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         System.err.println(e.getClass().getName()+": "+e.getMessage());
+	         System.exit(0);
+	      }
+	}
+
+
 	public void ladeTrainerTermine() {
 		// TODO Auto-generated method stub
 		System.out.println("ladeTrainerTermine");
@@ -66,7 +105,7 @@ public class TimeManagement {
 			         while(rs.next()) {
 		
 			        	KursTerminModel terminModel = new KursTerminModel();
-			        	terminModel.setTerminId(rs.getInt("id"));
+			        	terminModel.setId(rs.getInt("id"));
 			        	terminModel.setName(rs.getString("name"));
 			        	terminModel.setTrainer(rs.getString("trainer"));
 			        	terminModel.setBeschreibung(rs.getString("beschreibung"));

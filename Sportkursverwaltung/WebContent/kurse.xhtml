@@ -11,64 +11,63 @@
 <title>Kurse</title>
 </h:head>
 <h:body>
-	<f:view>
+<f:view>
 	<h:form id="master">
-		<f:loadBundle basename="messages" var="msg"/>
+	<f:loadBundle basename="messages" var="msg"/>
 
-        <div class="headblock">
+    <div class="headblock">
 		<ul>
-		<li><h:outputLink value="trainerbereich.xhtml" styleClass="sitelink">Trainerbereich</h:outputLink></li>
-		<li><h:outputLink value="kurse.xhtml" styleClass="sitelink">Kurse</h:outputLink></li>
-		<li><h:outputLink value="profil.xhtml" styleClass="sitelink">Mein Profil</h:outputLink></li>
-		<li><h:outputLink value="termine.xhtml" styleClass="sitelink">Meine Termine</h:outputLink></li>
-		<li style="float:right"><h:commandLink value = "Abmelden" styleClass="sitelink" action = "#{loginController.logout }" /></li>
+			<li><h:outputLink value="trainerbereich.xhtml" styleClass="sitelink">Trainerbereich</h:outputLink></li>
+			<li><h:outputLink value="kurse.xhtml" styleClass="sitelink">Kurse</h:outputLink></li>
+			<li><h:outputLink value="profil.xhtml" styleClass="sitelink">Mein Profil</h:outputLink></li>
+			<li><h:outputLink value="termine.xhtml" styleClass="sitelink">Meine Termine</h:outputLink></li>
+			<li style="float:right"> <p:commandLink value = "Abmelden" styleClass="sitelink" action = "#{loginController.logout }" /></li>
 		</ul>
-		</div>
-<p:dataTable paginator="true" value="#{kurseController.wochenListe}" var="wochentag" styleClass="pdatatable">
+	</div>
+		
+	<p:dataTable paginator="true" value="#{kurseController.wochenListe}" var="wochentag" styleClass="pdatatable">
 
-<p:column>
-#{wochentag.tag}
-<p:dataTable emptyMessage="" value="#{wochentag.termine}" var="termin" styleClass="pdatatable2" >
-<p:column headerClass="customHeader">
-<f:facet name="header">
-</f:facet>
-<p:commandButton value="Info" action="#{kurseController.setTermininfo(termin)}" 
-update=":detail" oncomplete="PF('detail').show();" />
-</p:column>
+		<p:column>
+			#{wochentag.tag}
+			<p:dataTable emptyMessage="" value="#{wochentag.termine}" var="termin" styleClass="pdatatable2" >
+				<p:column headerClass="customHeader">
+				<f:facet name="header"></f:facet>
+				<p:commandButton value="Info" action="#{kurseController.setTermin(termin)}" 
+					update=":detail" oncomplete="PF('detail').show();" />
+				</p:column>
 
-<p:column headerText="Uhrzeit" headerClass="customHeader">
-#{termin.startUhrzeit}-#{termin.endUhrzeit}
-</p:column>
+				<p:column headerText="Uhrzeit" headerClass="customHeader">
+					#{termin.startUhrzeit}-#{termin.endUhrzeit}
+				</p:column>
 
-<p:column headerClass="customHeader">
-<p:commandButton action="#{kurseController.toggleButton(termin)}" value="#{termin.actionName}" update="@form" />
-</p:column>
+				<p:column headerClass="customHeader">
+					<p:commandButton action="#{kurseController.toggleButton(termin)}" value="#{termin.actionName}" update="@form" disabled="#{termin.gesperrt}" />
+				</p:column>
 
+				<p:column headerText="Aktivität" headerClass="customHeader">
+					#{termin.name}
+				</p:column>
 
-<p:column headerText="Aktivität" headerClass="customHeader">
-#{termin.name}
-</p:column>
+				<p:column headerText="Dauer" headerClass="customHeader">
+					#{termin.dauer} Minuten
+				</p:column>
 
-<p:column headerText="Dauer" headerClass="customHeader">
-Dauer
-</p:column>
+			</p:dataTable>
+		</p:column>
+	</p:dataTable>
+	</h:form>	
 
-</p:dataTable>
-</p:column>
-</p:dataTable>
-</h:form>	
-
-<p:dialog header="#{kurseController.termininfo.name}" id="detail" widgetVar="detail"
- modal="true" resizable="false" width="375" height="400">
-<h:form>
-<h:outputText value="Trainer: #{kurseController.termininfo.trainer}"/><br></br>    
-<h:outputText value="Beschreibung: #{kurseController.termininfo.beschreibung}"/> <br></br>   
-<h:outputText value="Buchbar ab: #{kurseController.termininfo.buchbarAb}"/>  <br></br>  
-<h:outputText value="Buchbar bis: #{kurseController.termininfo.buchbarBis}"/>  <br></br>  
-<h:outputText value="Stornierbar bis: #{kurseController.termininfo.stornierbarBis}"/>   
-    </h:form>
-</p:dialog>
+	<p:dialog header="#{kurseController.termin.name}" id="detail" widgetVar="detail"
+ 			modal="true" resizable="false" width="375" height="400">	
+		<h:form>
+			<h:outputText value="Trainer: #{kurseController.termin.trainer}"/><br/>    
+			<h:outputText value="Beschreibung: #{kurseController.termin.beschreibung}"/> <br/>   
+			<h:outputText value="Buchbar ab: #{kurseController.termin.buchbarAb} Tage vorher"/>  <br/>  
+			<h:outputText value="Buchbar bis: #{kurseController.termin.buchbarBis} Tage vorher"/>  <br/>  
+			<h:outputText value="Stornierbar bis: #{kurseController.termin.stornierbarBis} Tage vorher"/>   
+    	</h:form>
+	</p:dialog>
 	
-	</f:view>
+</f:view>
 </h:body>
 </html>

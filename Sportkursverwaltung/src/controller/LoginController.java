@@ -19,14 +19,14 @@ import entity.Mitglied;
 
 public class LoginController implements LoginControllerInterface {
 
+	private String dbPfad = "localhost:5432/Terminverwaltung";
 	private String dbUser = "postgres";
 	private String dbPasswort = "postgres";
 	
 	private User user;
-	
 
 	public LoginController() {
-		
+		System.out.println("LoginController ()");
 	}
 	
 	@PostConstruct
@@ -36,36 +36,30 @@ public class LoginController implements LoginControllerInterface {
 	
 	@Override
     public String login(){
+		System.out.println("LoginController.login ()");
 
 		Connection c = null;
-	      PreparedStatement pstmt = null;
-			String sql="SELECT m.id, m.email, m.passwort, m.isttrainer FROM mitglied m WHERE m.email=? AND m.passwort=?";
+	    PreparedStatement pstmt = null;
+		String sql="SELECT m.id, m.email, m.passwort, m.isttrainer FROM mitglied m WHERE m.email=? AND m.passwort=?";
 	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
+	    try {
+	    	Class.forName("org.postgresql.Driver");
+	        c = DriverManager.getConnection("jdbc:postgresql:"+dbPfad, dbUser, dbPasswort);
+	        c.setAutoCommit(true);
+    
+	        pstmt = c.prepareStatement(sql);
+	        pstmt.setString(1, user.getEmail());
+	        pstmt.setString(2, user.getPasswort());
 	         
-	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
-	        
-	         pstmt = c.prepareStatement(sql);
-	         pstmt.setString(1, user.getEmail());
-	         pstmt.setString(2, user.getPasswort());
-	         
-	         ResultSet rs = pstmt.executeQuery();
-	         while(rs.next()) {
-
-	        	 user.setId(rs.getInt("id"));
-	        	 user.setEmail(rs.getString("email"));
-	        	 user.setPasswort(rs.getString("passwort"));
-	        	 user.setIstTrainer(rs.getBoolean("isttrainer"));
-	        	 user.setIstAuthentifiziert(true);
-	        	 
-	        	 System.out.println("ID: " + user.getId());
-	        	 System.out.println("EMAIL: " + user.getEmail());
+	        ResultSet rs = pstmt.executeQuery();
+	        while(rs.next()) {
+	        	user.setId(rs.getInt("id"));
+	        	user.setEmail(rs.getString("email"));
+	        	user.setPasswort(rs.getString("passwort"));
+	        	user.setIstTrainer(rs.getBoolean("isttrainer"));
+	        	user.setIstAuthentifiziert(true);
 	         }
+	        
 	         rs.close();
 	         pstmt.close();
 	         c.close();
@@ -74,9 +68,7 @@ public class LoginController implements LoginControllerInterface {
 	         e.printStackTrace();
 	         System.err.println(e.getClass().getName()+": "+e.getMessage());
 	         System.exit(0);
-	      }
-	     
-	      System.out.println("Operation done successfully");
+	      } 
     			
         if (user.isIstAuthentifiziert() && !user.isIstTrainer()){
             return "kurse";
@@ -91,13 +83,16 @@ public class LoginController implements LoginControllerInterface {
 
 	@Override
 	public String logout() {
-		// TODO Auto-generated method stub
-		System.out.println("logout");
+		System.out.println("LoginController.logout ()");
 		user.logout();
 		return "index";
 	}
 	
-    
+	
+	//------------------------------------------------------------------
+	//------------GETTER UND SETTER-------------------------------------
+	//------------------------------------------------------------------
+	
 	public User getUser() {
 		return user;
 	}
@@ -105,6 +100,5 @@ public class LoginController implements LoginControllerInterface {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
 
 }

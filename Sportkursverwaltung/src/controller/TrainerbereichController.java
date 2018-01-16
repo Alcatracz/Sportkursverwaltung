@@ -99,8 +99,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	      try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
+	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung", dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
 	         System.out.println("Opened database successfully");
@@ -440,8 +439,8 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 		
 		 Connection c = null;
 	      PreparedStatement pstmt = null;
-	      String sql = "INSERT INTO termin (startuhrzeit,enduhrzeit,datum,istwoechentlich,buchbarab,buchbarbis,stornierbarbis,aktivitaetid)"
-	      		+ " VALUES (?,?,?,?,?,?,?,?);";
+	      String sql = "INSERT INTO termin (startuhrzeit,enduhrzeit,datum,istwoechentlich,buchbarab,buchbarbis,stornierbarbis,aktivitaetid,istbuchbar,iststornierbar)"
+	      		+ " VALUES (?,?,?,?,?,?,?,?,?,?);";
 	      
 	      try {
 	         Class.forName("org.postgresql.Driver");
@@ -460,11 +459,14 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         pstmt.setTime(2, new Time(timeformatter.parse(termin.getEndUhrzeit()).getTime()));
 	         pstmt.setDate(3, new java.sql.Date(dateformatter.parse(termin.getDatum()).getTime()));
 	         pstmt.setBoolean(4, termin.isIstWoechentlich());
-	         pstmt.setInt(5, termin.getBuchbarAb());
+	         pstmt.setInt(5, termin.getBuchbarAb()); 
 	         pstmt.setInt(6, termin.getBuchbarBis());
 	         pstmt.setInt(7, termin.getStornierbarBis());
 	         pstmt.setInt(8, aktivitaet.getId());
-	      
+	         pstmt.setBoolean(9, true);
+	         pstmt.setBoolean(10, true);
+	         
+	         
 	    
 	         pstmt.executeUpdate();
 	  
@@ -523,7 +525,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	      System.out.println("Operation done successfully");
 	      
 	      														
-		termine.remove(termin);
+		termine.remove(termin);//
 		return null;
 	}
 
@@ -552,7 +554,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 			         while(rs.next()) {
 		
 			        	KursTerminModel terminModel = new KursTerminModel();
-			        	terminModel.setTerminId(rs.getInt("id"));
+			        	terminModel.setId(rs.getInt("id"));
 			        	terminModel.setName(rs.getString("name"));
 			        	terminModel.setTrainer(rs.getString("trainer"));
 			        	terminModel.setBeschreibung(rs.getString("beschreibung"));

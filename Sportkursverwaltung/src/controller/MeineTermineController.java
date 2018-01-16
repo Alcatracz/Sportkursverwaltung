@@ -17,19 +17,12 @@ import model.User;
 
 public class MeineTermineController implements MeineTermineControllerInterace {
 
+	private String dbPfad = "localhost:5432/Terminverwaltung";
 	private String dbUser = "postgres";
 	private String dbPasswort = "postgres";
 	
 	private List<MeineTermineModel> termine;
 	private MeineTermineModel termin;
-	private UIForm tableForm;
-	public UIForm getTableForm() {
-		return tableForm;
-	}
-
-	public void setTableForm(UIForm tableForm) {
-		this.tableForm = tableForm;
-	}
 
 	private User user;
 	
