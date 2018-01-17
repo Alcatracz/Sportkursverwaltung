@@ -47,29 +47,7 @@ public class TerminModelTimeManagement {
 	public void setId(int id) {
 		this.id = id;
 	}
-<<<<<<< HEAD
 
-
-=======
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getTrainer() {
-		return trainer;
-	}
-	public void setTrainer(String trainer) {
-		this.trainer = trainer;
-	}
-	public String getBeschreibung() {
-		return beschreibung;
-	}
-	public void setBeschreibung(String beschreibung) {
-		this.beschreibung = beschreibung;
-	}
->>>>>>> d905709647c8a18b7d6f0af5fd02f7dd552cbe46
 	public String getDatum() {
 		return datum;
 	}
