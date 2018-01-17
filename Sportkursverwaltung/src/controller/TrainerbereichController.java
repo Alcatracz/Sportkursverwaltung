@@ -392,8 +392,6 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 		         Class.forName("org.postgresql.Driver");
 		         c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
 		         c.setAutoCommit(true);
-	        DateFormat dateformatter = new SimpleDateFormat("YYYY-MM-DD");
-	        DateFormat timeformatter = new SimpleDateFormat("HH:MM:SS");
 	        
 	         pstmt = c.prepareStatement(sql);
 	         
@@ -405,7 +403,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         pstmt.setInt(6, termin.getBuchbarBis());
 	         pstmt.setInt(7, termin.getStornierbarBis());
 	         pstmt.setInt(8, aktivitaet.getId());
-	         pstmt.setBoolean(9, true);
+	         pstmt.setBoolean(9, false);
 	         pstmt.setBoolean(10, true);
 	         pstmt.setInt(11, 60); 				//Dauer berechnen
 	         
