@@ -7,9 +7,6 @@ public class TerminModelTimeManagement {
 	private boolean gesperrt;
 	
 	private int id;	
-	private String name;
-	private String trainer;
-	private String beschreibung;
 	private String datum;
 	private String startUhrzeit;
 	private String endUhrzeit;
@@ -56,29 +53,6 @@ public class TerminModelTimeManagement {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getTrainer() {
-		return trainer;
-	}
-
-	public void setTrainer(String trainer) {
-		this.trainer = trainer;
-	}
-
-	public String getBeschreibung() {
-		return beschreibung;
-	}
-
-	public void setBeschreibung(String beschreibung) {
-		this.beschreibung = beschreibung;
-	}
 
 	public String getDatum() {
 		return datum;

@@ -40,10 +40,11 @@ public class TimeManagement {
 	       System.out.println("Current Date"+localDate.toString());
 		for(int i=0;i<trainerTermine.size();i++) {
 			String date1 = trainerTermine.get(i).getDatum();
-			System.out.println(date1);
+			System.out.println("boolean"+trainerTermine.get(i).isIstWoechentlich());
 			if(date1.equals(localDate.toString())){
 				if(trainerTermine.get(i).isIstWoechentlich()) {
-					erstelleNeuenTermin(trainerTermine.get(i));
+					 System.out.println("Ist Wöchentlich");
+					 erstelleNeuenTermin(trainerTermine.get(i));
 				}
 				loescheAltenTermin(trainerTermine.get(i));
 			}
@@ -94,9 +95,9 @@ public class TimeManagement {
 		System.out.println("ladeTrainerTermine");
 				 Connection c = null;
 			      Statement stmt = null;
-			      String sql="SELECT a.name, a.trainer, a.beschreibung, a.teilnehmer, t.datum, t.startuhrzeit, t.enduhrzeit, t.id"
-			      		+ ",t.buchbarab, t.buchbarbis, t.stornierbarbis"
-			      		+ " FROM aktivitaet a INNER JOIN termin t ON a.id = t.aktivitaetid;";
+			      String sql="SELECT   t.datum, t.startuhrzeit, t.enduhrzeit,t.id,t.istwoechentlich"
+			      		+ ",t.buchbarab, t.buchbarbis, t.stornierbarbis, t.aktivitaetid,t.istbuchbar,t.iststornierbar,t.dauer"
+			      		+ " FROM termin t;";
 			      
 			      try {
 			         Class.forName("org.postgresql.Driver");
@@ -113,15 +114,19 @@ public class TimeManagement {
 		
 			        	TerminModelTimeManagement terminModel = new TerminModelTimeManagement();
 			        	terminModel.setId(rs.getInt("id"));
-			        	terminModel.setName(rs.getString("name"));
-			        	terminModel.setTrainer(rs.getString("trainer"));
-			        	terminModel.setBeschreibung(rs.getString("beschreibung"));
 			        	terminModel.setDatum(rs.getDate("datum").toString());
 			        	terminModel.setStartUhrzeit(rs.getTime("startuhrzeit").toString());
 			        	terminModel.setEndUhrzeit(rs.getTime("enduhrzeit").toString());
+			        	terminModel.setIstWoechentlich(rs.getBoolean("istwoechentlich"));
+			        	System.out.println(terminModel.isIstWoechentlich());
 			        	terminModel.setStornierbarBis(rs.getInt("stornierbarbis"));
 			        	terminModel.setBuchbarAb(rs.getInt("buchbarab"));
 			        	terminModel.setBuchbarBis(rs.getInt("buchbarbis"));
+			        	terminModel.setAktivitaetid(rs.getInt("aktivitaetid"));
+			        	terminModel.setIstBuchbar(rs.getBoolean("istbuchbar"));
+			        	terminModel.setIstStornierbar(rs.getBoolean("iststornierbar"));
+			        	terminModel.setDauer(rs.getInt("dauer"));
+			        	
 			        	
 			     	
 			        	
@@ -147,8 +152,8 @@ public class TimeManagement {
 		
 		 Connection c = null;
 	      PreparedStatement pstmt = null;
-	      String sql = "INSERT INTO termin (startuhrzeit,enduhrzeit,datum,istwoechentlich,buchbarab,buchbarbis,stornierbarbis,aktivitaetid,istbuchbar,iststornierbar)"
-	      		+ " VALUES (?,?,?,?,?,?,?,?,?,?);";
+	      String sql = "INSERT INTO termin (startuhrzeit,enduhrzeit,datum,istwoechentlich,buchbarab,buchbarbis,stornierbarbis,aktivitaetid,istbuchbar,iststornierbar,dauer)"
+	      		+ " VALUES (?,?,?,?,?,?,?,?,?,?,?);";
 	      
 	      try {
 	         Class.forName("org.postgresql.Driver");
@@ -172,6 +177,7 @@ public class TimeManagement {
 	         pstmt.setInt(8, termin.getAktivitaetid());
 	         pstmt.setBoolean(9, true);
 	         pstmt.setBoolean(10, true);
+	         pstmt.setInt(11, termin.getDauer());
 	         
 	         
 	    
@@ -185,8 +191,6 @@ public class TimeManagement {
 	         System.err.println(e.getClass().getName()+": "+e.getMessage());
 	         System.exit(0);
 	      }
-	      trainerTermine.add(termin);
-	     termin = new TerminModelTimeManagement();
 	      System.out.println("Operation done successfully");
 	      //ladeTermine(currentAktivitaetId);
 		return null;
