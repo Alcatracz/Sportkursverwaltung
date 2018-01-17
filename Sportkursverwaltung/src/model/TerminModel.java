@@ -13,7 +13,9 @@ public class TerminModel {
 	private int aktivitaetid;
 	
 	public TerminModel() {
-		
+		this.buchbarAb = 14;
+		this.buchbarBis = 1;
+		this.stornierbarBis = 1;
 	}
 	
 	

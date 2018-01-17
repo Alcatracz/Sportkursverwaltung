@@ -125,9 +125,9 @@
 				<p><p:inputText value="#{trainerbereichController.termin.endUhrzeit}"></p:inputText></p>
 				<p>Wöchentlich <h:selectBooleanCheckbox value="#{trainerbereichController.termin.istWoechentlich}"></h:selectBooleanCheckbox></p>
 				<p>Tag:  <p:inputText value="#{trainerbereichController.termin.datum}"></p:inputText> </p>
-				<p>Buchbar ab:  <p:inputText value="#{trainerbereichController.termin.buchbarAb}"></p:inputText> </p>
-				<p>Buchbar ab:  <p:inputText value="#{trainerbereichController.termin.buchbarBis}"></p:inputText> </p>
-				<p>Stornierbar bis:  <p:inputText value="#{trainerbereichController.termin.stornierbarBis}"></p:inputText> </p>
+				<p>Buchbar ab:  <p:inputText value="#{trainerbereichController.termin.buchbarAb} Tag(e) vorher"></p:inputText> </p>
+				<p>Buchbar bis:  <p:inputText value="#{trainerbereichController.termin.buchbarBis} Tag(e) vorher"></p:inputText> </p>
+				<p>Stornierbar bis:  <p:inputText value="#{trainerbereichController.termin.stornierbarBis} Tag(e) vorher"></p:inputText> </p>
 				
 				<h:commandButton action="#{trainerbereichController.speicherNeuenTermin(trainerbereichController.aktivitaetInfo)}" value="Hinzufügen"
 					styleClass="buttonClass" />
@@ -136,7 +136,7 @@
 					styleClass="order-table">
 					
 						<h:column headerClass="customHeader">
-         					#{curtermin.datum} 
+         					#{curtermin.datum},#{curtermin.startuhrzeit}-#{curtermin.endUhrzeit} 
         				</h:column>
         				
 						<h:column headerClass="customHeader">
@@ -146,15 +146,15 @@
 			</h:form>
 		</p:dialog>
 		
-		<p:dialog header="Details" id="detail4" widgetVar="detail4"
+		<p:dialog header="Details: #{trainerbereichController.trainerTermin.name}" id="detail4" widgetVar="detail4"
 			modal="true" resizable="false" width="375" height="400">
 			<h:form>
 			
 				<p>Trainer: <h:outputText value="#{trainerbereichController.trainerTermin.trainer}"></h:outputText> </p>
 				<p>Beschreibung:  <h:outputText value="#{trainerbereichController.trainerTermin.beschreibung}"></h:outputText> </p>
-				<p>Buchbar ab:  <h:outputText value="#{trainerbereichController.trainerTermin.buchbarAb}"></h:outputText> </p>
-				<p>Buchbar bis: <h:outputText value ="#{trainerbereichController.trainerTermin.buchbarBis}"></h:outputText></p>
-				<p>Stornierbar bis: <h:outputText value ="#{trainerbereichController.trainerTermin.stornierbarBis}"></h:outputText></p>
+				<p>Buchbar ab:  <h:outputText value="#{trainerbereichController.trainerTermin.buchbarAb} Tag(e) vorher"></h:outputText> </p>
+				<p>Buchbar bis: <h:outputText value ="#{trainerbereichController.trainerTermin.buchbarBis} Tag(e) vorher"></h:outputText></p>
+				<p>Stornierbar bis: <h:outputText value ="#{trainerbereichController.trainerTermin.stornierbarBis} Tag(e) vorher"></h:outputText></p>
 				
 		 		<h:dataTable value="#{trainerbereichController.terminMitglieder}" var="mitgliedcurr"
          			styleClass="order-table">

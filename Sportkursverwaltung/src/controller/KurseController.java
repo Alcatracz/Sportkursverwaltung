@@ -83,9 +83,9 @@ public class KurseController implements KurseControllerInterface{
 	        	terminModel.setName(rs.getString("name"));
 	        	terminModel.setTrainer(rs.getString("trainer"));
 	        	terminModel.setBeschreibung(rs.getString("beschreibung"));
-	        	terminModel.setDatum(rs.getDate("datum").toString());
-	        	terminModel.setStartUhrzeit(rs.getTime("startuhrzeit").toString());
-	        	terminModel.setEndUhrzeit(rs.getTime("enduhrzeit").toString());
+	        	terminModel.setDatum(rs.getString("datum"));
+	        	terminModel.setStartUhrzeit(rs.getString("startuhrzeit"));
+	        	terminModel.setEndUhrzeit(rs.getString("enduhrzeit"));
 	        	terminModel.setStornierbarBis(rs.getInt("stornierbarbis"));
 	        	terminModel.setBuchbarAb(rs.getInt("buchbarab"));
 	        	terminModel.setBuchbarBis(rs.getInt("buchbarbis"));

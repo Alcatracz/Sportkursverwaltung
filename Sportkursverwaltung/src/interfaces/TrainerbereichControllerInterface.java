@@ -22,5 +22,5 @@ public interface TrainerbereichControllerInterface {
 	public String loescheTermin (TerminModel termin);
 	
 	public void ladeTrainerTermine();
-	public void ladeTerminDetails(int id);
+	public void ladeTerminDetails(TerminModel termin);
 }

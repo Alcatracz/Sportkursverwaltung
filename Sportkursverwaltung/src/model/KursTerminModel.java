@@ -12,18 +12,16 @@ public class KursTerminModel {
 	private String datum;
 	private String startUhrzeit;
 	private String endUhrzeit;
-	private int buchbarAb=14;
-	private int buchbarBis=1;
-	private int stornierbarBis=1;
+	private int buchbarAb;
+	private int buchbarBis;
+	private int stornierbarBis;
 	private boolean istBuchbar;
 	private boolean istStornierbar;
 	private boolean istWoechentlich;
 	private int dauer;
 	
 	public KursTerminModel() {
-		this.buchbarAb = 14;
-		this.buchbarBis = 1;
-		this.stornierbarBis = 1;
+
 	}
 	
 	

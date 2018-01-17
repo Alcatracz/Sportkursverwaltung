@@ -52,6 +52,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	
 	public TrainerbereichController () {
 		System.out.println("TrainerbereichController ()");
+		
 		mitglieder = new ArrayList<MitgliedModel> ();
 		aktivitaeten = new ArrayList<AktivitaetModel> ();
 		termine = new ArrayList<TerminModel> ();
@@ -77,13 +78,14 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	
 	@Override
 	public String generatePasswort() {
-		// TODO Auto-generated method stub
+		System.out.println("TrainerbereichController.generatePasswort ()");
+		
 		return "klose";
 	}
 
 	@Override
 	public void ladeMitglieder() {
-		System.out.println("ladeMitglieder");
+		System.out.println("TrainerbereichController.ladeMitglieder ()");
 		
 		Connection c = null;
 	    PreparedStatement pstmt = null;
@@ -123,7 +125,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 
 	@Override
 	public void ladeAktivitaeten() {
-		System.out.println("ladeAktivitaeten");
+		System.out.println("TrainerbereichController.ladeAktivitaeten ()");
 		
 		Connection c = null;
 	    PreparedStatement pstmt = null;
@@ -157,76 +159,64 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         System.err.println(e.getClass().getName()+": "+e.getMessage());
 	         System.exit(0);
 	      }
-	     
-	      System.out.println("Operation done successfully");
 	}
 
 	@Override
 	public void ladeTermine(int id) {
-		System.out.println("ladeTermine");
+		System.out.println("TrainerbereichController.ladeTermine ()");
 		
 		termine= new ArrayList<TerminModel>();
 		Connection c = null;
-	      PreparedStatement pstmt = null;
-			String sql="SELECT * FROM termin WHERE aktivitaetid=?;";
+	    PreparedStatement pstmt = null;
+		String sql="SELECT * FROM termin WHERE aktivitaetid=?;";
 	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
-	         
-	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
+	    try {
+	    	Class.forName("org.postgresql.Driver");
+		    c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
+		    c.setAutoCommit(true);
 	        
-	         pstmt = c.prepareStatement(sql);	
-	         pstmt.setInt(1, id);
-	         ResultSet rs = pstmt.executeQuery();
+	        pstmt = c.prepareStatement(sql);	
+	        pstmt.setInt(1, id);
+	        ResultSet rs = pstmt.executeQuery();
 	         
-	         while(rs.next()) {
-	        	 TerminModel tm = new TerminModel();
-	        	 tm.setId(rs.getInt("id"));
-	        	 tm.setStartUhrzeit(rs.getTime("startuhrzeit").toString());
-	        	 tm.setBuchbarAb(rs.getInt("buchbarab"));
-	        	 tm.setBuchbarBis(rs.getInt("buchbarbis"));
-	        	 tm.setDatum(rs.getDate("datum").toString());
-	        	 tm.setEndUhrzeit(rs.getTime("enduhrzeit").toString());
-	        	 tm.setIstWoechentlich(rs.getBoolean("istwoechentlich"));
-	        	 tm.setStornierbarBis(rs.getInt("stornierbarbis"));
-	        	 tm.setAktivitaetid(id); //arne suckt
-	        	 termine.add(tm);
-	         }
-	         rs.close();
-	         pstmt.close();
-	         c.close();
-	         
-	      } catch (Exception e) {
-	         e.printStackTrace();
-	         System.err.println(e.getClass().getName()+": "+e.getMessage());
-	         System.exit(0);
-	      }
-	     // System.out.println("ID ARNE SUCKT"+ aktivitaetinfo.getId());
-	    
-	      System.out.println("Operation done successfully");
+	        while(rs.next()) {
+	        	TerminModel tm = new TerminModel();
+	        	tm.setId(rs.getInt("id"));
+	        	tm.setStartUhrzeit(rs.getString("startuhrzeit"));
+	        	tm.setBuchbarAb(rs.getInt("buchbarab"));
+	        	tm.setBuchbarBis(rs.getInt("buchbarbis"));
+	        	tm.setDatum(rs.getString("datum"));
+	        	tm.setEndUhrzeit(rs.getString("enduhrzeit"));
+	        	tm.setIstWoechentlich(rs.getBoolean("istwoechentlich"));
+	        	tm.setStornierbarBis(rs.getInt("stornierbarbis"));
+	        	tm.setAktivitaetid(id); //arne suckt
+	        	termine.add(tm);
+	        	}
+	        rs.close();
+	        pstmt.close();
+	        c.close();
+	        
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	        System.err.println(e.getClass().getName()+": "+e.getMessage());
+	        System.exit(0);
+	        
+	    }
 	}
 
 	@Override
 	public String speicherNeuesMitglied() {
-		System.out.println("speicherNeuesMitglied");
-		// TODO Auto-generated method stub		
-		 Connection c = null;
-	      PreparedStatement pstmt = null;
-	      String sql = "INSERT INTO mitglied (vorname, nachname, email, passwort, isttrainer,istbuchungsbestaetigung,istterminerinnerung,terminerinnerungzeit)"
+		System.out.println("TrainerbereichController.speicherNeuesMitglied ()");
+			
+		Connection c = null;
+	    PreparedStatement pstmt = null;
+	    String sql = "INSERT INTO mitglied (vorname, nachname, email, passwort, isttrainer,istbuchungsbestaetigung,istterminerinnerung,terminerinnerungzeit)"
 	      		+ " VALUES (?,?,?,?,?,?,?,?);";
 	      
-	      try {
+	    try {
 	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
-	         
+	         c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
 	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
 	        
 	         pstmt = c.prepareStatement(sql);
 	         pstmt.setString(1, mitglied.getVorname());
@@ -236,8 +226,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         pstmt.setBoolean(5, mitglied.isIstTrainer());
 	         pstmt.setBoolean(6, false);
 	         pstmt.setBoolean(7, false);
-	         pstmt.setInt(8, 0);
-	      
+	         pstmt.setInt(8, 0);      
 	    
 	         pstmt.executeUpdate();
 	  
@@ -249,30 +238,25 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         System.err.println(e.getClass().getName()+": "+e.getMessage());
 	         System.exit(0);
 	      }
-	     
-	      System.out.println("Operation done successfully");
 	      
 		mitglieder.add(mitglied);
 		mitglied= new MitgliedModel();
-		//ladeMitglieder();
+		
 		return null;
 	}
 
 	@Override
 	public String loescheMitglied(MitgliedModel mitglied) {
-		System.out.println("löscheMitglied: "+mitglied.getVorname());
+		System.out.println("TrainerbereichController.loescheMitglied ()");
+		
 		Connection c = null;
-	      PreparedStatement pstmt = null;
-	      String sql = "DELETE FROM mitglied WHERE id=?";
+	    PreparedStatement pstmt = null;
+	    String sql = "DELETE FROM mitglied WHERE id=?";
 	      
-	      try {
+	    try {
 	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
-	         
+	         c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
 	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
 	        
 	         pstmt = c.prepareStatement(sql);
 	         pstmt.setInt(1, mitglied.getId());
@@ -292,108 +276,89 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         System.err.println(e.getClass().getName()+": "+e.getMessage());
 	         System.exit(0);
 	      }
-	     
-	      System.out.println("Operation done successfully");
-	      
-	      														//lösche Termine von mitglied-------------------------------------
 		mitglieder.remove(mitglied);
 		return null;
 	}
 
 	@Override
 	public String speicherNeueAktivitaet() {
-		System.out.println("speicherNeueAktivitaet");
+		System.out.println("TrainerbereichController.speicherNeueAktivitaet ()");
+		
 		//aktivitaet = new AktivitaetModel();
 		
-		 Connection c = null;
-	      PreparedStatement pstmt = null;
-	      String sql = "INSERT INTO aktivitaet (name, beschreibung, trainer, teilnehmer)"
+		Connection c = null;
+	    PreparedStatement pstmt = null;
+	    String sql = "INSERT INTO aktivitaet (name, beschreibung, trainer, teilnehmer)"
 	      		+ " VALUES (?,?,?,?);";
 	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
-	         
-	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
+	    try {
+	    	Class.forName("org.postgresql.Driver");
+	    	c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
+		    c.setAutoCommit(true);
 	        
-	         pstmt = c.prepareStatement(sql,new String[] {"id"});
+	        pstmt = c.prepareStatement(sql,new String[] {"id"});
 	         
-	         pstmt.setString(1, aktivitaet.getName());
-	         pstmt.setString(2, aktivitaet.getBeschreibung());
-	         pstmt.setString(3, aktivitaet.getTrainer());
-	         pstmt.setInt(4, aktivitaet.getTeilnehmer());
-	         
-
+	        pstmt.setString(1, aktivitaet.getName());
+	        pstmt.setString(2, aktivitaet.getBeschreibung());
+	        pstmt.setString(3, aktivitaet.getTrainer());
+	        pstmt.setInt(4, aktivitaet.getTeilnehmer());
 	    
-	         pstmt.executeUpdate();
+	        pstmt.executeUpdate();
 	  
-	         ResultSet rs = pstmt.getGeneratedKeys();
-	         System.out.println("rslength: "+rs.getFetchSize());
-	         long id=0L;
-	         if(rs.next()) {
-	        	 id = rs.getLong(1); 
-	         }//
+	        ResultSet rs = pstmt.getGeneratedKeys();
+	        
+	        long id=0L;
+	        if(rs.next()) {
+	        	id = rs.getLong(1);
+	        	
+	        }
+	        aktivitaet.setId(Math.toIntExact(id));
 	         
-	         System.out.println("ROFL DIE ID: " + id);
-	         aktivitaet.setId(Math.toIntExact(id));
-	         
-	         pstmt.close();
-	         c.close();
+	        pstmt.close();
+	        c.close();
 	         
 	      } catch (Exception e) {
-	         e.printStackTrace();
-	         System.err.println(e.getClass().getName()+": "+e.getMessage());
-	         System.exit(0);
+	    	  e.printStackTrace();
+	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
+	    	  System.exit(0);
 	      }
-	     aktivitaeten.add(aktivitaet);
-	     aktivitaet= new AktivitaetModel();
-	    // ladeAktivitaeten();
-	      System.out.println("Operation done successfully");
+	    aktivitaeten.add(aktivitaet);
+	    aktivitaet= new AktivitaetModel();
+	    
 		return null;
 	}
 
 	@Override
 	public String loescheAktivitaet(AktivitaetModel aktivitaet) {
-		System.out.println("löscheAktivitaet"+aktivitaet.getName());
+		System.out.println("TrainerbereichController.loescheAktivitaet ()");
 		Connection c = null;
-	      PreparedStatement pstmt = null;
-	      String sql = "DELETE FROM aktivitaet WHERE id=?";
+	    PreparedStatement pstmt = null;
+	    String sql = "DELETE FROM aktivitaet WHERE id=?";
 	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
+	    try {
+	    	Class.forName("org.postgresql.Driver");
+		    c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
+		    c.setAutoCommit(true);
+	   
+	        pstmt = c.prepareStatement(sql);
+	        pstmt.setInt(1, aktivitaet.getId());
+	        pstmt.executeUpdate();
 	         
-	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
+	        String select = "SELECT t.id FROM termin t WHERE aktivitaetid=?;";
+	         
+	        pstmt=c.prepareStatement(select);
+	        pstmt.setInt(1, aktivitaet.getId());
+	        ResultSet rs=pstmt.executeQuery();
 	        
-	         pstmt = c.prepareStatement(sql);
-	         pstmt.setInt(1, aktivitaet.getId());
-	         pstmt.executeUpdate();
-	         
-	         String select = "SELECT t.id FROM termin t WHERE aktivitaetid=?;";
-	         
-	         pstmt=c.prepareStatement(select);
-	         pstmt.setInt(1, aktivitaet.getId());
-	         ResultSet rs=pstmt.executeQuery();
-	        
-	         
-	         while(rs.next()) {
-	        	 String deleteListe="DELETE FROM terminliste WHERE terminid=?";
-	        	 PreparedStatement pst = c.prepareStatement(deleteListe);
-	        	 pst.setInt(1, rs.getInt("id"));
-	        	 pst.executeUpdate();
-	        	 pst.close();
-	        	 
+	        while(rs.next()) {
+	        	String deleteListe="DELETE FROM terminliste WHERE terminid=?";
+	        	PreparedStatement pst = c.prepareStatement(deleteListe);
+	        	pst.setInt(1, rs.getInt("id"));
+	        	pst.executeUpdate();
+	        	pst.close();	        	 
 	         }
+	        
 	         pstmt.close(); 
-	         
-	         
-	         System.out.println("ID:"+aktivitaet.getId());
 	         
 	         String delete = "DELETE FROM termin WHERE aktivitaetid=?";
 	         PreparedStatement ps = c.prepareStatement(delete);
@@ -404,45 +369,37 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         c.close();
 	         
 	      } catch (Exception e) {
-	         e.printStackTrace();
-	         System.err.println(e.getClass().getName()+": "+e.getMessage());
-	         System.exit(0);
+	    	  e.printStackTrace();
+	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
+	    	  System.exit(0);
 	      }
-	     
-	      System.out.println("Operation done successfully");
-	      
-	      														//lösche Termine von aktivität------------------------------
-		aktivitaeten.remove(aktivitaet);
+	    aktivitaeten.remove(aktivitaet);
+	    
 		return null;
 	}
 
 	@Override
 	public String speicherNeuenTermin(AktivitaetModel aktivitaet) {
-		System.out.println("speicherNeuenTermin");
-		System.out.println("AktivitaetID: " +aktivitaet.getId());
+		System.out.println("TrainerbereichController.speicherNeuenTermin ()");
 		
-		 Connection c = null;
-	      PreparedStatement pstmt = null;
-	      String sql = "INSERT INTO termin (startuhrzeit,enduhrzeit,datum,istwoechentlich,"
+		Connection c = null;
+	    PreparedStatement pstmt = null;
+	    String sql = "INSERT INTO termin (startuhrzeit,enduhrzeit,datum,istwoechentlich,"
 	      		+ "buchbarab,buchbarbis,stornierbarbis,aktivitaetid,istbuchbar,iststornierbar,dauer)"
 	      		+ " VALUES (?,?,?,?,?,?,?,?,?,?,?);";
 	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
-	         
-	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
+	    try {
+		         Class.forName("org.postgresql.Driver");
+		         c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
+		         c.setAutoCommit(true);
 	        DateFormat dateformatter = new SimpleDateFormat("YYYY-MM-DD");
 	        DateFormat timeformatter = new SimpleDateFormat("HH:MM:SS");
 	        
 	         pstmt = c.prepareStatement(sql);
 	         
-	         pstmt.setTime(1, new Time(timeformatter.parse(termin.getStartUhrzeit()).getTime()));
-	         pstmt.setTime(2, new Time(timeformatter.parse(termin.getEndUhrzeit()).getTime()));
-	         pstmt.setDate(3, new java.sql.Date(dateformatter.parse(termin.getDatum()).getTime()));
+	         pstmt.setString(1, termin.getStartUhrzeit());
+	         pstmt.setString(2, termin.getEndUhrzeit());
+	         pstmt.setString(3, termin.getDatum());
 	         pstmt.setBoolean(4, termin.isIstWoechentlich());
 	         pstmt.setInt(5, termin.getBuchbarAb()); 
 	         pstmt.setInt(6, termin.getBuchbarBis());
@@ -452,7 +409,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         pstmt.setBoolean(10, true);
 	         pstmt.setInt(11, 60); 				//Dauer berechnen
 	         
-	         
+	         System.out.println("DATUM: " + termin.getDatum());
 	    
 	         pstmt.executeUpdate();
 	  
@@ -464,152 +421,132 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         System.err.println(e.getClass().getName()+": "+e.getMessage());
 	         System.exit(0);
 	      }
-	     termine.add(termin);
-	     termin = new TerminModel();
-	      System.out.println("Operation done successfully");
-	      //ladeTermine(currentAktivitaetId);
+	    termine.add(termin);
+	    termin = new TerminModel();
+	    
 		return null;
 	}
 
 	@Override
 	public String loescheTermin(TerminModel termin) {
-		System.out.println("löscheTermin"+termin.getDatum()+"/ "+termin.getId());
+		System.out.println("TrainerbereichController.loescheTermin ()");
+		
 		Connection c = null;
-	      PreparedStatement pstmt = null;
-	      String sql = "DELETE FROM termin WHERE id=?";
+	    PreparedStatement pstmt = null;
+	    String sql = "DELETE FROM termin WHERE id=?";
 	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
-	         
-	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
+	    try {
+	    	Class.forName("org.postgresql.Driver");
+		    c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
+		    c.setAutoCommit(true);
 	        
-	         pstmt = c.prepareStatement(sql);
-	         pstmt.setInt(1, termin.getId());
-	         
+	        pstmt = c.prepareStatement(sql);
+	        pstmt.setInt(1, termin.getId()); 
 	      
-	         pstmt.executeUpdate();
-	         pstmt.close();
+	        pstmt.executeUpdate();
+	        pstmt.close();
 	         
-	         String delete ="DELETE FROM terminliste WHERE terminid=?";
-	         PreparedStatement ps =c.prepareStatement(delete);
-	         ps.setInt(1, termin.getId());
-	         ps.executeUpdate();
-	         ps.close();
+	        String delete ="DELETE FROM terminliste WHERE terminid=?";
+	        PreparedStatement ps =c.prepareStatement(delete);
+	        ps.setInt(1, termin.getId());
+	        ps.executeUpdate();
+	        ps.close();
 	         
-	         c.close();
+	        c.close();
 	         
 	      } catch (Exception e) {
-	         e.printStackTrace();
-	         System.err.println(e.getClass().getName()+": "+e.getMessage());
-	         System.exit(0);
-	      }
-	     
-	      System.out.println("Operation done successfully");
-	      
-	      														
-		termine.remove(termin);//
+	    	  e.printStackTrace();
+	          System.err.println(e.getClass().getName()+": "+e.getMessage());
+	          System.exit(0);
+	      }    														
+	    termine.remove(termin);
+		
 		return null;
 	}
 
 
 	@Override
 	public void ladeTrainerTermine() {
-		// TODO Auto-generated method stub
-		System.out.println("ladeTrainerTermine");
-				 Connection c = null;
-			      Statement stmt = null;
-			      String sql="SELECT a.name, a.trainer, a.beschreibung, a.teilnehmer, t.datum, t.startuhrzeit, t.enduhrzeit, t.id"
+		System.out.println("TrainerbereichController.ladeTrainerTermine ()");
+		
+		Connection c = null;
+		Statement stmt = null;
+		String sql="SELECT a.name, a.trainer, a.beschreibung, a.teilnehmer, t.datum, t.startuhrzeit, t.enduhrzeit, t.id"
 			      		+ ",t.buchbarab, t.buchbarbis, t.stornierbarbis"
 			      		+ " FROM aktivitaet a INNER JOIN termin t ON a.id = t.aktivitaetid;";
 			      
-			      try {
-			         Class.forName("org.postgresql.Driver");
-			         c = DriverManager
-			            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-			            		dbUser, dbPasswort);
-			         
-			         c.setAutoCommit(false);
-			         System.out.println("Opened database successfully");
+		try {
+			Class.forName("org.postgresql.Driver");
+			c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
+			c.setAutoCommit(true);
 			        
-			         stmt = c.createStatement();
-			         ResultSet rs = stmt.executeQuery(sql);
-			         while(rs.next()) {
-		
-			        	KursTerminModel terminModel = new KursTerminModel();
-			        	terminModel.setId(rs.getInt("id"));
-			        	terminModel.setName(rs.getString("name"));
-			        	terminModel.setTrainer(rs.getString("trainer"));
-			        	terminModel.setBeschreibung(rs.getString("beschreibung"));
-			        	terminModel.setDatum(rs.getDate("datum").toString());
-			        	terminModel.setStartUhrzeit(rs.getTime("startuhrzeit").toString());
-			        	terminModel.setEndUhrzeit(rs.getTime("enduhrzeit").toString());
-			        	terminModel.setStornierbarBis(rs.getInt("stornierbarbis"));
-			        	terminModel.setBuchbarAb(rs.getInt("buchbarab"));
-			        	terminModel.setBuchbarBis(rs.getInt("buchbarbis"));
+			stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				KursTerminModel terminModel = new KursTerminModel();
+			    terminModel.setId(rs.getInt("id"));
+			    terminModel.setName(rs.getString("name"));
+			    terminModel.setTrainer(rs.getString("trainer"));
+			    terminModel.setBeschreibung(rs.getString("beschreibung"));
+			    terminModel.setDatum(rs.getDate("datum").toString());
+			    terminModel.setStartUhrzeit(rs.getTime("startuhrzeit").toString());
+			    terminModel.setEndUhrzeit(rs.getTime("enduhrzeit").toString());
+			    terminModel.setStornierbarBis(rs.getInt("stornierbarbis"));
+			    terminModel.setBuchbarAb(rs.getInt("buchbarab"));
+			    terminModel.setBuchbarBis(rs.getInt("buchbarbis"));
 			        	
-			     	
-			        	
-			        	trainerTermine.add(terminModel);
-			         }
-			         rs.close();
-			         stmt.close();
-			         c.close();
-			         
-			      } catch (Exception e) {
-			         e.printStackTrace();
-			         System.err.println(e.getClass().getName()+": "+e.getMessage());
-			         System.exit(0);
-			      }
-			     
-			      System.out.println("Operation done successfully");
-			      System.out.println("LISTE: "+trainerTermine.size());
-		
+			    trainerTermine.add(terminModel);
+			    
+			}
+			
+			rs.close();
+			stmt.close();
+			c.close();
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+			    System.err.println(e.getClass().getName()+": "+e.getMessage());
+			    System.exit(0);			    
+			}		
 	}
 
 	@Override
-	public void ladeTerminDetails(int id) {
+	public void ladeTerminDetails(TerminModel termin) {
+		System.out.println("TrainerbereichController.ladeTerminDetails ()");
+		
 		terminMitglieder= new ArrayList<MitgliedModel>();
-		// TODO Auto-generated method stub
-		System.out.println("ladeTerminDetailsr");
+		
 		Connection c = null;
-	      PreparedStatement pstmt = null;
-			String sql="SELECT m.vorname, m.nachname FROM mitglied m INNER JOIN terminliste tl ON tl.mitgliedid=m.id WHERE tl.terminid = ? ;";
+	    PreparedStatement pstmt = null;
+		String sql="SELECT m.vorname, m.nachname FROM mitglied m INNER JOIN terminliste tl ON tl.mitgliedid=m.id WHERE tl.terminid = ? ;";
 	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
-	         
-	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
+	    try {
+	    	Class.forName("org.postgresql.Driver");
+	        c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
+	        c.setAutoCommit(true);
 	        
-	         pstmt = c.prepareStatement(sql);
-	         pstmt.setInt(1, id);
-	         ResultSet rs = pstmt.executeQuery();
+	        pstmt = c.prepareStatement(sql);
+	        pstmt.setInt(1, termin.getId());
+	        ResultSet rs = pstmt.executeQuery();
 	         
-	         while(rs.next()) {
-		      MitgliedModel mitgliedModel = new MitgliedModel();
-		      mitgliedModel.setVorname(rs.getString("vorname"));
-		      mitgliedModel.setNachname(rs.getString("nachname"));
+	        while(rs.next()) {
+	        	MitgliedModel mitgliedModel = new MitgliedModel();
+	        	mitgliedModel.setVorname(rs.getString("vorname"));
+	        	mitgliedModel.setNachname(rs.getString("nachname"));
 	  
-		      terminMitglieder.add(mitgliedModel);
-	         }
-	         rs.close();
-	         pstmt.close();
-	         c.close();
-	         
-	      } catch (Exception e) {
-	         e.printStackTrace();
-	         System.err.println(e.getClass().getName()+": "+e.getMessage());
-	         System.exit(0);
+	        	terminMitglieder.add(mitgliedModel);
+	        }
+	        
+	        rs.close();
+	        pstmt.close();
+	        c.close();
+	        
+	        } catch (Exception e) {
+	        	e.printStackTrace();
+	        	System.err.println(e.getClass().getName()+": "+e.getMessage());
+	        	System.exit(0);
 	      }
-	     
-	      System.out.println("Operation done successfully");
 	}
 	
 	
