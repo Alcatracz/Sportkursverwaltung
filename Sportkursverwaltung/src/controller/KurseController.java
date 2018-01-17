@@ -153,49 +153,49 @@ public class KurseController implements KurseControllerInterface{
 	        		if(calender.get(Calendar.WEEK_OF_YEAR)==currWeek) {
 	        			wochenListe.get(6).add(terminModel);
 	        		}else {
-	        			wochenListe.get(7).add(terminModel);
+	        			wochenListe.get(13).add(terminModel);
 	        		}	   
 	        		break;
 	        	case 2:
 	        		if(calender.get(Calendar.WEEK_OF_YEAR)==currWeek) {
 	        			wochenListe.get(0).add(terminModel);
 	        		}else {
-	        			wochenListe.get(8).add(terminModel);
+	        			wochenListe.get(7).add(terminModel);
 	        		}
 	        		break;
 	        	case 3:
 	        		if(calender.get(Calendar.WEEK_OF_YEAR)==currWeek) {
 	        			wochenListe.get(1).add(terminModel);
 	        		}else {
-	        			wochenListe.get(9).add(terminModel);
+	        			wochenListe.get(8).add(terminModel);
 	        		}
 	        		break;
 	        	case 4:
 	        		if(calender.get(Calendar.WEEK_OF_YEAR)==currWeek) {
 	        			wochenListe.get(2).add(terminModel);
 	        		}else {
-	        			wochenListe.get(10).add(terminModel);
+	        			wochenListe.get(9).add(terminModel);
 	        		}
 	        		break;
 	        	case 5:
 	        		if(calender.get(Calendar.WEEK_OF_YEAR)==currWeek) {
 	        			wochenListe.get(3).add(terminModel);
 	        		}else {
-	        			wochenListe.get(11).add(terminModel);
+	        			wochenListe.get(10).add(terminModel);
 	        		}
 	        		break;
 	        	case 6:
 	        		if(calender.get(Calendar.WEEK_OF_YEAR)==currWeek) {
 	        			wochenListe.get(4).add(terminModel);
 	        		}else {
-	        			wochenListe.get(12).add(terminModel);
+	        			wochenListe.get(11).add(terminModel);
 	        		}
 	        		break;
 	        	case 7:
 	        		if(calender.get(Calendar.WEEK_OF_YEAR)==currWeek) {
 	        			wochenListe.get(5).add(terminModel);
 	        		}else {
-	        			wochenListe.get(13).add(terminModel);
+	        			wochenListe.get(12).add(terminModel);
 	        		}
 	        		break;	
 	        	}   	

@@ -425,8 +425,10 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 		         
 		         String starte = termin.getStartUhrzeit();
 		         String ende = termin.getEndUhrzeit();
-		         LocalTime start = LocalTime.of(Integer.valueOf(starte.substring(1, 2)),Integer.valueOf(starte.substring(4)),5);
-		         LocalTime end = LocalTime.of(Integer.valueOf(ende.substring(1, 2)),Integer.valueOf(ende.substring(4)),5);
+		         System.out.println(termin.getStartUhrzeit());
+		         System.out.println(starte.substring(0,2)+":"+starte.substring(3,5));
+		         LocalTime start = LocalTime.of(Integer.valueOf(starte.substring(0, 2)),Integer.valueOf(starte.substring(3,5)));
+		         LocalTime end = LocalTime.of(Integer.valueOf(ende.substring(0, 2)),Integer.valueOf(ende.substring(3,5)));
 		         Duration d= Duration.between(start, end);
 		         
 		         pstmt.setInt(11, (int)(d.getSeconds()/60)); 				//Dauer berechnen
