@@ -27,6 +27,7 @@ import model.User;
 
 public class TrainerbereichController implements TrainerbereichControllerInterface {
 
+	private String dbPfad = "localhost:5432/Terminverwaltung";
 	private String dbUser = "postgres";
 	private String dbPasswort = "postgres";
 	
@@ -37,9 +38,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	
 	private List<AktivitaetModel> aktivitaeten;
 	private AktivitaetModel aktivitaet;
-	private AktivitaetModel aktivitaetInfo;
-	
-	
+	private AktivitaetModel aktivitaetInfo;	//Entfernen?
 
 	private List<TerminModel> termine;
 	private TerminModel termin;
@@ -52,7 +51,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	
 	
 	public TrainerbereichController () {
-		System.out.println("KONSTRUKOR");
+		System.out.println("TrainerbereichController ()");
 		mitglieder = new ArrayList<MitgliedModel> ();
 		aktivitaeten = new ArrayList<AktivitaetModel> ();
 		termine = new ArrayList<TerminModel> ();
@@ -66,17 +65,11 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 		termin = new TerminModel();
 		aktivitaetInfo= new AktivitaetModel();
 	}
-	
-	public AktivitaetModel getAktivitaetInfo() {
-		return aktivitaetInfo;
-	}
-
-	public void setAktivitaetInfo(AktivitaetModel aktivitaetInfo) {
-		this.aktivitaetInfo = aktivitaetInfo;
-	}
 
 	@PostConstruct
 	public void init() {
+		System.out.println("TrainerbereichController.init ()");
+		
 		ladeMitglieder();
 		ladeAktivitaeten();
 		ladeTrainerTermine();
@@ -91,63 +84,55 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	@Override
 	public void ladeMitglieder() {
 		System.out.println("ladeMitglieder");
+		
 		Connection c = null;
-	      PreparedStatement pstmt = null;
-			String sql="SELECT * FROM mitglied;";
-	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung", dbUser, dbPasswort);
+	    PreparedStatement pstmt = null;
+	    String sql="SELECT * FROM mitglied;";
+	    try {
+	    	Class.forName("org.postgresql.Driver");
+	        c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
+	        c.setAutoCommit(true);
+	  
+	        pstmt = c.prepareStatement(sql);	    
+	        ResultSet rs = pstmt.executeQuery();
 	         
-	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
-	        
-	         pstmt = c.prepareStatement(sql);	    
-	         ResultSet rs = pstmt.executeQuery();
-	         
-	         while(rs.next()) {
-		      MitgliedModel mitgliedModel = new MitgliedModel();
-		      mitgliedModel.setId(rs.getInt("id"));
-		      mitgliedModel.setVorname(rs.getString("vorname"));
-		      mitgliedModel.setNachname(rs.getString("nachname"));
-		      mitgliedModel.setEmail(rs.getString("email"));
-		      mitgliedModel.setPasswort(rs.getString("passwort"));
-		      mitgliedModel.setIstTrainer(rs.getBoolean("isttrainer"));
-		      mitgliedModel.setIstBuchungsbestaetigung(rs.getBoolean("istbuchungsbestaetigung"));
-		      mitgliedModel.setIstTerminerinnerung(rs.getBoolean("istterminerinnerung"));
-		      mitgliedModel.setTerminerinnerungZeit(rs.getInt("terminerinnerungzeit"));
+	        while(rs.next()) {
+	        	MitgliedModel mitgliedModel = new MitgliedModel();
+	        	mitgliedModel.setId(rs.getInt("id"));
+	        	mitgliedModel.setVorname(rs.getString("vorname"));
+	        	mitgliedModel.setNachname(rs.getString("nachname"));
+	        	mitgliedModel.setEmail(rs.getString("email"));
+	        	mitgliedModel.setPasswort(rs.getString("passwort"));
+	        	mitgliedModel.setIstTrainer(rs.getBoolean("isttrainer"));
+	        	mitgliedModel.setIstBuchungsbestaetigung(rs.getBoolean("istbuchungsbestaetigung"));
+	        	mitgliedModel.setIstTerminerinnerung(rs.getBoolean("istterminerinnerung"));
+	        	mitgliedModel.setTerminerinnerungZeit(rs.getInt("terminerinnerungzeit"));
 		      
-		      mitglieder.add(mitgliedModel);
-	         }
-	         rs.close();
-	         pstmt.close();
-	         c.close();
+	        	mitglieder.add(mitgliedModel);
+	        	}
+	        rs.close();
+	        pstmt.close();
+	        c.close();
 	         
 	      } catch (Exception e) {
 	         e.printStackTrace();
 	         System.err.println(e.getClass().getName()+": "+e.getMessage());
 	         System.exit(0);
 	      }
-	     
-	      System.out.println("Operation done successfully");
 	}
 
 	@Override
 	public void ladeAktivitaeten() {
 		System.out.println("ladeAktivitaeten");
+		
 		Connection c = null;
-	      PreparedStatement pstmt = null;
-			String sql="SELECT * FROM aktivitaet;";
+	    PreparedStatement pstmt = null;
+		String sql="SELECT * FROM aktivitaet;";
 	      
 	      try {
 	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
-	         
-	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
+	         c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad,dbUser, dbPasswort);	         
+	         c.setAutoCommit(true);	      
 	        
 	         pstmt = c.prepareStatement(sql);	    
 	         ResultSet rs = pstmt.executeQuery();
@@ -626,93 +611,82 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	     
 	      System.out.println("Operation done successfully");
 	}
-
+	
+	
+	//------------------------------------------------------------------
+	//------------GETTER UND SETTER-------------------------------------
+	//------------------------------------------------------------------
+	
 	public User getUser() {
 		return user;
 	}
-
 	public void setUser(User user) {
 		this.user = user;
 	}
-
 	public List<MitgliedModel> getMitglieder() {
 		return mitglieder;
 	}
-
 	public void setMitglieder(List<MitgliedModel> mitglieder) {
 		this.mitglieder = mitglieder;
 	}
-
 	public MitgliedModel getMitglied() {
 		return mitglied;
 	}
-
 	public void setMitglied(MitgliedModel mitglied) {
 		this.mitglied = mitglied;
 	}
-
 	public List<AktivitaetModel> getAktivitaeten() {
 		return aktivitaeten;
 	}
-
 	public void setAktivitaeten(List<AktivitaetModel> aktivitaeten) {
 		this.aktivitaeten = aktivitaeten;
 	}
-
 	public AktivitaetModel getAktivitaet() {
 		return aktivitaet;
 	}
-
 	public void setAktivitaet(AktivitaetModel aktivitaet) {
 		this.aktivitaet = aktivitaet;
 	}
-
 	public List<TerminModel> getTermine() {
 		return termine;
 	}
-
 	public void setTermine(List<TerminModel> termine) {
 		this.termine = termine;
 	}
-
 	public TerminModel getTermin() {
 		return termin;
 	}
-
 	public void setTermin(TerminModel termin) {
 		this.termin = termin;
 	}
-
 	public List<KursTerminModel> getTrainerTermine() {
 		return trainerTermine;
 	}
-
 	public void setTrainerTermine(List<KursTerminModel> trainerTermine) {
 		this.trainerTermine = trainerTermine;
 	}
-
 	public KursTerminModel getTrainerTermin() {
 		return trainerTermin;
 	}
-
 	public void setTrainerTermin(KursTerminModel trainerTermin) {
 		this.trainerTermin = trainerTermin;
 	}
-
 	public List<MitgliedModel> getTerminMitglieder() {
 		return terminMitglieder;
 	}
-
 	public void setTerminMitglieder(List<MitgliedModel> terminMitglieder) {
 		this.terminMitglieder = terminMitglieder;
 	}
-
 	public MitgliedModel getTerminMitglied() {
 		return terminMitglied;
 	}
-
 	public void setTerminMitglied(MitgliedModel terminMitglied) {
 		this.terminMitglied = terminMitglied;
 	}
-
+	public AktivitaetModel getAktivitaetInfo() {
+		return aktivitaetInfo;
+	}
+	public void setAktivitaetInfo(AktivitaetModel aktivitaetInfo) {
+		this.aktivitaetInfo = aktivitaetInfo;
+	}
 }

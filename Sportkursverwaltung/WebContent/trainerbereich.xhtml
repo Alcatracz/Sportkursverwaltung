@@ -14,153 +14,154 @@
 <h:body>
 	<f:view>
 		<h:form id="mainform">
-			<f:loadBundle basename="messages" var="msg" />
-			<div class="headblock">
-				<h:outputLink value="trainerbereich.xhtml" styleClass="sitelink">Trainerbereich</h:outputLink>
-				<h:outputLink value="kurse.xhtml" styleClass="sitelink">Kurse</h:outputLink>
-				<h:outputLink value="profil.xhtml" styleClass="sitelink">Mein Profil</h:outputLink>
-				<h:outputLink value="termine.xhtml" styleClass="sitelink">Meine Termine</h:outputLink>
-				<h:commandLink value="Abmelden" action="#{loginController.logout}" />
-			</div>
-			<p:tabView>
-				<p:tab title="Mitglieder">
+		<f:loadBundle basename="messages" var="msg" />
+		
+		<div class="headblock">
+			<h:outputLink value="trainerbereich.xhtml" styleClass="sitelink">Trainerbereich</h:outputLink>
+			<h:outputLink value="kurse.xhtml" styleClass="sitelink">Kurse</h:outputLink>
+			<h:outputLink value="profil.xhtml" styleClass="sitelink">Mein Profil</h:outputLink>
+			<h:outputLink value="termine.xhtml" styleClass="sitelink">Meine Termine</h:outputLink>
+			<h:commandLink value="Abmelden" action="#{loginController.logout}" />
+		</div>
+			
+		<p:tabView>
+			<p:tab title="Mitglieder">
 				<p:commandButton value="Erstellen" update=":detail" oncomplete="PF('detail').show();" />
 				
-					<h:dataTable value="#{trainerbereichController.mitglieder}" var="curmitglied"
-styleClass="order-table">
+				<h:dataTable value="#{trainerbereichController.mitglieder}" var="curmitglied"
+					styleClass="order-table">
+					
 						<h:column headerClass="customHeader">
-         #{curmitglied.vorname} #{curmitglied.nachname}
-        </h:column>
+         					#{curmitglied.vorname} #{curmitglied.nachname}
+        				</h:column>
+        				
 						<h:column headerClass="customHeader">
 							<h:commandButton action="#{trainerbereichController.loescheMitglied(curmitglied)}" value="Löschen" styleClass="buttonClass" />
 						</h:column>
-					</h:dataTable>
-				</p:tab>
+						
+				</h:dataTable>
+			</p:tab>
 				
-				<p:tab title="Aktivitäten">
+			<p:tab title="Aktivitäten">
 				<p:commandButton value="Erstellen" update=":detail2" oncomplete="PF('detail2').show();" />
 				
-					<h:dataTable value="#{trainerbereichController.aktivitaeten}" var="curaktiv"
-styleClass="order-table">
-						<h:column headerClass="customHeader">
-         #{curaktiv.name}
-        </h:column>
-						<h:column headerClass="customHeader">
-							<p:commandButton action="#{trainerbereichController.setAktivitaetInfo(curaktiv)}"
+				<h:dataTable value="#{trainerbereichController.aktivitaeten}" var="curaktiv"
+					styleClass="order-table">
+					<h:column headerClass="customHeader">
+         				#{curaktiv.name}
+        			</h:column>
+        				
+					<h:column headerClass="customHeader">
+						<p:commandButton action="#{trainerbereichController.setAktivitaetInfo(curaktiv)}"
 							value="Termine verwalten" update=":detail3" oncomplete="PF('detail3').show();" 
 							actionListener="#{trainerbereichController.ladeTermine(curaktiv.id)}">
-							<f:ajax execute="@form" render="@none"></f:ajax>
-							</p:commandButton>
-						</h:column>
-						<h:column headerClass="customHeader">
-							<h:commandButton action="#{trainerbereichController.loescheAktivitaet(curaktiv)}" value="Löschen" styleClass="buttonClass" />
-						</h:column>
-					</h:dataTable>
-				</p:tab>
-		<p:tab title="Termine">
-		<h:dataTable value="#{trainerbereichController.trainerTermine}" var="curtermin"
-         styleClass="order-table">
-        <h:column headerClass="customHeader">
-         #{curtermin.name}
-        </h:column>
-        <h:column headerClass="customHeader">
-         #{curtermin.startUhrzeit}-#{curtermin.endUhrzeit}
-        </h:column>
-        <h:column headerClass="customHeader">
-        <p:commandButton value="Info" action="#{trainerbereichController.setTrainerTermin(curtermin)}" 
-          update=":detail4" oncomplete="PF('detail4').show();"
-          actionListener="#{trainerbereichController.ladeTerminDetails(curtermin.terminId)}" >
-          </p:commandButton>
-        </h:column>
-         </h:dataTable>
-	
-
-
-		</p:tab>
-				</p:tabView>
+						<f:ajax execute="@form" render="@none"></f:ajax>
+						</p:commandButton>
+					</h:column>
+						
+					<h:column headerClass="customHeader">
+						<h:commandButton action="#{trainerbereichController.loescheAktivitaet(curaktiv)}" value="Löschen" styleClass="buttonClass" />
+					</h:column>
+						
+				</h:dataTable>
+			</p:tab>
+			
+			<p:tab title="Termine">
+				<h:dataTable value="#{trainerbereichController.trainerTermine}" var="curtermin"
+         			styleClass="order-table">
+         			
+       				<h:column headerClass="customHeader">
+        				 #{curtermin.name}
+        			</h:column>
+        			
+        			<h:column headerClass="customHeader">
+         				#{curtermin.startUhrzeit}-#{curtermin.endUhrzeit}
+       				</h:column>
+       				
+       			 	<h:column headerClass="customHeader">
+        				<p:commandButton value="Info" action="#{trainerbereichController.setTrainerTermin(curtermin)}" 
+          					update=":detail4" oncomplete="PF('detail4').show();"
+          					actionListener="#{trainerbereichController.ladeTerminDetails(curtermin.terminId)}" >
+          				</p:commandButton>
+        			</h:column>
+         		</h:dataTable>
+         	</p:tab>
+		</p:tabView>
 	
 		</h:form>
 
 		<p:dialog header="Neues Mitglied" id="detail" widgetVar="detail"
 			modal="true" resizable="false" width="375" height="400">
+			
 			<h:form>
-				<p>Vorname: <p:inputText value="#{trainerbereichController.mitglied.vorname}">
-		</p:inputText> </p>
-				<p>Nachname:  <p:inputText value="#{trainerbereichController.mitglied.nachname}">
-		</p:inputText> </p>
-				<p>Email:  <p:inputText value="#{trainerbereichController.mitglied.email}">
-		</p:inputText> </p>
-				<p>Trainer <h:selectBooleanCheckbox value ="#{trainerbereichController.mitglied.istTrainer}">
-		 </h:selectBooleanCheckbox></p>
+				<p>Vorname: <p:inputText value="#{trainerbereichController.mitglied.vorname}"></p:inputText> </p>
+				<p>Nachname:  <p:inputText value="#{trainerbereichController.mitglied.nachname}"></p:inputText> </p>
+				<p>Email:  <p:inputText value="#{trainerbereichController.mitglied.email}"></p:inputText> </p>
+				<p>Trainer <h:selectBooleanCheckbox value ="#{trainerbereichController.mitglied.istTrainer}"></h:selectBooleanCheckbox></p>
 				<p:commandButton action="#{trainerbereichController.speicherNeuesMitglied}" value="Hinzufügen"
 					 update=":mainform"/>
 			</h:form>
 		</p:dialog>
 		
+		
 		<p:dialog header="Neues Aktivität" id="detail2" widgetVar="detail2"
 			modal="true" resizable="false" width="375" height="400">
 			<h:form>
-				<p>Name: <p:inputText value="#{trainerbereichController.aktivitaet.name}">
-		</p:inputText> </p>
-				<p>Trainer:  <p:inputText value="#{trainerbereichController.aktivitaet.trainer}">
-		</p:inputText> </p>
-				<p>Teilnehmeranzahl:  <p:inputText value="#{trainerbereichController.aktivitaet.teilnehmer}">
-		</p:inputText> </p>
-				<p>Beschreibung: <p:inputTextarea value ="#{trainerbereichController.aktivitaet.beschreibung}">
-		 </p:inputTextarea></p>
+				<p>Name: <p:inputText value="#{trainerbereichController.aktivitaet.name}"></p:inputText> </p>
+				<p>Trainer:  <p:inputText value="#{trainerbereichController.aktivitaet.trainer}"></p:inputText> </p>
+				<p>Teilnehmeranzahl:  <p:inputText value="#{trainerbereichController.aktivitaet.teilnehmer}"></p:inputText> </p>
+				<p>Beschreibung: <p:inputTextarea value ="#{trainerbereichController.aktivitaet.beschreibung}"></p:inputTextarea></p>
 				<p:commandButton action="#{trainerbereichController.speicherNeueAktivitaet}" value="Hinzufügen"
 					 update=":mainform" />
 			</h:form>
 		</p:dialog>
 		
+		
 		<p:dialog header="#{trainerbereichController.aktivitaet.name}" id="detail3" widgetVar="detail3"
 			modal="true" resizable="false" width="375" height="400">
+			
 			<h:form>
-				<p>Uhrzeit: <p:inputText value="#{trainerbereichController.termin.startUhrzeit}">
-		</p:inputText>  <p:inputText value="#{trainerbereichController.termin.endUhrzeit}">
-		</p:inputText> Wöchentlich <h:selectBooleanCheckbox value="#{trainerbereichController.termin.istWoechentlich}">
-		</h:selectBooleanCheckbox></p>
-				<p>Tag:  <p:inputText value="#{trainerbereichController.termin.datum}">
-		</p:inputText> </p>
-				<p>Buchbar ab:  <p:inputText value="#{trainerbereichController.termin.buchbarAb}">
-		</p:inputText> </p>
-				<p>Buchbar ab:  <p:inputText value="#{trainerbereichController.termin.buchbarBis}">
-		</p:inputText> </p>
-				<p>Stornierbar bis:  <p:inputText value="#{trainerbereichController.termin.stornierbarBis}">
-		</p:inputText> </p>
+				<p>Uhrzeit: <p:inputText value="#{trainerbereichController.termin.startUhrzeit}"></p:inputText> </p>		 
+				<p><p:inputText value="#{trainerbereichController.termin.endUhrzeit}"></p:inputText></p>
+				<p>Wöchentlich <h:selectBooleanCheckbox value="#{trainerbereichController.termin.istWoechentlich}"></h:selectBooleanCheckbox></p>
+				<p>Tag:  <p:inputText value="#{trainerbereichController.termin.datum}"></p:inputText> </p>
+				<p>Buchbar ab:  <p:inputText value="#{trainerbereichController.termin.buchbarAb}"></p:inputText> </p>
+				<p>Buchbar ab:  <p:inputText value="#{trainerbereichController.termin.buchbarBis}"></p:inputText> </p>
+				<p>Stornierbar bis:  <p:inputText value="#{trainerbereichController.termin.stornierbarBis}"></p:inputText> </p>
+				
 				<h:commandButton action="#{trainerbereichController.speicherNeuenTermin(trainerbereichController.aktivitaetInfo)}" value="Hinzufügen"
 					styleClass="buttonClass" />
-		<h:dataTable value="#{trainerbereichController.termine}" var="curtermin"
-styleClass="order-table">
+					
+				<h:dataTable value="#{trainerbereichController.termine}" var="curtermin"
+					styleClass="order-table">
+					
 						<h:column headerClass="customHeader">
-         #{curtermin.datum} 
-        </h:column>
-		<h:column headerClass="customHeader">
-	    <h:commandButton action="#{trainerbereichController.loescheTermin(curtermin)}" value="Löschen" styleClass="buttonClass" />
-		</h:column>
-</h:dataTable>
+         					#{curtermin.datum} 
+        				</h:column>
+        				
+						<h:column headerClass="customHeader">
+	   	 					<h:commandButton action="#{trainerbereichController.loescheTermin(curtermin)}" value="Löschen" styleClass="buttonClass" />
+						</h:column>
+				</h:dataTable>
 			</h:form>
 		</p:dialog>
 		
 		<p:dialog header="Details" id="detail4" widgetVar="detail4"
 			modal="true" resizable="false" width="375" height="400">
 			<h:form>
-				<p>Trainer: <h:outputText value="#{trainerbereichController.trainerTermin.trainer}">
-		</h:outputText> </p>
-				<p>Beschreibung:  <h:outputText value="#{trainerbereichController.trainerTermin.beschreibung}">
-		</h:outputText> </p>
-				<p>Buchbar ab:  <h:outputText value="#{trainerbereichController.trainerTermin.buchbarAb}">
-		</h:outputText> </p>
-				<p>Buchbar bis: <h:outputText value ="#{trainerbereichController.trainerTermin.buchbarBis}">
-		 </h:outputText></p>
-				<p>Stornierbar bis: <h:outputText value ="#{trainerbereichController.trainerTermin.stornierbarBis}">
-		 </h:outputText></p>
+			
+				<p>Trainer: <h:outputText value="#{trainerbereichController.trainerTermin.trainer}"></h:outputText> </p>
+				<p>Beschreibung:  <h:outputText value="#{trainerbereichController.trainerTermin.beschreibung}"></h:outputText> </p>
+				<p>Buchbar ab:  <h:outputText value="#{trainerbereichController.trainerTermin.buchbarAb}"></h:outputText> </p>
+				<p>Buchbar bis: <h:outputText value ="#{trainerbereichController.trainerTermin.buchbarBis}"></h:outputText></p>
+				<p>Stornierbar bis: <h:outputText value ="#{trainerbereichController.trainerTermin.stornierbarBis}"></h:outputText></p>
+				
 		 		<h:dataTable value="#{trainerbereichController.terminMitglieder}" var="mitgliedcurr"
-         styleClass="order-table">
+         			styleClass="order-table">
 						<h:column headerClass="customHeader">
-         #{mitgliedcurr.vorname} #{mitgliedcurr.nachname}
-        </h:column>
-        </h:dataTable>
+         					#{mitgliedcurr.vorname} #{mitgliedcurr.nachname}
+        				</h:column>
+        		</h:dataTable>
 			</h:form>
 		</p:dialog>
 		
