@@ -42,7 +42,7 @@ public class KurseController implements KurseControllerInterface{
 		calendar.set(Calendar.DAY_OF_WEEK,calendar.getFirstDayOfWeek());
 		DateFormat df = new SimpleDateFormat("E, dd. MMM yyyy");
 		
-		for(int i = 1; i<=7; i++) {
+		for(int i = 1; i<=14; i++) {
 			String tag= df.format(calendar.getTime());
 			calendar.add(Calendar.DATE, 1);
 			//System.out.println(tag);
@@ -137,31 +137,66 @@ public class KurseController implements KurseControllerInterface{
 	        		terminModel.setIstBuchbar(false);
 	        		terminModel.setGesperrt(true);
 	        	}
-	        	DateFormat format = new SimpleDateFormat("dd.m.yyyy");
+	        	DateFormat format = new SimpleDateFormat("dd.mm.yyyy");
 	        	Date date = format.parse(rs.getString("datum"));
+	        	
 	        	Calendar calender = Calendar.getInstance();
+	        	System.out.println("currDatum: "+calender.getTime().toString());
+	        	int currWeek = calender.get(Calendar.WEEK_OF_YEAR);
 	        	calender.setTime(date);
+	        	System.out.println("seleDatum: "+calender.getTime().toString());
+	        	System.out.println("CurrWeek: "+currWeek+"/ seleWeek: "+calender.get(Calendar.DAY_OF_WEEK));
+	        	
 	        	switch(calender.get(Calendar.DAY_OF_WEEK)) {
+	        	
 	        	case 1:
-	        		wochenListe.get(6).add(terminModel);
+	        		if(calender.get(Calendar.WEEK_OF_YEAR)==currWeek) {
+	        			wochenListe.get(6).add(terminModel);
+	        		}else {
+	        			wochenListe.get(7).add(terminModel);
+	        		}	   
 	        		break;
 	        	case 2:
-	        		wochenListe.get(0).add(terminModel);
+	        		if(calender.get(Calendar.WEEK_OF_YEAR)==currWeek) {
+	        			wochenListe.get(0).add(terminModel);
+	        		}else {
+	        			wochenListe.get(8).add(terminModel);
+	        		}
 	        		break;
 	        	case 3:
-	        		wochenListe.get(1).add(terminModel);
+	        		if(calender.get(Calendar.WEEK_OF_YEAR)==currWeek) {
+	        			wochenListe.get(1).add(terminModel);
+	        		}else {
+	        			wochenListe.get(9).add(terminModel);
+	        		}
 	        		break;
 	        	case 4:
-	        		wochenListe.get(2).add(terminModel);
+	        		if(calender.get(Calendar.WEEK_OF_YEAR)==currWeek) {
+	        			wochenListe.get(2).add(terminModel);
+	        		}else {
+	        			wochenListe.get(10).add(terminModel);
+	        		}
 	        		break;
 	        	case 5:
-	        		wochenListe.get(3).add(terminModel);
+	        		if(calender.get(Calendar.WEEK_OF_YEAR)==currWeek) {
+	        			wochenListe.get(3).add(terminModel);
+	        		}else {
+	        			wochenListe.get(11).add(terminModel);
+	        		}
 	        		break;
 	        	case 6:
-	        		wochenListe.get(4).add(terminModel);
+	        		if(calender.get(Calendar.WEEK_OF_YEAR)==currWeek) {
+	        			wochenListe.get(4).add(terminModel);
+	        		}else {
+	        			wochenListe.get(12).add(terminModel);
+	        		}
 	        		break;
 	        	case 7:
-	        		wochenListe.get(5).add(terminModel);
+	        		if(calender.get(Calendar.WEEK_OF_YEAR)==currWeek) {
+	        			wochenListe.get(5).add(terminModel);
+	        		}else {
+	        			wochenListe.get(13).add(terminModel);
+	        		}
 	        		break;	
 	        	}   	
 	        	

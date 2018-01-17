@@ -39,7 +39,7 @@ public class TimeManagement {
 	
 	@Schedule(hour="*",minute="*",second="*/10",persistent=false)
 	public void test() {
-		System.out.println("test()");
+		//System.out.println("test()");
 		
 		List<TerminModelTimeManagement> termine = ladeTermine();
 
@@ -70,17 +70,17 @@ public class TimeManagement {
 			String formatedbisdate = buchbarbisdate.format(formatter);
 			String formaetdstodate = stornierbarbisdate.format(formatter);
 			
-			System.out.println("ENDE: "+formatedcurrdate );
+			//System.out.println("ENDE: "+formatedcurrdate );
 			
 			try {
 				Date current = format.parse(formatedcurrdate);
 				Date buchBarAb = format.parse(formatedabdate);
 				Date buchBarBis = format.parse(formatedbisdate);
 				Date stornierbarBis = format.parse(formaetdstodate);
-				System.out.println("current"+current);
-				System.out.println("buchBarAb"+buchBarAb);
-				System.out.println("buchBarBis"+buchBarBis);
-				System.out.println("stornierbarBis"+stornierbarBis);
+				//System.out.println("current"+current);
+				//System.out.println("buchBarAb"+buchBarAb);
+				//System.out.println("buchBarBis"+buchBarBis);
+				//System.out.println("stornierbarBis"+stornierbarBis);
 				
 				if (current.before(buchBarBis) && current.after(buchBarAb)) {
 					updateTermin (termine.get(i),"istbuchbar",true);

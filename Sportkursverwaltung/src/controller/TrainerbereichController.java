@@ -90,7 +90,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	public void ladeMitglieder() {
 		System.out.println("TrainerbereichController.ladeMitglieder ()");
 		
-		if(user.isIstTrainer()) {
+		
 			Connection c = null;
 		    PreparedStatement pstmt = null;
 		    String sql="SELECT * FROM mitglied;";
@@ -125,13 +125,13 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 		         System.err.println(e.getClass().getName()+": "+e.getMessage());
 		         System.exit(0);
 		      }
-		}	
+			
 	}
 
 	@Override
 	public void ladeAktivitaeten() {
 		System.out.println("TrainerbereichController.ladeAktivitaeten ()");
-		if(user.isIstTrainer()) {
+		
 			Connection c = null;
 		    PreparedStatement pstmt = null;
 			String sql="SELECT * FROM aktivitaet;";
@@ -164,7 +164,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 		         System.err.println(e.getClass().getName()+": "+e.getMessage());
 		         System.exit(0);
 		      }
-		}
+		
 	}
 
 	@Override
@@ -494,7 +494,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	public void ladeTrainerTermine() {
 		System.out.println("TrainerbereichController.ladeTrainerTermine ()");
 		
-		if(user.isIstTrainer()) {
+		
 			Connection c = null;
 			Statement stmt = null;
 			String sql="SELECT a.name, a.trainer, a.beschreibung, a.teilnehmer, t.datum, t.startuhrzeit, t.enduhrzeit, t.id"
@@ -535,7 +535,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 				    System.err.println(e.getClass().getName()+": "+e.getMessage());
 				    System.exit(0);			    
 				}
-		}		
+			
 	}
 
 	@Override
