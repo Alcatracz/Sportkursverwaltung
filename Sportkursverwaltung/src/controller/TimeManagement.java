@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -28,18 +29,26 @@ public class TimeManagement {
 	private String dbUser = "postgres";
 	private String dbPasswort = "postgres";
 	private List<TerminModelTimeManagement> trainerTermine = new ArrayList<TerminModelTimeManagement>();
+	private List<TerminModelTimeManagement> freischaltTermine = new ArrayList<TerminModelTimeManagement>();
 	LocalDate localDate;
-
+	LocalDate localDate2;
+	LocalDate buchbarabdate;
+	LocalDateTime ldt;
+//    ldt = LocalDateTime.now();
+//    ldt.mi
 	
-	@Schedule(hour="*",minute="*",second="*/10",persistent=false)
+	@Schedule(hour="*",minute="*",second="*/15",persistent=false)
 	public void test() {
-		ladeTrainerTermine();
+		ladeTrainerTermine(trainerTermine);
 		trainerTermine.size();
 	       localDate = LocalDate.now().minusDays(1);
 	       DateTimeFormatter.ofPattern("yyy-MM-dd").format(localDate);
-	    
+	       buchbarabdate = LocalDate.now().minusDays(1);
+
 		for(int i=0;i<trainerTermine.size();i++) {
 			String date1 = trainerTermine.get(i).getDatum();
+			System.out.println(trainerTermine.get(i).getStartUhrzeit());
+			
 			System.out.println("boolean"+trainerTermine.get(i).isIstWoechentlich());
 
 			if(date1.equals(localDate.toString())){
@@ -51,8 +60,10 @@ public class TimeManagement {
 			}
 		}
 		trainerTermine.clear();
+		
 	}
 	
+
 	
 	private void loescheAltenTermin(TerminModelTimeManagement termin) {
 		Connection c = null;
@@ -91,7 +102,7 @@ public class TimeManagement {
 	}
 
 
-	public void ladeTrainerTermine() {
+	public void ladeTrainerTermine(List<TerminModelTimeManagement> term) {
 		// TODO Auto-generated method stub
 	
 				 Connection c = null;
@@ -115,9 +126,9 @@ public class TimeManagement {
 		
 			        	TerminModelTimeManagement terminModel = new TerminModelTimeManagement();
 			        	terminModel.setId(rs.getInt("id"));
-			        	terminModel.setDatum(rs.getDate("datum").toString());
-			        	terminModel.setStartUhrzeit(rs.getTime("startuhrzeit").toString());
-			        	terminModel.setEndUhrzeit(rs.getTime("enduhrzeit").toString());
+			        	terminModel.setDatum(rs.getString("datum"));
+			        	terminModel.setStartUhrzeit(rs.getString("startuhrzeit"));
+			        	terminModel.setEndUhrzeit(rs.getString("enduhrzeit"));
 			        	terminModel.setIstWoechentlich(rs.getBoolean("istwoechentlich"));
 			        	System.out.println(terminModel.isIstWoechentlich());
 			        	terminModel.setStornierbarBis(rs.getInt("stornierbarbis"));
@@ -131,7 +142,7 @@ public class TimeManagement {
 			        	
 			     	
 			        	
-			        	trainerTermine.add(terminModel);
+			        	term.add(terminModel);
 			         }
 			         rs.close();
 			         stmt.close();
