@@ -72,11 +72,33 @@ li .sitelink:hover:not(.active) {
 	color: #333;
 }
 
+.tabviewclass{
+	width:70%;
+	margin-top:20px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
 .pdatatable2{
 	width:92%;
 	float:right;
 	background-color: #333;
 	color: #333;
+}
+
+
+h1{
+  font-family: "Helvetica";
+  font-size: 32px;
+  text-align: center;
+  color: #a3a8b1;
+}
+
+h2{
+  font-family: "Helvetica";
+  font-size: 16px;
+  text-align: left;
+  color: #a3a8b1;
 }
 
 body {

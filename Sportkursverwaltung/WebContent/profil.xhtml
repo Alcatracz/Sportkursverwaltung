@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:h="http://xmlns.jcp.org/jsf/html"
-	  xmlns:f="http://xmlns.jcp.org/jsf/core">
+	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
 <h:head>
     <h:outputStylesheet library="css" name="profil.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -14,12 +15,14 @@
 	<h:form>
 	<f:loadBundle basename="messages" var="msg"/>
 
-	<div class="headblock">
-		<h:outputLink value="trainerbereich.xhtml" styleClass="sitelink" disabled="#{!user.istTrainer}" rendered="#{user.istTrainer}">Trainerbereich</h:outputLink>
-		<h:outputLink value="kurse.xhtml" styleClass="sitelink">Kurse</h:outputLink>
-		<h:outputLink value="profil.xhtml" styleClass="sitelink">Mein Profil</h:outputLink>
-		<h:outputLink value="termine.xhtml" styleClass="sitelink">Meine Termine</h:outputLink>
-		<h:commandLink value = "Abmelden" action = "#{loginController.logout}" />
+    <div class="headblock">
+		<ul>
+			<li><h:outputLink value="trainerbereich.xhtml" styleClass="sitelink" disabled="#{!user.istTrainer}" rendered="#{user.istTrainer}">Trainerbereich</h:outputLink></li>
+			<li><h:outputLink value="kurse.xhtml" styleClass="sitelink">Kurse</h:outputLink></li>
+			<li><h:outputLink value="profil.xhtml" styleClass="sitelink">Mein Profil</h:outputLink></li>
+			<li><h:outputLink value="termine.xhtml" styleClass="sitelink">Meine Termine</h:outputLink></li>
+			<li style="float:right"> <p:commandLink value = "Abmelden" styleClass="sitelink" action = "#{loginController.logout }" /></li>
+		</ul>
 	</div>
 	
 	<br/>
@@ -43,7 +46,7 @@
 			<br/>
 			<p>Terminerinnerung <h:inputText value="#{meinProfilController.profilDaten.terminerinnerungZeit}">
 			</h:inputText><br></br> Minuten vorher:</p>
-			<h:commandButton action="#{meinProfilController.speicherProfildaten}" value="Speichern" styleClass="buttonClass"/>
+			<p:commandButton action="#{meinProfilController.speicherProfildaten}" value="Speichern" styleClass="buttonClass"/>
 		</div>
 		
 		<div class="rightblock">
@@ -53,10 +56,10 @@
 		 		readonly="true"></h:outputText></p>		
 			<br/>
 			<p>Neue Email: <h:inputText value="#{meinProfilController.emailNeu}">
-			</h:inputText> <h:commandButton action="#{meinProfilController.emailAendern}" value="Ändern" styleClass="buttonchangeClass"/></p>
+			</h:inputText> <p:commandButton action="#{meinProfilController.emailAendern}" value="Ändern" styleClass="buttonchangeClass"/></p>
 			<br/>
 			<p>Neues Passwort: <h:inputSecret value="#{meinProfilController.passwortNeu}" redisplay="true">
-			</h:inputSecret><h:commandButton action="#{meinProfilController.passwortAendern}" value="Ändern" styleClass="buttonchangeClass"/></p>
+			</h:inputSecret><p:commandButton action="#{meinProfilController.passwortAendern}" value="Ändern" styleClass="buttonchangeClass"/></p>
 		</div>
 	</section>
 	</h:form>

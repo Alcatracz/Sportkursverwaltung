@@ -5,7 +5,7 @@
 	  xmlns:f="http://xmlns.jcp.org/jsf/core"
 	  xmlns:p="http://primefaces.org/ui">
 <h:head>
-    <h:outputStylesheet library="css" name="termine.css" />
+    <h:outputStylesheet library="css" name="kurse.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <meta http-equiv="pragma" content="no-cache" />
 <title>Termine</title>
@@ -15,13 +15,16 @@
 	<h:form id="master">
 		<f:loadBundle basename="messages" var="msg"/>
 		
-		<div class="headblock">
-		<h:outputLink value="trainerbereich.xhtml" styleClass="sitelink" disabled="#{!user.istTrainer}" rendered="#{user.istTrainer}">Trainerbereich </h:outputLink>
-		<h:outputLink value="kurse.xhtml" styleClass="sitelink">Kurse</h:outputLink>
-		<h:outputLink value="profil.xhtml" styleClass="sitelink">Mein Profil</h:outputLink>
-		<h:outputLink value="termine.xhtml" styleClass="sitelink">Meine Termine</h:outputLink>
-		<h:commandLink value = "Abmelden" action = "#{loginController.logout}" />
-		</div>
+    <div class="headblock">
+		<ul>
+			<li><h:outputLink value="trainerbereich.xhtml" styleClass="sitelink" disabled="#{!user.istTrainer}" rendered="#{user.istTrainer}">Trainerbereich</h:outputLink></li>
+			<li><h:outputLink value="kurse.xhtml" styleClass="sitelink">Kurse</h:outputLink></li>
+			<li><h:outputLink value="profil.xhtml" styleClass="sitelink">Mein Profil</h:outputLink></li>
+			<li><h:outputLink value="termine.xhtml" styleClass="sitelink">Meine Termine</h:outputLink></li>
+			<li style="float:right"> <p:commandLink value = "Abmelden" styleClass="sitelink" action = "#{loginController.logout }" /></li>
+		</ul>
+	</div>
+	
 		<h1>Meine Termine</h1>
       	
 		<h:dataTable value="#{meineTermineController.termine}" var="termin"
