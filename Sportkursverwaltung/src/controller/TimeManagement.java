@@ -37,10 +37,10 @@ public class TimeManagement {
 		trainerTermine.size();
 	       localDate = LocalDate.now().minusDays(1);
 	       DateTimeFormatter.ofPattern("yyy-MM-dd").format(localDate);
-	       System.out.println("Current Date"+localDate.toString());
+	    
 		for(int i=0;i<trainerTermine.size();i++) {
 			String date1 = trainerTermine.get(i).getDatum();
-			System.out.println(date1);
+			
 			if(date1.equals(localDate.toString())){
 				if(trainerTermine.get(i).isIstWoechentlich()) {
 					erstelleNeuenTermin(trainerTermine.get(i));
@@ -64,7 +64,7 @@ public class TimeManagement {
 	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
+	      
 	        
 	         pstmt = c.prepareStatement(sql);
 	         pstmt.setInt(1, termin.getId());
@@ -91,7 +91,7 @@ public class TimeManagement {
 
 	public void ladeTrainerTermine() {
 		// TODO Auto-generated method stub
-		System.out.println("ladeTrainerTermine");
+	
 				 Connection c = null;
 			      Statement stmt = null;
 			      String sql="SELECT a.name, a.trainer, a.beschreibung, a.teilnehmer, t.datum, t.startuhrzeit, t.enduhrzeit, t.id"
@@ -105,7 +105,7 @@ public class TimeManagement {
 			            		dbUser, dbPasswort);
 			         
 			         c.setAutoCommit(false);
-			         System.out.println("Opened database successfully");
+			         
 			        
 			         stmt = c.createStatement();
 			         ResultSet rs = stmt.executeQuery(sql);
@@ -137,8 +137,7 @@ public class TimeManagement {
 			         System.exit(0);
 			      }
 			     
-			      System.out.println("Operation done successfully");
-			      System.out.println("LISTE: "+trainerTermine.size());
+			    
 		
 	}
 	
@@ -157,7 +156,7 @@ public class TimeManagement {
 	            		dbUser, dbPasswort);
 	         
 	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
+	       
 	        DateFormat timeformatter = new SimpleDateFormat("HH:MM:SS");
 	        
 	         pstmt = c.prepareStatement(sql);
@@ -187,7 +186,7 @@ public class TimeManagement {
 	      }
 	      trainerTermine.add(termin);
 	     termin = new TerminModelTimeManagement();
-	      System.out.println("Operation done successfully");
+	     
 	      //ladeTermine(currentAktivitaetId);
 		return null;
 	}

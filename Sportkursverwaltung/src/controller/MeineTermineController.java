@@ -37,28 +37,26 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 		ladeTermine();
 	}
 	
+	@Override
 	public void ladeTermine() {
 		System.out.println("MeineTermineController.ladeTermine ()");
 		
-		//System.out.println("UserID:"+user.getId());
-	      Connection c = null;
-	      PreparedStatement pstmt = null;
-			String sql="SELECT tl.id, t.datum, t.enduhrzeit, t.startuhrzeit, a.name, a.beschreibung, a.trainer FROM terminliste tl INNER JOIN termin t ON "
-					+ "tl.terminid = t.id INNER JOIN aktivitaet a ON t.aktivitaetid = a.id WHERE tl.mitgliedid = ?;";
-	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
-	         
-	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
-	        
-	         pstmt = c.prepareStatement(sql);
-	         pstmt.setInt(1, user.getId());
-	         ResultSet rs = pstmt.executeQuery();
-	         while(rs.next()) {
+		Connection c = null;
+	    PreparedStatement pstmt = null;
+		String sql="SELECT t.id, t.datum, t.enduhrzeit, t.startuhrzeit, t.iststornierbar, "
+				+ "a.name, a.beschreibung, a.trainer "
+				+ "FROM terminliste tl INNER JOIN termin t ON "
+				+ "tl.terminid = t.id INNER JOIN aktivitaet a "
+				+ "ON t.aktivitaetid = a.id WHERE tl.mitgliedid = ?;";
+		try {
+			Class.forName("org.postgresql.Driver");
+	        c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad ,dbUser, dbPasswort);
+	        c.setAutoCommit(true);
+    
+	        pstmt = c.prepareStatement(sql);
+	        pstmt.setInt(1, user.getId());
+	        ResultSet rs = pstmt.executeQuery();
+	        while(rs.next()) {
 	        	MeineTermineModel terminModel = new MeineTermineModel();
 	        	
 	        	terminModel.setId(rs.getInt("id"));
@@ -67,7 +65,16 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	        	terminModel.setBeschreibung(rs.getString("beschreibung"));
 	        	terminModel.setDatum(rs.getDate("datum").toString());
 	        	terminModel.setStartUhrzeit(rs.getTime("startuhrzeit").toString());
-	        	terminModel.setEndUhrzeit(rs.getTime("enduhrzeit").toString());	        	
+	        	terminModel.setEndUhrzeit(rs.getTime("enduhrzeit").toString());	  
+	        	terminModel.setStornierbar(rs.getBoolean("iststornierbar"));
+	      
+	        	if(terminModel.isStornierbar()) {
+	        		terminModel.setGesperrt(false);
+	        		terminModel.setActionName("Absagen");
+	        	} else {
+	        		terminModel.setActionName("NichtStornierbar");
+	        		terminModel.setGesperrt(true);
+	        	}
 	        	
 	        	termine.add(terminModel);
 	         }
@@ -81,77 +88,73 @@ public class MeineTermineController implements MeineTermineControllerInterace {
 	         System.exit(0);
 	      }
 	     
-	      System.out.println("Operation done successfully");
+	   
 	}
-	
-	public String absagen() {
-		System.out.println("MeineTermineController.absagen ()");
+	@Override
+	public String absagen(MeineTermineModel termin) {
+		System.out.println("MeineTermineController.absagen ()"+termin.getId());
 		
-		int id = termin.getId();
-		System.out.println("TERMIN_ID: " + id);
-		System.out.println("MITGLIED_ID: " + user.getId());
-		System.out.println("Rofl Absage");
-		termine.remove(termin);
-		
-		
-	      Connection c = null;
-	      PreparedStatement pstmt = null;
-	      String sql = "DELETE FROM terminliste WHERE id = ? AND mitgliedid=?";
+		Connection c = null;
+	    PreparedStatement pstmt = null;
+	    String delete = "DELETE FROM terminliste WHERE terminid = ? AND mitgliedid=?";
+	    String check = "SELECT iststornierbar FROM termin WHERE id=?;";
 	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
+	    try {
+	    	Class.forName("org.postgresql.Driver");
+	        c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
 	         
-	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
+	        c.setAutoCommit(true);
 	        
-	         pstmt = c.prepareStatement(sql);
-	         pstmt.setInt(1, id);
-	         pstmt.setInt(2, user.getId());
-	      
-	         pstmt.executeUpdate();
-	         pstmt.close();
-	         c.close();
+	        pstmt = c.prepareStatement(check);
+	        pstmt.setInt(1, termin.getId());
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        if(rs.next()) {
+	        	if(rs.getBoolean("iststornierbar")) {
+	        		System.out.println("UserID:"+user.getId()+" /TerminID: "+termin.getId());
+	    	        pstmt = c.prepareStatement(delete);
+	    	        pstmt.setInt(1, termin.getId());
+	    	        pstmt.setInt(2, user.getId());
+	    	      
+	    	        pstmt.executeUpdate();
+	        	} else {
+	        		termin.setActionName("Nicht Stornierbar");
+	        		termin.setGesperrt(true);
+	        	}
+	        }
+
+	        pstmt.close();
+	        c.close();
 	         
 	      } catch (Exception e) {
-	         e.printStackTrace();
-	         System.err.println(e.getClass().getName()+": "+e.getMessage());
-	         System.exit(0);
+	        e.printStackTrace();
+	        System.err.println(e.getClass().getName()+": "+e.getMessage());
+	        System.exit(0);
 	      }
-	     
-	      System.out.println("Operation done successfully");
-		
-		//Termin aus Datenbank löschen
+	    termine.remove(termin);
 		return null;
 	}
 
+	//------------------------------------------------------------------
+	//------------GETTER UND SETTER-------------------------------------
+	//------------------------------------------------------------------
 	
-	
-	// Setter und Getter
 	public List<MeineTermineModel> getTermine() {
 		return termine;
 	}
-
 	public void setTermine(List<MeineTermineModel> termine) {
 		this.termine = termine;
 	}
-
 	public MeineTermineModel getTermin() {
 		return termin;
 	}
-
 	public void setTermin(MeineTermineModel termin) {
 		this.termin = termin;
 	}
-
 	public User getUser() {
 		return user;
 	}
-
 	public void setUser(User user) {
 		this.user = user;
 	}
-
 }

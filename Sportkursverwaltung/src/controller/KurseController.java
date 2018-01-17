@@ -30,7 +30,6 @@ public class KurseController implements KurseControllerInterface{
 	private KursTerminModel termin;
 
 	private User user;
-
 	
 	public KurseController() {
 		System.out.println("KurseController ()");
@@ -44,7 +43,7 @@ public class KurseController implements KurseControllerInterface{
 		for(int i = 1; i<=7; i++) {
 			String tag= df.format(calendar.getTime());
 			calendar.add(Calendar.DATE, 1);
-			System.out.println(tag);
+			//System.out.println(tag);
 			KursListeTagModel kltm = new KursListeTagModel();
 			kltm.setTag(tag);
 			wochenListe.add(kltm);
@@ -112,30 +111,29 @@ public class KurseController implements KurseControllerInterface{
 	        	pshero.setInt(2, user.getId());
 	        	ResultSet rshero = pshero.executeQuery();
 	        	int terminmitgliedid=0;
-	        		 while(rshero.next()) {
-	        			 terminmitgliedid=rshero.getInt("id");
-	        		 }
-	        		 pshero.close();
-	        		 rshero.close();
-	        		 
-	        	 //Check ob freier platz
-	        	 //Check ob angemeldet
-
+	        	while(rshero.next()) {
+	        		terminmitgliedid=rshero.getInt("id");
+	        		}
+	        	pshero.close();
+	        	rshero.close();
 	        	
-	        	if(maxTeilnehmer-currTeilnehmmer>0) {
+	        	if(!terminModel.isIstStornierbar()) {
+	        		terminModel.setActionName("Nicht stornierbar");
+	 	        	terminModel.setGesperrt(true);
+	 	        }else if(terminmitgliedid != 0) {
+	    	        terminModel.setActionName("Absagen");
+	    	        terminModel.setGesperrt(false);
+	    	    }else if(!terminModel.isIstBuchbar()) {
+	    	        terminModel.setActionName("Nicht buchbar");
+	    	        terminModel.setGesperrt(true);
+	    	    }else if(terminModel.isIstBuchbar() && maxTeilnehmer-currTeilnehmmer>0) {
 	        		terminModel.setActionName("Teilnehmen");
 	        		terminModel.setIstBuchbar(true);
 	        		terminModel.setGesperrt(false);
-	        	} else {
+	        	} else if (terminModel.isIstBuchbar()){
 	        		terminModel.setActionName("Bereits voll");
 	        		terminModel.setIstBuchbar(false);
 	        		terminModel.setGesperrt(true);
-	        	}
-	        	
-	        	if(terminmitgliedid != 0) {
-	        		terminModel.setActionName("Absagen");
-	        		terminModel.setGesperrt(false);
-	        		//terminModel.setBereitsgebucht(true);
 	        	}
 	        	
 	        	Calendar calender = Calendar.getInstance();
@@ -162,9 +160,7 @@ public class KurseController implements KurseControllerInterface{
 	        	case 7:
 	        		wochenListe.get(5).add(terminModel);
 	        		break;	
-	        	}
-	        	
-	        	
+	        	}   	
 	        	
 	         }
 	        rs.close();
@@ -198,7 +194,7 @@ public class KurseController implements KurseControllerInterface{
 		Connection c = null;
 	    PreparedStatement pstmt = null;
 	    String insert = "INSERT INTO terminliste(terminid,mitgliedid) VALUES (?,?);";
-	    String check = "SELECT buchbar FROM termin WHERE id=?;";
+	    String check = "SELECT istbuchbar FROM termin WHERE id=?;";
 	      
 	    try {
 	    	Class.forName("org.postgresql.Driver");
@@ -210,7 +206,7 @@ public class KurseController implements KurseControllerInterface{
 	        ResultSet rs = pstmt.executeQuery();
 	        
 	        if(rs.next()) {
-	        	if(rs.getBoolean("buchbar")) {
+	        	if(rs.getBoolean("istbuchbar")) {
 	    	        pstmt = c.prepareStatement(insert);
 	    	        pstmt.setInt(1, termin.getId());
 	    	        pstmt.setInt(2, user.getId());
@@ -241,7 +237,7 @@ public class KurseController implements KurseControllerInterface{
 		Connection c = null;
 	    PreparedStatement pstmt = null;
 	    String delete = "DELETE FROM terminliste WHERE terminid = ? AND mitgliedid=?";
-	    String check = "SELECT stornierbar FROM termin WHERE id=?;";
+	    String check = "SELECT iststornierbar FROM termin WHERE id=?;";
 	      
 	    try {
 	    	Class.forName("org.postgresql.Driver");
@@ -254,7 +250,7 @@ public class KurseController implements KurseControllerInterface{
 	        ResultSet rs = pstmt.executeQuery();
 	        
 	        if(rs.next()) {
-	        	if(rs.getBoolean("stornierbar")) {
+	        	if(rs.getBoolean("iststornierbar")) {
 	    	        pstmt = c.prepareStatement(delete);
 	    	        pstmt.setInt(1, termin.getId());
 	    	        pstmt.setInt(2, user.getId());
@@ -285,23 +281,18 @@ public class KurseController implements KurseControllerInterface{
 	public List<KursListeTagModel> getWochenListe() {
 		return wochenListe;
 	}
-
 	public void setWochenListe(List<KursListeTagModel> wochenListe) {
 		this.wochenListe = wochenListe;
 	}
-
 	public KursTerminModel getTermin() {
 		return termin;
 	}
-
 	public void setTermin(KursTerminModel termin) {
 		this.termin = termin;
 	}
-
 	public User getUser() {
 		return user;
 	}
-
 	public void setUser(User user) {
 		this.user = user;
 	}

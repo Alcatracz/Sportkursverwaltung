@@ -16,9 +16,14 @@ public class User {
     	this.passwort = null;
     	this.istTrainer = false;
     	this.id = 0;
-    	this.istAuthentifiziert = false;
-    	
+    	this.istAuthentifiziert = false;  	
     }
+    
+    
+	//------------------------------------------------------------------
+	//------------GETTER UND SETTER-------------------------------------
+	//------------------------------------------------------------------
+    
     public boolean isIstAuthentifiziert() {
 		return istAuthentifiziert;
 	}
@@ -31,7 +36,6 @@ public class User {
 	public void setId(int id) {
 		this.id = id;
 	}
-
     public String getEmail() {
 		return email;
 	}
@@ -50,6 +54,4 @@ public class User {
 	public void setIstTrainer(boolean istTrainer) {
 		this.istTrainer = istTrainer;
 	}
-
-
 }

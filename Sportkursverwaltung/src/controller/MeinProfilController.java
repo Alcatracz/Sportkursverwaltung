@@ -15,6 +15,7 @@ import model.User;
 
 public class MeinProfilController implements MeinProfilControllerInterface {
 
+	private String dbPfad ="localhost:5432/Terminverwaltung";
 	private String dbUser = "postgres";
 	private String dbPasswort = "postgres";
 	
@@ -26,53 +27,35 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	
 
 	public MeinProfilController() {
+		System.out.println("MeinProfilController ()");
 		profilDaten= new ProfilDatenModel();
 	}
 	@PostConstruct
 	public void init() {
+		System.out.println("MeinProfilController.init ()");
 		ladeProfildaten();
 	}
 	
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public ProfilDatenModel getProfilDaten() {
-		return profilDaten;
-	}
-
-	public void setProfilDaten(ProfilDatenModel profilDaten) {
-		this.profilDaten = profilDaten;
-	}
 
 	@Override
 	public void ladeProfildaten() {
-		 Connection c = null;
-	      PreparedStatement pstmt = null;
-	      String sql="SELECT * FROM mitglied WHERE id=?";
+		System.out.println("MeinProfilController.ladeProfilDaten ()");
+		
+		Connection c = null;
+	    PreparedStatement pstmt = null;
+	    String sql = "SELECT * FROM mitglied WHERE id=?";
 	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
-	         
-	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
+	    try {
+	    	Class.forName("org.postgresql.Driver");
+	        c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
+	        c.setAutoCommit(true);    
 	        
-	         pstmt = c.prepareStatement(sql);
-	         pstmt.setInt(1,user.getId());
+	        pstmt = c.prepareStatement(sql);
+	        pstmt.setInt(1,user.getId());
+	  
+	        ResultSet rs = pstmt.executeQuery();
 	         
-	         
-	         ResultSet rs = pstmt.executeQuery();
-	         
-	         while(rs.next()) {
-	        	
-	        	
+	        while(rs.next()) {
 	        	profilDaten.setVorname(rs.getString("vorname"));
 	        	profilDaten.setNachname(rs.getString("nachname"));
 	        	profilDaten.setEmail(rs.getString("email"));
@@ -81,9 +64,7 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	        	profilDaten.setIstBuchungsbestaetigung(rs.getBoolean("istbuchungsbestaetigung"));
 	        	profilDaten.setIstTerminerinnerung(rs.getBoolean("istterminerinnerung"));
 	        	profilDaten.setTerminerinnerungZeit(rs.getInt("terminerinnerungzeit"));
-	        	
-	        
-	        	
+	    	
 	         }
 	         rs.close();
 	         pstmt.close();
@@ -94,26 +75,21 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         System.err.println(e.getClass().getName()+": "+e.getMessage());
 	         System.exit(0);
 	      }
-	     
-	      System.out.println("Operation done successfully");
+   
 	}
 
 	@Override
 	public String speicherProfildaten() {
-		System.out.println("Speichern");
-		System.out.println("BUCHUNGSBESTAETIGUNG: " + profilDaten.isIstBuchungsbestaetigung());
+		System.out.println("MeinProfilController.speicherProfildaten ()");
+		
 		 Connection c = null;
 	      PreparedStatement pstmt = null;
 	      String sql = "UPDATE mitglied SET istbuchungsbestaetigung = ?, istterminerinnerung = ?, terminerinnerungzeit = ? WHERE id = ?;";
 	      
 	      try {
 	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
-	         
+	         c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);         
 	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
 	        
 	         pstmt = c.prepareStatement(sql);
 	         pstmt.setBoolean(1, profilDaten.isIstBuchungsbestaetigung());
@@ -131,36 +107,33 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         System.err.println(e.getClass().getName()+": "+e.getMessage());
 	         System.exit(0);
 	      }
-	     
-	      System.out.println("Operation done successfully");
+
 		return null;	
 	}
 
 	@Override
 	public String emailAendern() {
-		 Connection c = null;
-	      PreparedStatement pstmt = null;
-	      String sql = "UPDATE mitglied SET email = ? WHERE id = ?;";
-	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
-	         
-	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
+		System.out.println("MeinProfilController.emailAendern ()");
+		
+		Connection c = null;
+	    PreparedStatement pstmt = null;
+	    String sql = "UPDATE mitglied SET email = ? WHERE id = ?;";
+	    try {
+	    	Class.forName("org.postgresql.Driver");
+	    	c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
+	    	c.setAutoCommit(true);
 	        
-	         pstmt = c.prepareStatement(sql);
-	         pstmt.setString(1, emailNeu);
-	         pstmt.setInt(2, user.getId());
-	         
-	         
-	         pstmt.executeUpdate();
-	        profilDaten.setEmail(emailNeu);
-	        emailNeu="";
-	         pstmt.close();
-	         c.close();
+	    	pstmt = c.prepareStatement(sql);
+	    	pstmt.setString(1, emailNeu);
+	    	pstmt.setInt(2, user.getId());
+	    
+	    	pstmt.executeUpdate();
+	    	
+	    	profilDaten.setEmail(emailNeu);
+	    	emailNeu="";
+	    	
+	    	pstmt.close();
+	    	c.close();
 	         
 	      } catch (Exception e) {
 	         e.printStackTrace();
@@ -168,38 +141,33 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         System.exit(0);
 	      }
 	     
-	      System.out.println("Operation done successfully");
-		return null;
-	
-		
+		return null;	
 	}
 
 	@Override
 	public String passwortAendern() {
-		 Connection c = null;
-	      PreparedStatement pstmt = null;
-	      String sql = "UPDATE mitglied SET passwort = ? WHERE id = ?;";
-	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
-	         
-	         c.setAutoCommit(true);
-	         System.out.println("Opened database successfully");
+		System.out.println("MeinProfilController.passwortAendern ()");
+		
+		Connection c = null;
+	    PreparedStatement pstmt = null;
+	    String sql = "UPDATE mitglied SET passwort = ? WHERE id = ?;";
+	    
+	    try {
+	    	Class.forName("org.postgresql.Driver");
+	        c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad ,dbUser, dbPasswort);
+	        c.setAutoCommit(true);
+	  
+	        pstmt = c.prepareStatement(sql);
+	        pstmt.setString(1, passwortNeu);
+	        pstmt.setInt(2, user.getId());
+	     
+	        pstmt.executeUpdate();
 	        
-	         pstmt = c.prepareStatement(sql);
-	         pstmt.setString(1, passwortNeu);
-	         pstmt.setInt(2, user.getId());
-	         
-	         
-	         pstmt.executeUpdate();
-	        
-	         profilDaten.setPasswort(passwortNeu);
-		        passwortNeu="";
-	         pstmt.close();
-	         c.close();
+	        profilDaten.setPasswort(passwortNeu);
+		    passwortNeu="";
+		    
+	        pstmt.close();
+	        c.close();
 	         
 	      } catch (Exception e) {
 	         e.printStackTrace();
@@ -207,25 +175,37 @@ public class MeinProfilController implements MeinProfilControllerInterface {
 	         System.exit(0);
 	      }
 	     
-	      System.out.println("Operation done successfully");
 		return null;
 	
 	}
 	
+	
+	//------------------------------------------------------------------
+	//------------GETTER UND SETTER-------------------------------------
+	//------------------------------------------------------------------
+	
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public ProfilDatenModel getProfilDaten() {
+		return profilDaten;
+	}
+	public void setProfilDaten(ProfilDatenModel profilDaten) {
+		this.profilDaten = profilDaten;
+	}
 	public String getPasswortNeu() {
 		return passwortNeu;
 	}
-
 	public void setPasswortNeu(String passwortNeu) {
 		this.passwortNeu = passwortNeu;
 	}
-
 	public String getEmailNeu() {
 		return emailNeu;
 	}
-
 	public void setEmailNeu(String emailNeu) {
 		this.emailNeu = emailNeu;
 	}
-
 }

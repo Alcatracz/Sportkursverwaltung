@@ -23,7 +23,6 @@ import model.AktivitaetModel;
 import model.KursTerminModel;
 import model.MeineTermineModel;
 import model.TerminModel;
-import model.TrainerTermineModel;
 import model.User;
 
 public class TrainerbereichController implements TrainerbereichControllerInterface {
@@ -439,8 +438,9 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 		
 		 Connection c = null;
 	      PreparedStatement pstmt = null;
-	      String sql = "INSERT INTO termin (startuhrzeit,enduhrzeit,datum,istwoechentlich,buchbarab,buchbarbis,stornierbarbis,aktivitaetid,istbuchbar,iststornierbar)"
-	      		+ " VALUES (?,?,?,?,?,?,?,?,?,?);";
+	      String sql = "INSERT INTO termin (startuhrzeit,enduhrzeit,datum,istwoechentlich,"
+	      		+ "buchbarab,buchbarbis,stornierbarbis,aktivitaetid,istbuchbar,iststornierbar,dauer)"
+	      		+ " VALUES (?,?,?,?,?,?,?,?,?,?,?);";
 	      
 	      try {
 	         Class.forName("org.postgresql.Driver");
@@ -465,6 +465,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         pstmt.setInt(8, aktivitaet.getId());
 	         pstmt.setBoolean(9, true);
 	         pstmt.setBoolean(10, true);
+	         pstmt.setInt(11, 60); 				//Dauer berechnen
 	         
 	         
 	    
