@@ -1,0 +1,94 @@
+
+@charset "utf-8";
+
+
+.headblock {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 25px;
+  padding: 20px;
+  overflow: hidden;
+  border: none;
+  font: normal 16px/1 "Times New Roman", Times, serif;
+  color: #171a1e;
+  text-align: center;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  background: #171a1e;
+  -webkit-box-shadow: 1px 1px 1px 0 rgba(0,0,0,0.3) ;
+  box-shadow: 1px 1px 1px 0 rgba(0,0,0,0.3) ;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.2) ;
+}
+
+.order-table{
+	margin-top:24px;
+	border-collapse:collapse;
+    margin-left: auto;
+    margin-right: auto;
+	width:85%;
+}
+
+.customHeader{
+	font-size:18px;
+	background: #1b1e23;
+}
+
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+}
+
+li .sitelink {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li .sitelink:hover:not(.active) {
+    background-color: #111;
+}
+
+.active {
+    background-color: #4CAF50;
+}
+
+.pdatatable{
+	width:70%;
+	margin-top:20px;
+	margin-left:auto;
+	margin-right:auto;
+	background-color: #333;
+	color: #333;
+}
+
+.pdatatable2{
+	width:92%;
+	float:right;
+	background-color: #333;
+	color: #333;
+}
+
+body {
+  
+  font-family: "Lato";
+  font-size: 16px;
+  background: #171a1e;
+  
+}
+
+
+
+
+
+
