@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -135,9 +136,10 @@ public class KurseController implements KurseControllerInterface{
 	        		terminModel.setIstBuchbar(false);
 	        		terminModel.setGesperrt(true);
 	        	}
-	        	
+	        	DateFormat format = new SimpleDateFormat("dd.m.yyyy");
+	        	Date date = format.parse(rs.getString("datum"));
 	        	Calendar calender = Calendar.getInstance();
-	        	calender.setTime(rs.getDate("datum"));
+	        	calender.setTime(date);
 	        	switch(calender.get(Calendar.DAY_OF_WEEK)) {
 	        	case 1:
 	        		wochenListe.get(6).add(terminModel);

@@ -81,7 +81,7 @@
        			 	<h:column headerClass="customHeader">
         				<p:commandButton value="Info" action="#{trainerbereichController.setTrainerTermin(curtermin)}" 
           					update=":detail4" oncomplete="PF('detail4').show();"
-          					actionListener="#{trainerbereichController.ladeTerminDetails(curtermin.terminId)}" >
+          					actionListener="#{trainerbereichController.ladeTerminDetails(curtermin)}" >
           				</p:commandButton>
         			</h:column>
          		</h:dataTable>
@@ -125,9 +125,9 @@
 				<p><p:inputText value="#{trainerbereichController.termin.endUhrzeit}"></p:inputText></p>
 				<p>Wöchentlich <h:selectBooleanCheckbox value="#{trainerbereichController.termin.istWoechentlich}"></h:selectBooleanCheckbox></p>
 				<p>Tag:  <p:inputText value="#{trainerbereichController.termin.datum}"></p:inputText> </p>
-				<p>Buchbar ab:  <p:inputText value="#{trainerbereichController.termin.buchbarAb} Tag(e) vorher"></p:inputText> </p>
-				<p>Buchbar bis:  <p:inputText value="#{trainerbereichController.termin.buchbarBis} Tag(e) vorher"></p:inputText> </p>
-				<p>Stornierbar bis:  <p:inputText value="#{trainerbereichController.termin.stornierbarBis} Tag(e) vorher"></p:inputText> </p>
+				<p>Buchbar ab:  <p:inputText value="#{trainerbereichController.termin.buchbarAb}"></p:inputText> Tag(e) vorher</p>
+				<p>Buchbar bis:  <p:inputText value="#{trainerbereichController.termin.buchbarBis}"></p:inputText>Tag(e) vorher </p>
+				<p>Stornierbar bis:  <p:inputText value="#{trainerbereichController.termin.stornierbarBis}"></p:inputText>Tag(e) vorher </p>
 				
 				<h:commandButton action="#{trainerbereichController.speicherNeuenTermin(trainerbereichController.aktivitaetInfo)}" value="Hinzufügen"
 					styleClass="buttonClass" />
@@ -136,7 +136,7 @@
 					styleClass="order-table">
 					
 						<h:column headerClass="customHeader">
-         					#{curtermin.datum},#{curtermin.startuhrzeit}-#{curtermin.endUhrzeit} 
+         					#{curtermin.datum},#{curtermin.startUhrzeit}-#{curtermin.endUhrzeit} 
         				</h:column>
         				
 						<h:column headerClass="customHeader">

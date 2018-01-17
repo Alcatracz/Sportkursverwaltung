@@ -1,6 +1,7 @@
 package interfaces;
 
 import model.AktivitaetModel;
+import model.KursTerminModel;
 import model.MitgliedModel;
 import model.TerminModel;
 
@@ -22,5 +23,5 @@ public interface TrainerbereichControllerInterface {
 	public String loescheTermin (TerminModel termin);
 	
 	public void ladeTrainerTermine();
-	public void ladeTerminDetails(TerminModel termin);
+	public void ladeTerminDetails(KursTerminModel termin);
 }
