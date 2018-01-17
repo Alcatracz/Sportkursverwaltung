@@ -10,11 +10,11 @@
   overflow: hidden;
   border: none;
   font: normal 16px/1 "Times New Roman", Times, serif;
-  color: #24d6a6;
+  color: #171a1e;
   text-align: center;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
-  background: #24d6a6;
+  background: #171a1e;
   -webkit-box-shadow: 1px 1px 1px 0 rgba(0,0,0,0.3) ;
   box-shadow: 1px 1px 1px 0 rgba(0,0,0,0.3) ;
   text-shadow: 1px 1px 1px rgba(0,0,0,0.2) ;
@@ -25,14 +25,14 @@
 	margin-top:24px;
     margin-left: auto;
     margin-right: auto;
-    background: background: #24d6a6;
+    background: background: #171a1e;
 	width:400px;
 	height:300px;
 }
 
 .customHeader{
 	font-size:18px;
-	background: background: #24d6a6;
+	background: background: #171a1e;
 	color:white;
 }
 
@@ -52,13 +52,55 @@
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-  background: #24d6a6;
   border: 1px solid transparent;
   color: #171a1e;
   position:center;
   border-radius: 3px;
   opacity: 0.8;
   transition: all 0.2s ease;  
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+}
+
+li .sitelink {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li .sitelink:hover:not(.active) {
+    background-color: #111;
+}
+
+.active {
+    background-color: #4CAF50;
+}
+
+h1{
+  font-family: "Helvetica";
+  font-size: 32px;
+  text-align: center;
+  color: #a3a8b1;
+}
+
+p{
+  margin-top:0px;
+  font-family: "Helvetica";
+  font-size: 22px;
+  text-align: left;
+  color: #a3a8b1;
 }
 
 body {
