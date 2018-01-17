@@ -16,6 +16,11 @@ public class KursListeTagModel {
 		termine.add(termin);
 	}
 	
+	
+	//------------------------------------------------------------------
+	//------------GETTER UND SETTER-------------------------------------
+	//------------------------------------------------------------------
+	
 	public String getTag() {
 		return tag;
 	}
@@ -28,5 +33,4 @@ public class KursListeTagModel {
 	public void setTermine(List<KursTerminModel> termine) {
 		this.termine = termine;
 	}
-	
 }

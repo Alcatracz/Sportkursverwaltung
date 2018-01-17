@@ -17,6 +17,10 @@ public class MitgliedModel {
 	}
 	
 	
+	//------------------------------------------------------------------
+	//------------GETTER UND SETTER-------------------------------------
+	//------------------------------------------------------------------
+	
 	public String getVorname() {
 		return vorname;
 	}
@@ -65,13 +69,9 @@ public class MitgliedModel {
 	public void setTerminerinnerungZeit(int terminerinnerungZeit) {
 		this.terminerinnerungZeit = terminerinnerungZeit;
 	}
-
-
 	public int getId() {
 		return id;
 	}
-
-
 	public void setId(int id) {
 		this.id = id;
 	}

@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:h="http://xmlns.jcp.org/jsf/html"
-	  xmlns:f="http://xmlns.jcp.org/jsf/core">
+	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
 <h:head>
     <h:outputStylesheet library="css" name="termine.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -11,7 +12,7 @@
 </h:head>
 <h:body>
 	<f:view>
-	<h:form>
+	<h:form id="master">
 		<f:loadBundle basename="messages" var="msg"/>
 		
 		<div class="headblock">
@@ -21,28 +22,23 @@
 		<h:outputLink value="termine.xhtml" styleClass="sitelink">Meine Termine</h:outputLink>
 		<h:commandLink value = "Abmelden" action = "#{loginController.logout}" />
 		</div>
-		
+		<h1>Meine Termine</h1>
       	
-<h:dataTable value="#{meineTermineController.termine}" var="termin"
-styleClass="order-table">
+		<h:dataTable value="#{meineTermineController.termine}" var="termin"
+			styleClass="order-table">
 
-<h:column headerClass="customHeader">
-<div class="blockview">
-<f:facet name="header">
-</f:facet>
-#{termin.datum} #{termin.startUhrzeit}<br></br>
-Kurs: #{termin.name}<br></br>
-Trainer: #{termin.trainer}<br></br>
-                 <h:commandLink value="absagen" action="#{meineTermineController.absagen}">
-                        <f:setPropertyActionListener target="#{meineTermineController.termin}"
-                            value="#{termin}" />
-                    </h:commandLink>
-</div>
-</h:column>
-
-</h:dataTable>
+			<h:column headerClass="customHeader">
+				<div class="blockview">
+					<f:facet name="header"></f:facet>
+					#{termin.datum} #{termin.startUhrzeit}<br/>
+					Kurs: #{termin.name}<br/>
+					Trainer: #{termin.trainer}<br/>
+                 	<p:commandButton value="#{termin.actionName}" action="#{meineTermineController.absagen(termin)}" update="@form" disabled="#{termin.gesperrt}"/>
+				</div>
+			</h:column>
+		</h:dataTable>
  
-		</h:form>
+	</h:form>
 	</f:view>
 </h:body>
 </html>

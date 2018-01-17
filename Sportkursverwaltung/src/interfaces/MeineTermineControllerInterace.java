@@ -4,7 +4,7 @@ import model.MeineTermineModel;
 
 public interface MeineTermineControllerInterace {
 
-	public String absagen();
+	public String absagen(MeineTermineModel termin);
 	public void ladeTermine();
 	
 }

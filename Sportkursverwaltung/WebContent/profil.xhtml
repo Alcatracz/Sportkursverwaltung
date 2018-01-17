@@ -12,52 +12,54 @@
 <h:body>
 	<f:view>
 	<h:form>
-		<f:loadBundle basename="messages" var="msg"/>
+	<f:loadBundle basename="messages" var="msg"/>
 
-		<div class="headblock">
+	<div class="headblock">
 		<h:outputLink value="trainerbereich.xhtml" styleClass="sitelink">Trainerbereich</h:outputLink>
 		<h:outputLink value="kurse.xhtml" styleClass="sitelink">Kurse</h:outputLink>
 		<h:outputLink value="profil.xhtml" styleClass="sitelink">Mein Profil</h:outputLink>
 		<h:outputLink value="termine.xhtml" styleClass="sitelink">Meine Termine</h:outputLink>
 		<h:commandLink value = "Abmelden" action = "#{loginController.logout}" />
-		</div>
-	    <br></br>
-		<h1>Mein Profil</h1>
-		<br></br>
-		<section class="container">
+	</div>
+	
+	<br/>
+	<h1>Mein Profil</h1>
+	<br/>
+	<section class="container">
 		<div class="leftblock">		
-		<h2>Meine Daten</h2>
-		<br></br>
-		<p>Vorname: <h:inputText value="#{meinProfilController.profilDaten.vorname}"
-		 readonly="true"></h:inputText></p>
-		<br></br>
-		<p>Nachname: <h:inputText value="#{meinProfilController.profilDaten.nachname}"
-		 readonly="true"></h:inputText></p>
-		<br></br>
-		<p>Buchungsbestätigung:<h:selectBooleanCheckbox value="#{meinProfilController.profilDaten.istBuchungsbestaetigung}"
-		 ><f:ajax></f:ajax></h:selectBooleanCheckbox></p>
-		<br></br>
-		<p>Terminerinnerung: <h:selectBooleanCheckbox value="#{meinProfilController.profilDaten.istTerminerinnerung}"
-		 ><f:ajax></f:ajax></h:selectBooleanCheckbox></p>
-		<br></br>
-		<p>Terminerinnerung <h:inputText value="#{meinProfilController.profilDaten.terminerinnerungZeit}">
-		</h:inputText><br></br> Minuten vorher:</p>
-		<h:commandButton action="#{meinProfilController.speicherProfildaten}" value="Speichern" styleClass="buttonClass"/>
+			<h2>Meine Daten</h2>
+			<br/>
+			<p>Vorname: <h:inputText value="#{meinProfilController.profilDaten.vorname}"
+		 		readonly="true"></h:inputText></p>
+			<br/>
+			<p>Nachname: <h:inputText value="#{meinProfilController.profilDaten.nachname}"
+		 		readonly="true"></h:inputText></p>
+			<br/>
+			<p>Buchungsbestätigung:<h:selectBooleanCheckbox value="#{meinProfilController.profilDaten.istBuchungsbestaetigung}"
+		 		><f:ajax></f:ajax></h:selectBooleanCheckbox></p>
+			<br/>
+			<p>Terminerinnerung: <h:selectBooleanCheckbox value="#{meinProfilController.profilDaten.istTerminerinnerung}"
+				 ><f:ajax></f:ajax></h:selectBooleanCheckbox></p>
+			<br/>
+			<p>Terminerinnerung <h:inputText value="#{meinProfilController.profilDaten.terminerinnerungZeit}">
+			</h:inputText><br></br> Minuten vorher:</p>
+			<h:commandButton action="#{meinProfilController.speicherProfildaten}" value="Speichern" styleClass="buttonClass"/>
 		</div>
+		
 		<div class="rightblock">
-		<h2>Email/Passwort ändern</h2>
-		<br></br>
-		<p>Email:<h:outputText value="#{meinProfilController.profilDaten.email}"
-		 readonly="true"></h:outputText></p>		
-		<br></br>
-		<p>Neue Email: <h:inputText value="#{meinProfilController.emailNeu}">
-		</h:inputText> <h:commandButton action="#{meinProfilController.emailAendern}" value="Ändern" styleClass="buttonchangeClass"/></p>
-		<br></br>
-		<p>Neues Passwort: <h:inputSecret value="#{meinProfilController.passwortNeu}" redisplay="true">
-		</h:inputSecret><h:commandButton action="#{meinProfilController.passwortAendern}" value="Ändern" styleClass="buttonchangeClass"/></p>
+			<h2>Email/Passwort ändern</h2>
+			<br/>
+			<p>Email:<h:outputText value="#{meinProfilController.profilDaten.email}"
+		 		readonly="true"></h:outputText></p>		
+			<br/>
+			<p>Neue Email: <h:inputText value="#{meinProfilController.emailNeu}">
+			</h:inputText> <h:commandButton action="#{meinProfilController.emailAendern}" value="Ändern" styleClass="buttonchangeClass"/></p>
+			<br/>
+			<p>Neues Passwort: <h:inputSecret value="#{meinProfilController.passwortNeu}" redisplay="true">
+			</h:inputSecret><h:commandButton action="#{meinProfilController.passwortAendern}" value="Ändern" styleClass="buttonchangeClass"/></p>
 		</div>
-		</section>
-		</h:form>
-		</f:view>
-		</h:body>
+	</section>
+	</h:form>
+	</f:view>
+</h:body>
 </html>

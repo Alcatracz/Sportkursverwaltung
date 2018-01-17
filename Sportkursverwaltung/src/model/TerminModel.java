@@ -16,27 +16,23 @@ public class TerminModel {
 		
 	}
 	
+	
+	//------------------------------------------------------------------
+	//------------GETTER UND SETTER-------------------------------------
+	//------------------------------------------------------------------
 
 	public int getAktivitaetid() {
 		return aktivitaetid;
 	}
-
-
 	public void setAktivitaetid(int aktivitaetid) {
 		this.aktivitaetid = aktivitaetid;
 	}
-
-
 	public int getId() {
 		return id;
 	}
-
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
-
 	public String getDatum() {
 		return datum;
 	}

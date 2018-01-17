@@ -44,7 +44,7 @@ public class LoginController implements LoginControllerInterface {
 	      
 	    try {
 	    	Class.forName("org.postgresql.Driver");
-	        c = DriverManager.getConnection("jdbc:postgresql:"+dbPfad, dbUser, dbPasswort);
+	        c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
 	        c.setAutoCommit(true);
     
 	        pstmt = c.prepareStatement(sql);
@@ -96,9 +96,7 @@ public class LoginController implements LoginControllerInterface {
 	public User getUser() {
 		return user;
 	}
-
 	public void setUser(User user) {
 		this.user = user;
 	}
-
 }
