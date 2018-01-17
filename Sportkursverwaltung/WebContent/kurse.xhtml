@@ -17,7 +17,7 @@
 
     <div class="headblock">
 		<ul>
-			<li><h:outputLink value="trainerbereich.xhtml" styleClass="sitelink">Trainerbereich</h:outputLink></li>
+			<li><h:outputLink value="trainerbereich.xhtml" styleClass="sitelink" disabled="#{!user.istTrainer}" rendered="#{!user.istTrainer}">Trainerbereich</h:outputLink></li>
 			<li><h:outputLink value="kurse.xhtml" styleClass="sitelink">Kurse</h:outputLink></li>
 			<li><h:outputLink value="profil.xhtml" styleClass="sitelink">Mein Profil</h:outputLink></li>
 			<li><h:outputLink value="termine.xhtml" styleClass="sitelink">Meine Termine</h:outputLink></li>

@@ -7,13 +7,16 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Time;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.*;
@@ -23,53 +26,83 @@ import model.KursTerminModel;
 import model.TerminModelTimeManagement;
 
 @Singleton
+@LocalBean
 public class TimeManagement {
 
-
+	private String dbPfad = "localhost:5432/Terminverwaltung";
 	private String dbUser = "postgres";
 	private String dbPasswort = "postgres";
-	private List<TerminModelTimeManagement> trainerTermine = new ArrayList<TerminModelTimeManagement>();
-	private List<TerminModelTimeManagement> freischaltTermine = new ArrayList<TerminModelTimeManagement>();
-	LocalDate realDate;
-	LocalDate localDate;
-	LocalDate localDate2;
-	LocalDate buchbarabdate;
-	LocalDateTime ldt;
-
 	
-	@Schedule(hour="*",minute="*",second="*/1")
+	private DateFormat format = new SimpleDateFormat("dd.mm.yyyy");
+	ZoneId defaultZoneId = ZoneId.systemDefault();
+	LocalDate localDate;
+	
+	@Schedule(hour="*",minute="*",second="*/10",persistent=false)
 	public void test() {
-		ladeTrainerTermine(trainerTermine);
-		trainerTermine.size();
-		   realDate = LocalDate.now();
-	       localDate = LocalDate.now().minusDays(1);
-	       DateTimeFormatter formatter= DateTimeFormatter.ofPattern("dd.llll.yyyy");
-	       String formatedldate=localDate.format(formatter);
-	       String formatedrealdate=realDate.format(formatter);
-	       System.out.println("u running?");
+		System.out.println("test()");
+		
+		List<TerminModelTimeManagement> termine = ladeTermine();
 
-		for(int i=0;i<trainerTermine.size();i++) {
+	    
+	    DateTimeFormatter formatter= DateTimeFormatter.ofPattern("dd.LLLL.yyyy");
+
+
+		for(int i=0;i<termine.size();i++) {
 			
-			buchbarabdate = LocalDate.now().minusDays(trainerTermine.get(i).getBuchbarAb());
-			String formatedabdate=localDate.format(formatter);
-			if(formatedabdate.equals(formatedrealdate)) {
-				updateBuchbar(trainerTermine.get(i).getId());
+			try {
+				Date terminDate = format.parse(termine.get(i).getDatum());
+				Instant instant = terminDate.toInstant();
+				localDate = instant.atZone(defaultZoneId).toLocalDate();
+
+
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			
-			String date1 = trainerTermine.get(i).getDatum();
-			System.out.println(trainerTermine.get(i).getStartUhrzeit());		
-			System.out.println("boolean"+trainerTermine.get(i).isIstWoechentlich());
-			System.out.println( formatedldate);
-
-			if(date1.equals(formatedldate)){
-				if(trainerTermine.get(i).isIstWoechentlich()) {
-					 System.out.println("Ist Wöchentlich");
-					 erstelleNeuenTermin(trainerTermine.get(i));
+			LocalDate currentdate = LocalDate.now();
+			LocalDate buchbarabdate = localDate.minusDays(termine.get(i).getBuchbarAb());
+			LocalDate buchbarbisdate = localDate.minusDays(termine.get(i).getBuchbarBis());
+			LocalDate stornierbarbisdate = localDate.minusDays(termine.get(i).getStornierbarBis());
+			
+			String formatedcurrdate = currentdate.format(formatter);
+			String formatedabdate = buchbarabdate.format(formatter);
+			String formatedbisdate = buchbarbisdate.format(formatter);
+			String formaetdstodate = stornierbarbisdate.format(formatter);
+			
+			System.out.println("ENDE: "+formatedcurrdate );
+			
+			try {
+				Date current = format.parse(formatedcurrdate);
+				Date buchBarAb = format.parse(formatedabdate);
+				Date buchBarBis = format.parse(formatedbisdate);
+				Date stornierbarBis = format.parse(formaetdstodate);
+				System.out.println("current"+current);
+				System.out.println("buchBarAb"+buchBarAb);
+				System.out.println("buchBarBis"+buchBarBis);
+				System.out.println("stornierbarBis"+stornierbarBis);
+				
+				if (current.before(buchBarBis) && current.after(buchBarAb)) {
+					updateTermin (termine.get(i),"istbuchbar",true);
+				} else {
+					updateTermin (termine.get(i),"istbuchbar",false);
 				}
-				loescheAltenTermin(trainerTermine.get(i));
+				if (current.after(stornierbarBis)) {
+					updateTermin (termine.get(i),"iststornierbar",false);
+				}
+				
+
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+		
+			
+
+			
+			
 		}
-		trainerTermine.clear();
+		
+		termine.clear();
 		
 	}
 	
@@ -77,184 +110,150 @@ public class TimeManagement {
 	
 	private void loescheAltenTermin(TerminModelTimeManagement termin) {
 		Connection c = null;
-	      PreparedStatement pstmt = null;
-	      String sql = "DELETE FROM termin WHERE id=?";
-	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
-	         
-	         c.setAutoCommit(true);
-	      
+	    PreparedStatement pstmt = null;
+	    String sql = "DELETE FROM termin WHERE id=?";
+	    
+	    try {
+	    	Class.forName("org.postgresql.Driver");
+	        c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
+	        c.setAutoCommit(true);
 	        
-	         pstmt = c.prepareStatement(sql);
-	         pstmt.setInt(1, termin.getId());
-	         
+	        pstmt = c.prepareStatement(sql);
+	        pstmt.setInt(1, termin.getId());
+	        pstmt.executeUpdate();
 	      
-	         pstmt.executeUpdate();
-	         pstmt.close();
-	         
-	         String delete ="DELETE FROM terminliste WHERE terminid=?";
-	         PreparedStatement ps =c.prepareStatement(delete);
-	         ps.setInt(1, termin.getId());
-	         ps.executeUpdate();
-	         ps.close();
-	         
-	         c.close();
+	        String delete ="DELETE FROM terminliste WHERE terminid=?";
+	        pstmt =c.prepareStatement(delete);
+	        pstmt.setInt(1, termin.getId());
+	        pstmt.executeUpdate();
+	        
+	        pstmt.close();	      
+	        c.close();
 	         
 	      } catch (Exception e) {
-	         e.printStackTrace();
-	         System.err.println(e.getClass().getName()+": "+e.getMessage());
-	         System.exit(0);
+	    	  e.printStackTrace();
+	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
+	    	  System.exit(0);
 	      }
 	}
 
 
-	public void ladeTrainerTermine(List<TerminModelTimeManagement> term) {
-		// TODO Auto-generated method stub
-	
-				 Connection c = null;
-			      Statement stmt = null;
-			      String sql="SELECT   t.datum, t.startuhrzeit, t.enduhrzeit,t.id,t.istwoechentlich"
-			      		+ ",t.buchbarab, t.buchbarbis, t.stornierbarbis, t.aktivitaetid,t.istbuchbar,t.iststornierbar,t.dauer"
+	public List<TerminModelTimeManagement> ladeTermine() {
+		
+		List<TerminModelTimeManagement> termine = new ArrayList<TerminModelTimeManagement>();
+		Connection c = null;
+		PreparedStatement pstmt = null;
+		String sql="SELECT  t.datum, t.startuhrzeit, t.enduhrzeit,t.id,t.istwoechentlich"
+			      		+ ",t.buchbarab, t.buchbarbis, t.stornierbarbis, "
+			      		+ "t.aktivitaetid,t.istbuchbar,t.iststornierbar,t.dauer"
 			      		+ " FROM termin t;";
 			      
-			      try {
-			         Class.forName("org.postgresql.Driver");
-			         c = DriverManager
-			            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-			            		dbUser, dbPasswort);
+		try {//
+			Class.forName("org.postgresql.Driver");
+			c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
+			c.setAutoCommit(false);
 			         
-			         c.setAutoCommit(false);
-			         
-			        
-			         stmt = c.createStatement();
-			         ResultSet rs = stmt.executeQuery(sql);
-			         while(rs.next()) {
-		
-			        	TerminModelTimeManagement terminModel = new TerminModelTimeManagement();
-			        	terminModel.setId(rs.getInt("id"));
-			        	terminModel.setDatum(rs.getString("datum"));
-			        	terminModel.setStartUhrzeit(rs.getString("startuhrzeit"));
-			        	terminModel.setEndUhrzeit(rs.getString("enduhrzeit"));
-			        	terminModel.setIstWoechentlich(rs.getBoolean("istwoechentlich"));
-			        	System.out.println(terminModel.isIstWoechentlich());
-			        	terminModel.setStornierbarBis(rs.getInt("stornierbarbis"));
-			        	terminModel.setBuchbarAb(rs.getInt("buchbarab"));
-			        	terminModel.setBuchbarBis(rs.getInt("buchbarbis"));
-			        	terminModel.setAktivitaetid(rs.getInt("aktivitaetid"));
-			        	terminModel.setIstBuchbar(rs.getBoolean("istbuchbar"));
-			        	terminModel.setIstStornierbar(rs.getBoolean("iststornierbar"));
-			        	terminModel.setDauer(rs.getInt("dauer"));
+			pstmt = c.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				TerminModelTimeManagement terminModel = new TerminModelTimeManagement();
+			    terminModel.setId(rs.getInt("id"));
+			    terminModel.setDatum(rs.getString("datum"));
+			    terminModel.setStartUhrzeit(rs.getString("startuhrzeit"));
+			    terminModel.setEndUhrzeit(rs.getString("enduhrzeit"));
+			    terminModel.setIstWoechentlich(rs.getBoolean("istwoechentlich"));
+			    terminModel.setStornierbarBis(rs.getInt("stornierbarbis"));
+			    terminModel.setBuchbarAb(rs.getInt("buchbarab"));
+			    terminModel.setBuchbarBis(rs.getInt("buchbarbis"));
+			    terminModel.setAktivitaetid(rs.getInt("aktivitaetid"));
+			    terminModel.setIstBuchbar(rs.getBoolean("istbuchbar"));
+			    terminModel.setIstStornierbar(rs.getBoolean("iststornierbar"));
+			    terminModel.setDauer(rs.getInt("dauer"));
 			        	
-			        	
-			     	
-			        	
-			        	term.add(terminModel);
-			         }
-			         rs.close();
-			         stmt.close();
-			         c.close();
-			         
-			      } catch (Exception e) {
-			         e.printStackTrace();
-			         System.err.println(e.getClass().getName()+": "+e.getMessage());
-			         System.exit(0);
-			      }
-			     
+			    termine.add(terminModel);
 			    
-		
+			}
+			rs.close();
+			pstmt.close();
+			c.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			    System.err.println(e.getClass().getName()+": "+e.getMessage());
+			    System.exit(0);
+			    
+			}
+		return termine;
 	}
 	
 	public void erstelleNeuenTermin(TerminModelTimeManagement termin) {
-		System.out.println("speicherNeuenTermin");
-		
-		 Connection c = null;
-	      PreparedStatement pstmt = null;
-	      String sql = "INSERT INTO termin (startuhrzeit,enduhrzeit,datum,istwoechentlich,buchbarab,buchbarbis,stornierbarbis,aktivitaetid,istbuchbar,iststornierbar,dauer)"
+		Connection c = null;
+	    PreparedStatement pstmt = null;
+	    String sql = "INSERT INTO termin (startuhrzeit,enduhrzeit,datum,istwoechentlich,"
+	    		+ "buchbarab,buchbarbis,stornierbarbis,aktivitaetid,istbuchbar,iststornierbar,dauer)"
 	      		+ " VALUES (?,?,?,?,?,?,?,?,?,?,?);";
-	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
-	         
-	         c.setAutoCommit(true);
-	       
-	        DateFormat timeformatter = new SimpleDateFormat("HH:MM:SS");
-	        
-	         pstmt = c.prepareStatement(sql);
-	         
-	         pstmt.setTime(1, new Time(timeformatter.parse(termin.getStartUhrzeit()).getTime()));
-	         pstmt.setTime(2, new Time(timeformatter.parse(termin.getEndUhrzeit()).getTime()));
-	         pstmt.setDate(3, java.sql.Date.valueOf(localDate.plusDays(14)));
-	         pstmt.setBoolean(4, termin.isIstWoechentlich());
-	         pstmt.setInt(5, termin.getBuchbarAb()); 
-	         pstmt.setInt(6, termin.getBuchbarBis());
-	         pstmt.setInt(7, termin.getStornierbarBis());
-	         pstmt.setInt(8, termin.getAktivitaetid());
-	         pstmt.setBoolean(9, true);
-	         pstmt.setBoolean(10, true);
-	         pstmt.setInt(11, termin.getDauer());
-	         
-	         
 	    
-	         pstmt.executeUpdate();
+	    try {
+	    	Class.forName("org.postgresql.Driver");
+	        c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
+	        c.setAutoCommit(true);
+	        
+	        LocalDate localDate = LocalDate.now();
+	        localDate.plusDays(14);
+	        
+	        DateTimeFormatter formatter= DateTimeFormatter.ofPattern("dd.llll.yyyy");
+		    String formatedldate=localDate.format(formatter);
+		    
+	        pstmt = c.prepareStatement(sql);
+	        pstmt.setString(1, termin.getStartUhrzeit());
+	        pstmt.setString(2, termin.getEndUhrzeit());
+	        pstmt.setString(3, formatedldate );
+	        pstmt.setBoolean(4, termin.isIstWoechentlich());
+	        pstmt.setInt(5, termin.getBuchbarAb()); 
+	        pstmt.setInt(6, termin.getBuchbarBis());
+	        pstmt.setInt(7, termin.getStornierbarBis());
+	        pstmt.setInt(8, termin.getAktivitaetid());
+	        pstmt.setBoolean(9, true);
+	        pstmt.setBoolean(10, true);
+	        pstmt.setInt(11, termin.getDauer());
+	         
+	        pstmt.executeUpdate();
 	  
-	         pstmt.close();
-	         c.close();
+	        pstmt.close();
+	        c.close();
 	         
 	      } catch (Exception e) {
-	         e.printStackTrace();
-	         System.err.println(e.getClass().getName()+": "+e.getMessage());
-	         System.exit(0);
+	    	  e.printStackTrace();
+	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
+	    	  System.exit(0);
 	      }
-
 	}
 	
 	
 
 	
-	public void updateBuchbar(int id) {
-		System.out.println("speicherNeuenTermin");
-		
-		 Connection c = null;
-	      PreparedStatement pstmt = null;
-	      String sql = "UPDATE termin SET istbuchbar=? where id=?";
-	      
-	      try {
-	         Class.forName("org.postgresql.Driver");
-	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/Terminverwaltung",
-	            		dbUser, dbPasswort);
-	         
-	         c.setAutoCommit(true);
-	       
-	        DateFormat timeformatter = new SimpleDateFormat("HH:MM:SS");
-	        
-	         pstmt = c.prepareStatement(sql);
-
-	         pstmt.setBoolean(1, true);
-	         pstmt.setInt(2,id);
-	         
-	         
+	public void updateTermin(TerminModelTimeManagement termin,String attribute, boolean state) {
+		Connection c = null;
+	    PreparedStatement pstmt = null;
+	    String sql = "UPDATE termin SET "+attribute+"=? where id=?";
 	    
-	         pstmt.executeUpdate();
+	    try {
+	    	Class.forName("org.postgresql.Driver");
+	        c = DriverManager.getConnection("jdbc:postgresql://"+dbPfad, dbUser, dbPasswort);
+	        c.setAutoCommit(true);
+	        
+	        pstmt = c.prepareStatement(sql);
+	        pstmt.setBoolean(1, state);
+	        pstmt.setInt(2,termin.getId());
+	        
+	        pstmt.executeUpdate();
 	  
-	         pstmt.close();
-	         c.close();
-	         
-	      } catch (Exception e) {
-	         e.printStackTrace();
-	         System.err.println(e.getClass().getName()+": "+e.getMessage());
-	         System.exit(0);
-	      }
-
-	}
-	
-	
-	
+	        pstmt.close();
+	        c.close();
+	        
+	        } catch (Exception e) {
+	        	e.printStackTrace();
+	        	System.err.println(e.getClass().getName()+": "+e.getMessage());
+	        	System.exit(0);
+	        }
+	}	
 }
