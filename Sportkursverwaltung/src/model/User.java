@@ -2,10 +2,13 @@ package model;
 
 public class User {
     private String email;
+    private String name;
     private String passwort;
     private boolean istTrainer;
     private int id;
     private boolean istAuthentifiziert = false;
+    private boolean istBuchungsbestaetigung;
+    private boolean istTerminerinnerung;
 
     public User() {
     	istAuthentifiziert=false;
@@ -53,5 +56,23 @@ public class User {
 	}
 	public void setIstTrainer(boolean istTrainer) {
 		this.istTrainer = istTrainer;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public boolean isIstBuchungsbestaetigung() {
+		return istBuchungsbestaetigung;
+	}
+	public void setIstBuchungsbestaetigung(boolean istBuchungsbestaetigung) {
+		this.istBuchungsbestaetigung = istBuchungsbestaetigung;
+	}
+	public boolean isIstTerminerinnerung() {
+		return istTerminerinnerung;
+	}
+	public void setIstTerminerinnerung(boolean istTerminerinnerung) {
+		this.istTerminerinnerung = istTerminerinnerung;
 	}
 }

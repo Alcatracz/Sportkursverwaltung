@@ -1,4 +1,4 @@
-package controller;
+package time;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,7 +22,7 @@ import model.AktivitaetModel;
 import model.KursTerminModel;
 import model.TerminModelTimeManagement;
 
-@Stateless
+@Singleton
 public class TimeManagement {
 
 
@@ -35,10 +35,9 @@ public class TimeManagement {
 	LocalDate localDate2;
 	LocalDate buchbarabdate;
 	LocalDateTime ldt;
-//    ldt = LocalDateTime.now();
-//    ldt.mi
+
 	
-	@Schedule(hour="*",minute="*",second="*/15",persistent=false)
+	@Schedule(hour="*",minute="*",second="*/1")
 	public void test() {
 		ladeTrainerTermine(trainerTermine);
 		trainerTermine.size();
@@ -47,6 +46,7 @@ public class TimeManagement {
 	       DateTimeFormatter formatter= DateTimeFormatter.ofPattern("dd.llll.yyyy");
 	       String formatedldate=localDate.format(formatter);
 	       String formatedrealdate=realDate.format(formatter);
+	       System.out.println("u running?");
 
 		for(int i=0;i<trainerTermine.size();i++) {
 			

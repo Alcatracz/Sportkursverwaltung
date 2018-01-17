@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,6 +20,7 @@ import javax.annotation.PostConstruct;
 import com.sun.xml.rpc.encoding.MissingTrailingBlockIDException;
 
 import interfaces.TrainerbereichControllerInterface;
+import mail.MailController;
 import model.MitgliedModel;
 import model.AktivitaetModel;
 import model.KursTerminModel;
@@ -217,12 +220,12 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager.getConnection("jdbc:postgresql://" + dbPfad, dbUser, dbPasswort);
 	         c.setAutoCommit(true);
-	        
+	        mitglied.setPasswort(generatePasswort());
 	         pstmt = c.prepareStatement(sql);
 	         pstmt.setString(1, mitglied.getVorname());
 	         pstmt.setString(2, mitglied.getNachname());
 	         pstmt.setString(3, mitglied.getEmail());
-	         pstmt.setString(4, generatePasswort());
+	         pstmt.setString(4, mitglied.getPasswort());
 	         pstmt.setBoolean(5, mitglied.isIstTrainer());
 	         pstmt.setBoolean(6, false);
 	         pstmt.setBoolean(7, false);
@@ -238,7 +241,7 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         System.err.println(e.getClass().getName()+": "+e.getMessage());
 	         System.exit(0);
 	      }
-	      
+	      MailController.sendEinladung(mitglied);
 		mitglieder.add(mitglied);
 		mitglied= new MitgliedModel();
 		
@@ -405,7 +408,14 @@ public class TrainerbereichController implements TrainerbereichControllerInterfa
 	         pstmt.setInt(8, aktivitaet.getId());
 	         pstmt.setBoolean(9, false);
 	         pstmt.setBoolean(10, true);
-	         pstmt.setInt(11, 60); 				//Dauer berechnen
+	         
+	         String starte = termin.getStartUhrzeit();
+	         String ende = termin.getEndUhrzeit();
+	         LocalTime start = LocalTime.of(Integer.valueOf(starte.substring(1, 2)),Integer.valueOf(starte.substring(4)),5);
+	         LocalTime end = LocalTime.of(Integer.valueOf(ende.substring(1, 2)),Integer.valueOf(ende.substring(4)),5);
+	         Duration d= Duration.between(start, end);
+	         
+	         pstmt.setInt(11, (int)(d.getSeconds()/60)); 				//Dauer berechnen
 	         
 	         System.out.println("DATUM: " + termin.getDatum());
 	    

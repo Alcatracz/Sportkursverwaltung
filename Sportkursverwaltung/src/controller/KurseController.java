@@ -15,6 +15,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import interfaces.KurseControllerInterface;
+import mail.MailController;
 import model.KursListeTagModel;
 import model.KursTerminModel;
 import model.MeineTermineModel;
@@ -214,6 +215,12 @@ public class KurseController implements KurseControllerInterface{
 	    	        pstmt.setInt(2, user.getId());
 	    	      
 	    	        pstmt.executeUpdate();
+	    	        
+	    	        if(user.isIstBuchungsbestaetigung()) {
+	    	        	MailController.sendBestaetigung(user, termin);
+	    	        }else {
+	    	        	System.out.println("keine Mail");
+	    	        }
 	    	        
 	        		termin.setActionName("Absagen");
 	        		

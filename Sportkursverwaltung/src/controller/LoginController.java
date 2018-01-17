@@ -40,7 +40,8 @@ public class LoginController implements LoginControllerInterface {
 
 		Connection c = null;
 	    PreparedStatement pstmt = null;
-		String sql="SELECT m.id, m.email, m.passwort, m.isttrainer FROM mitglied m WHERE m.email=? AND m.passwort=?";
+		String sql="SELECT m.id, m.vorname,m.email, m.passwort, m.isttrainer,m.istbuchungsbestaetigung,m.istterminerinnerung"
+				+ " FROM mitglied m WHERE m.email=? AND m.passwort=?";
 	      
 	    try {
 	    	Class.forName("org.postgresql.Driver");
@@ -58,6 +59,9 @@ public class LoginController implements LoginControllerInterface {
 	        	user.setPasswort(rs.getString("passwort"));
 	        	user.setIstTrainer(rs.getBoolean("isttrainer"));
 	        	user.setIstAuthentifiziert(true);
+	        	user.setName(rs.getString("vorname"));
+	        	user.setIstBuchungsbestaetigung(rs.getBoolean("istbuchungsbestaetigung"));
+	        	user.setIstTerminerinnerung(rs.getBoolean("istterminerinnerung"));
 	         }
 	        
 	         rs.close();
